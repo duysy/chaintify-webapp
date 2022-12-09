@@ -1,0 +1,8 @@
+.playClass {
+    opacity: 0;
+}
+
+.playClass:hover {
+    opacity: 1;
+    /* background: rgba(8, 10, 8, 0.5); */
+}

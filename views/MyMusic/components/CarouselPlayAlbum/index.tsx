@@ -10,15 +10,15 @@ import { useRouter } from "next/navigation";
 import { useMusicPlayer } from "../../../../contexts/useMusicPlayer";
 import PopupCreateAlbum from "../../../../components/popups/PopupCreateAlbum";
 type TProps = {
-  list: TAlbum[];
+  list: TCarouselPlayAlbum[];
 };
-type TAlbum = {
+export type TCarouselPlayAlbum = {
   name: string;
   cover: string;
   clickHrefTo: string;
 };
 export default function CarouselPlayAlbum(props: TProps) {
-  const list: TAlbum[] = props.list;
+  const list: TCarouselPlayAlbum[] = props.list;
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { play, pause, isPlay } = useMusicPlayer();
@@ -63,7 +63,7 @@ export default function CarouselPlayAlbum(props: TProps) {
   };
   return (
     <Stack direction="row" spacing={3}>
-      {list.map((item: TAlbum, index: any) => {
+      {list.map((item: TCarouselPlayAlbum, index: any) => {
         return (
           <Box
             key={index}
@@ -123,7 +123,7 @@ export default function CarouselPlayAlbum(props: TProps) {
               </Box>
               <Image
                 src={item?.cover as string}
-                alt="Picture of the author"
+                alt="Picture of album"
                 width={150}
                 height={150}
                 style={{

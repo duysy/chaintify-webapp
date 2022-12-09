@@ -7,7 +7,7 @@ import AudioPlayer from "../AudioPlayer";
 
 export default function Player() {
   const { hidden, listSongMusicPlayer, indexSongPlaylist, setPlayerRef, onPlay, onPause, onClickPrevious, onClickNext, onEnded } = useMusicPlayer();
-  const playerRef:  React.RefObject<any> = useRef();
+  const playerRef: React.RefObject<any> = useRef();
   useEffect(() => {
     if (!playerRef) return;
     setPlayerRef(playerRef);

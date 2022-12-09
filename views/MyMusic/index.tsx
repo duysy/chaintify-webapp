@@ -12,7 +12,7 @@ import MusicList from "../../components/MusicList";
 import LikeSongTab from "./components/LikeSongTab";
 import UploadTab from "./components/UploadTab";
 import CarouselBoxCircle from "./components/CarouselBoxCircle";
-import CarouselPlayAlbum from "./components/CarouselPlayAlbum";
+import CarouselPlayAlbum, { TCarouselPlayAlbum } from "./components/CarouselPlayAlbum";
 import { TMusicList } from "../../components/MusicList/types";
 
 import { list as listAlbumPrivate } from "../../apis/private/models/album/get_album";
@@ -21,13 +21,12 @@ import { list as listSongPrivate } from "../../apis/private/models/song/get_song
 import { useQuery } from "react-query";
 
 import { TCarouselBoxCircle } from "./components/CarouselBoxCircle";
-import { TCarouselPlayBasic } from "../../components/CarouselPlayBasic";
 import MyLoader from "./Loading";
 
 type TTabView = "likeSongTab" | "UploadTab";
 
 export default function MyMusicView() {
-  const [albums, setAlbums] = useState<TCarouselPlayBasic[]>();
+  const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const [playlists, setPlaylists] = useState<TCarouselBoxCircle[]>();
   const [songs, setSongs] = useState<TMusicList[]>();
 
@@ -62,7 +61,7 @@ export default function MyMusicView() {
             name: item.name,
             cover: `${config.baseMedia}${item.cover}`,
             clickHrefTo: `/album/${item.id}`,
-          } as TCarouselPlayBasic;
+          } as TCarouselPlayAlbum;
         });
         setAlbums(albums);
       },
@@ -121,7 +120,7 @@ export default function MyMusicView() {
       </Box>
       <Box>
         <SectionTitle>Album</SectionTitle>
-        {queryAlbum.isSuccess ? <CarouselPlayAlbum list={albums as TCarouselPlayBasic[]} /> : <h1>Loading</h1>}
+        {queryAlbum.isSuccess ? <CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} /> : <h1>Loading</h1>}
       </Box>
       <Box>
         <SectionTitle>Bài hát</SectionTitle>

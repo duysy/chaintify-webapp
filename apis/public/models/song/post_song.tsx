@@ -11,9 +11,3 @@ export type TCreateSong = {
   path: string | null;
   mtime: number | null;
 };
-export async function create(song: TCreateSong) {
-  try {
-    const res = await common.post("/models/songs/", song);
-    return res.data;
-  } catch (error) {}
-}

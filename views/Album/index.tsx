@@ -74,9 +74,11 @@ export default function AlbumView(props: Props) {
               alt="Image album"
               width={300}
               height={300}
+              layout="responsive"
               style={{
                 borderRadius: "20px",
-                objectFit: "cover"
+                objectFit: "cover",
+                aspectRatio: "1 / 1",
               }}
             />
             <Typography

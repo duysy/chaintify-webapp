@@ -208,7 +208,7 @@ export default function MusicList(props: TProps) {
                     <Stack direction="row" spacing={2}>
                       <Image
                         src={row.cover}
-                        alt="Picture of the author"
+                        alt="Picture of music"
                         width={50}
                         height={50}
                         style={{

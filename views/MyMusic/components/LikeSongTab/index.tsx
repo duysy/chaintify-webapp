@@ -51,7 +51,7 @@ export default function LikeSongTab(props: any) {
               >
                 <Image
                   src={item.cover}
-                  alt="Picture of the author"
+                  alt="Picture of song"
                   width={40}
                   height={40}
                   style={{

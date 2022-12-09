@@ -13,7 +13,7 @@ export type TCreateSong = {
 };
 export async function create(song: TCreateSong) {
   try {
-    const res = await common.post("/models/songs/", song);
+    const res = await common.post("/models/private/songs/", song);
     return res.data;
   } catch (error) {}
 }

@@ -3,7 +3,14 @@ const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
     images: {
-        domains: ['picsum.photos', 'localhost'],
+        // domains: ['picsum.photos', 'localhost', '*'],
+        remotePatterns: [{
+            protocol: "https",
+            hostname: "**",
+        }, {
+            protocol: "http",
+            hostname: "**",
+        }],
     },
     typescript: {
         ignoreBuildErrors: true,

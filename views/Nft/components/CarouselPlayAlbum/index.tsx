@@ -3,20 +3,20 @@ import { Grid, Stack, Container, Box, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { PlayCircle, PauseCircle } from "@mui/icons-material";
-import styles from "./CarouselPlayBasic.module.css";
-import { useMusicPlayer } from "../../contexts/useMusicPlayer";
+import styles from "./CarouselPlayAlbum.module.css";
 type TProps = {
-  list: TCarouselPlayBasic[];
+  list: TCarouselPlayAlbum[];
 };
-export type TCarouselPlayBasic = {
+export type TCarouselPlayAlbum = {
   name: string;
   cover: string;
+  isMint: boolean;
+  balance: string;
   clickHrefTo: string;
 };
-export default function CarouselPlayBasic(props: TProps) {
-  const list: TCarouselPlayBasic[] = props.list;
+export default function CarouselPlayAlbum(props: TProps) {
+  const list: TCarouselPlayAlbum[] = props.list;
   const router = useRouter();
-  const { play, pause, isPlay } = useMusicPlayer();
 
   const MainContent = () => {
     return (
@@ -33,50 +33,47 @@ export default function CarouselPlayBasic(props: TProps) {
                 width: 150,
                 height: 200,
               }}
-              onClick={(event:any) => {
+              onClick={(event: any) => {
                 event.stopPropagation();
                 console.log("card click");
                 router.push(item?.clickHrefTo as string);
               }}
             >
               <Box position="relative" className={styles.card}>
-                {/* <Box
-                  className={styles.playClass}
+                <Box
                   position="absolute"
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
                   sx={{
-                    borderRadius: "20px",
-                    width: "150px",
-                    height: "150px",
+                    // borderRadius: "20px",
+                    top: 0,
+                    right: 0,
                   }}
                 >
-                  {isPlay ? (
-                    <PauseCircle
+                  {item.isMint ? (
+                    <Typography
                       sx={{
-                        fontSize: "2.5rem",
+                        bgcolor: "#E8AC24",
                       }}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("Play icon click");
-                        pause();
-                      }}
-                    />
+                    >
+                      MINT
+                    </Typography>
                   ) : (
-                    <PlayCircle
-                      sx={{
-                        fontSize: "2.5rem",
-                      }}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        console.log("pause icon click");
-
-                        play();
-                      }}
-                    />
+                    <></>
                   )}
-                </Box> */}
+                  {item.balance ? (
+                    <Typography
+                      sx={{
+                        bgcolor: "#E8AC24",
+                      }}
+                    >
+                      Balance : {item.balance}
+                    </Typography>
+                  ) : (
+                    <></>
+                  )}
+                </Box>
                 <Image
                   src={item?.cover as string}
                   alt="Image album"

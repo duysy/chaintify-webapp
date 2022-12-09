@@ -5,6 +5,8 @@ export type EtherContextValue = {
   onClickConnect: any;
   currentAccount: string | undefined;
   onClickDisconnect: any;
+  provider: any;
+  balance: any;
 };
 export const Ether = createContext<EtherContextValue>({} as EtherContextValue);
 
@@ -19,7 +21,7 @@ const EtherContextProvider = ({ children }: Props) => {
   const [chainName, setChainName] = useState<string | undefined>();
   const [provider, setProvider] = useState<any>();
   const [isConnect, setIsConnect] = useState<any>();
-  const { setIsLogin, login, logout } = useAuth();
+  const { login, logout } = useAuth();
 
   useEffect(() => {
     if (!provider) return;
@@ -33,6 +35,12 @@ const EtherContextProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (!provider) return;
+    provider.on("accountsChanged", function (accounts: any) {
+      if (accounts.length > 0) setCurrentAccount(accounts[0]);
+    });
+  }, [provider]);
+  useEffect(() => {
+    if (!provider) return;
     if (!currentAccount) return;
     provider.getBalance(currentAccount).then((result: any) => {
       setBalance(ethers.utils.formatEther(result));
@@ -42,7 +50,7 @@ const EtherContextProvider = ({ children }: Props) => {
       setChainName(result.name);
     });
     console.log(chainName, chainId, balance);
-  }, [provider]);
+  }, [provider, currentAccount]);
 
   useEffect(() => {
     const check = async () => {
@@ -50,7 +58,7 @@ const EtherContextProvider = ({ children }: Props) => {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x7A69" }],
+          params: [{ chainId: "0x13881" }],
         });
       } catch (e: any) {
         if (e.code === 4902) {
@@ -59,15 +67,15 @@ const EtherContextProvider = ({ children }: Props) => {
               method: "wallet_addEthereumChain",
               params: [
                 {
-                  chainId: "0x61",
-                  chainName: "Smart Chain - Testnet",
+                  chainId: "0x13881",
+                  chainName: "Polygon Mumbai",
                   nativeCurrency: {
-                    name: "Binance",
-                    symbol: "BNB", // 2-6 characters long
+                    name: "Polygon",
+                    symbol: "MATIC", // 2-6 characters long
                     decimals: 18,
                   },
-                  blockExplorerUrls: ["https://testnet.bscscan.com"],
-                  rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+                  blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+                  rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
                 },
               ],
             });
@@ -85,7 +93,7 @@ const EtherContextProvider = ({ children }: Props) => {
     if (!provider) return;
     login();
     setIsConnect(true);
-  }, [provider]);
+  }, [provider, currentAccount]);
 
   useEffect(() => {
     onClickConnect();
@@ -100,8 +108,14 @@ const EtherContextProvider = ({ children }: Props) => {
     }
     const provider_ = new ethers.providers.Web3Provider(window?.ethereum);
     setProvider(provider_);
+    signMessage()
   };
-
+  const signMessage = async () => {
+    if (!provider) return;
+    const signer = provider.getSigner();
+    let flatSig = await signer.signMessage("hello");
+    console.log(flatSig)
+  };
   const onClickDisconnect = () => {
     console.log("onClickDisConnect");
     setBalance(undefined);
@@ -116,6 +130,8 @@ const EtherContextProvider = ({ children }: Props) => {
         onClickConnect,
         currentAccount,
         onClickDisconnect,
+        provider,
+        balance,
       }}
     >
       {children}

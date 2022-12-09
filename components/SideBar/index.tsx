@@ -39,13 +39,13 @@ export default function SideBar() {
   const listMenuBottom = [
     {
       iconElement: <LibraryMusic />,
-      title: "NFT",
+      title: "Mint NFT",
       href: "/nft",
     },
     {
       iconElement: <Album />,
-      title: "Khám Phá",
-      href: "/home",
+      title: "Collection",
+      href: "/nft/collection",
     },
     {
       iconElement: <AirlineStops />,

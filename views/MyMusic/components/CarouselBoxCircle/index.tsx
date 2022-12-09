@@ -69,7 +69,7 @@ export default function CarouselBoxCircle(props: TProps) {
               </Box>
               <Image
                 src={item.cover}
-                alt="Picture of the author"
+                alt="Picture of playlist"
                 width={150}
                 height={150}
                 style={{

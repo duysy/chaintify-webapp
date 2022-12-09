@@ -72,12 +72,14 @@ export default function PlayListView(props: Props) {
             {playlist?.cover ? (
               <Image
                 src={`${config.baseMedia}${playlist?.cover}`}
-                alt="Image album"
+                alt="Image playlist"
                 width={300}
                 height={300}
+                layout="responsive"
                 style={{
                   borderRadius: "20px",
-                  objectFit: "cover"
+                  objectFit: "cover",
+                  aspectRatio: "1 / 1",
                 }}
               />
             ) : (

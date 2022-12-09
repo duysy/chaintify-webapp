@@ -6,12 +6,13 @@ import { useEther } from "../../contexts/useEther";
 import { useQuery } from "react-query";
 import { list as listAlbumPrivate } from "../../apis/private/models/album/get_album";
 import SectionTitle from "../../components/SectionTitle";
-import CarouselPlayBasic, { TCarouselPlayBasic } from "../../components/CarouselPlayBasic";
+import CarouselPlayAlbum, { TCarouselPlayAlbum } from "./components/CarouselPlayAlbum";
 import config from "../../config";
+import { Typography } from "@material-ui/core";
 
 export default function NftView() {
-  const { onClickConnect, onClickDisconnect, currentAccount } = useEther();
-  const [albums, setAlbums] = useState<TCarouselPlayBasic[]>();
+  const { onClickConnect, onClickDisconnect, currentAccount, balance } = useEther();
+  const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const queryAlbum = useQuery(
     ["listAlbumPrivate_0_5_0"],
     async () => {
@@ -19,12 +20,13 @@ export default function NftView() {
     },
     {
       onSuccess: (data: any) => {
-        let albums = data.results.map((item: any, index: any) => {
+        let albums = data.results.map((item: any) => {
           return {
             name: item.name,
             cover: `${config.baseMedia}${item.cover}`,
+            isMint: item.isMint,
             clickHrefTo: `/nft/mint/${item.id}`,
-          } as TCarouselPlayBasic;
+          } as TCarouselPlayAlbum;
         });
         setAlbums(albums);
       },
@@ -33,12 +35,14 @@ export default function NftView() {
   return (
     <Wrap>
       <Stack>
-        {currentAccount}
+        <Typography>
+          {currentAccount} : {balance}
+        </Typography>
         <Button onClick={onClickDisconnect}>DisConnect wallet</Button>
       </Stack>
       <Box>
         <SectionTitle>Album</SectionTitle>
-        {queryAlbum.isSuccess ? <CarouselPlayBasic list={albums as TCarouselPlayBasic[]} /> : <h1>Loading</h1>}
+        {queryAlbum.isSuccess ? <CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} /> : <h1>Loading</h1>}
       </Box>
     </Wrap>
   );
