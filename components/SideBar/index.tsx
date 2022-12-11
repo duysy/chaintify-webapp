@@ -49,7 +49,7 @@ export default function SideBar() {
     },
     {
       iconElement: <AirlineStops />,
-      title: "Trending",
+      title: "Nhạc mới",
       href: "/mymusic",
     },
     {

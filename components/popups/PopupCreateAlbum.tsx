@@ -54,7 +54,7 @@ export default function PopupCreateAlbum(props: Props) {
     ];
     const uniqueData = [...artistsPicker_.reduce((map, obj) => map.set(obj.id, obj), new Map()).values()];
 
-    console.log(uniqueData);
+    // console.log(uniqueData);
     setArtistsPicker(uniqueData);
   };
 
@@ -71,10 +71,10 @@ export default function PopupCreateAlbum(props: Props) {
   const mutationSubmit = useMutation((data: any) => createAlbumPrivate(data), {
     onSuccess: (data) => {
       if (data) {
-        console.log("createAlbum", data);
+        // console.log("createAlbum", data);
         handleClose();
         router.push(`/album/${data.id}`);
-        queryClient.invalidateQueries("listAlbumPrivate_0_5_0");
+        queryClient.invalidateQueries(["listAlbumPrivate_0_5_0"]);
       } else {
         alert("Fail");
       }
@@ -89,7 +89,7 @@ export default function PopupCreateAlbum(props: Props) {
 
   const handelCheckBoxIsPrivateChange = (event: any) => {
     const isPublic_ = event.target.checked;
-    console.log(isPublic_);
+    // console.log(isPublic_);
     setIsPublic(isPublic_);
   };
   useEffect(() => {
@@ -191,7 +191,7 @@ export default function PopupCreateAlbum(props: Props) {
           >
             {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.baseMedia}${pathImage}`} />}
             <br />
-            <FileUpload setPath={setPathImage} accept=".png, .gif, .jpeg" title={"Pick a image"} />
+            <FileUpload setPath={setPathImage} accept=".png, .jpg, .jpeg" title={"Pick a image"} />
           </Box>
 
           <TextareaAutosize

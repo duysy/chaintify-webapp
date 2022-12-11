@@ -46,7 +46,7 @@ export default function HomeView() {
           const updated_at = new Date(item.updated_at).getTime();
           let datetime = +Math.abs(dateNow - updated_at).toFixed(0);
           datetime = datetime / 1000;
-          console.log(datetime);
+          // console.log(datetime);
           let updated_at_text = "";
           if (datetime < 60) {
             updated_at_text = `${datetime.toFixed(0)} giây trước`;

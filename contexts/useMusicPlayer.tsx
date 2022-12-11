@@ -45,32 +45,32 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     list: [],
   });
   const onPlay = () => {
-    console.log("onPlay");
+    // console.log("onPlay");
     setIsPlay(true);
   };
   const onPause = () => {
-    console.log("onPause");
+    // console.log("onPause");
     setIsPlay(false);
   };
   const onEnded = () => {
-    console.log("onEnded");
+    // console.log("onEnded");
     onClickNext();
   };
 
   const setListMusicPlayer = (listSongMusicPlayer_: any) => {
     if (listSongMusicPlayer_.length <= 0) return;
-    console.log(listSongMusicPlayer_);
+    // console.log(listSongMusicPlayer_);
     setListSongMusicPlayer(listSongMusicPlayer_);
     setIndexSongPlaylist(0);
   };
 
   const onClickNext = () => {
-    console.log("onClickNext");
+    // console.log("onClickNext");
     let indexSongPlaylist_ = indexSongPlaylist + 1;
     if (indexSongPlaylist_ > listSongMusicPlayer.length - 1) {
       indexSongPlaylist_ = 0;
     }
-    console.log("onClickNext : ", indexSongPlaylist_, listSongMusicPlayer);
+    // console.log("onClickNext : ", indexSongPlaylist_, listSongMusicPlayer);
     setIndexSongPlaylist(indexSongPlaylist_);
   };
   const onClickPrevious = () => {
@@ -111,7 +111,7 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     }
   }, [listSongMusicPlayer]);
   useEffect(() => {
-    console.log("listSongMusicPlayer : ", listSongMusicPlayer, indexSongPlaylist);
+    // console.log("listSongMusicPlayer : ", listSongMusicPlayer, indexSongPlaylist);
     if (indexSongPlaylist > 0) {
       play();
     }

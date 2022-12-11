@@ -8,7 +8,7 @@ import FileUpload from "../../components/FileUpload";
 import { list as listAlbumPrivate } from "../../apis/private/models/album/get_album";
 import { list as listArtistPublic } from "../../apis/public/models/artist/get_artist";
 import { create as createSongApi, TCreateSong } from "../../apis/private/models/song/post_song";
-
+import {useAuth} from "../../contexts/useAuth"
 const style = {
   width: "500px",
   height: "auto",
@@ -27,14 +27,15 @@ export default function PopupMusicUpLoad(props: Props) {
   const [pathSong, setPathSong] = useState(null);
   const [pathImage, setPathImage] = useState(null);
   const refAudio: any = useRef();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+  const {isLogin} = useAuth()
   const queryAlbum = useQuery(
     ["listAlbumPrivate_0_1000_0"],
     async () => {
       return await listAlbumPrivate({ depth: 0, limit: 1000, offset: 0 });
     },
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         let albums_ = data.results.map((item: any, index: any) => {
           return {
             id: item.id,
@@ -43,6 +44,7 @@ export default function PopupMusicUpLoad(props: Props) {
         });
         setAlbums(albums_);
       },
+      enabled: !!isLogin,
     }
   );
   const queryArtist = useQuery(
@@ -51,7 +53,7 @@ export default function PopupMusicUpLoad(props: Props) {
       return await listArtistPublic({ depth: 0, limit: 1000, offset: 0 });
     },
     {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         let artists_ = data.results.map((item: any, index: any) => {
           return {
             id: item.id,
@@ -63,11 +65,11 @@ export default function PopupMusicUpLoad(props: Props) {
     }
   );
   const mutationSubmit = useMutation((data: any) => createSongApi(data), {
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       if (data) {
         alert("Up load success new song");
         handleClosePopUp();
-        queryClient.invalidateQueries("listSong_1_1000_0")
+        queryClient.invalidateQueries(["listSong_1_1000_0"]);
       } else {
         alert("Fail");
       }
@@ -165,7 +167,7 @@ export default function PopupMusicUpLoad(props: Props) {
                 label: option.name,
                 id: option.id,
               }))}
-              renderInput={(params) => <TextField {...params} label="Album" variant="standard" />}
+              renderInput={(params: any) => <TextField {...params} label="Album" variant="standard" />}
             />
           ) : (
             <>
@@ -181,7 +183,7 @@ export default function PopupMusicUpLoad(props: Props) {
                 label: option.name,
                 id: option.id,
               }))}
-              renderInput={(params) => <TextField {...params} label="Artist" variant="standard" />}
+              renderInput={(params: any) => <TextField {...params} label="Artist" variant="standard" />}
             />
           ) : (
             <>
@@ -214,7 +216,7 @@ export default function PopupMusicUpLoad(props: Props) {
           >
             {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.baseMedia}${pathImage}`} />}
             <br />
-            <FileUpload setPath={setPathImage} accept=".png,.jpeg" title={"Pick a image cover"} />
+            <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover"} />
           </Box>
 
           <TextareaAutosize

@@ -30,10 +30,10 @@ export default function PopupCreatePlaylist(props: Props) {
     onSuccess: (data) => {
       if (data) {
         alert("Success");
-        console.log("createPlayList", data);
+        // console.log("createPlayList", data);
         handleClose();
         router.push(`/playlist/${data.id}`);
-        queryClient.invalidateQueries("listPlaylistPrivate_0_5_0");
+        queryClient.invalidateQueries(["listPlaylistPrivate_0_5_0"]);
       } else {
         alert("Fail");
       }
@@ -64,7 +64,7 @@ export default function PopupCreatePlaylist(props: Props) {
   };
   const handelCheckBoxIsPrivateChange = (event: any) => {
     const isPublic_ = event.target.checked;
-    console.log(isPublic_);
+    // console.log(isPublic_);
     setIsPublic(isPublic_);
   };
 
@@ -113,7 +113,7 @@ export default function PopupCreatePlaylist(props: Props) {
             >
               {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.baseMedia}${pathImage}`} />}
               <br />
-              <FileUpload setPath={setPathImage} accept=".png, .gif, .jpeg" title={"Pick a image"} />
+              <FileUpload setPath={setPathImage} accept=".png, .jpeg, .jpg" title={"Pick a image"} />
             </Box>
             <Stack direction="row">
               <Checkbox value={isPublic} defaultChecked={true} onChange={handelCheckBoxIsPrivateChange} />

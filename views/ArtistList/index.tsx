@@ -38,7 +38,7 @@ export default function Artist() {
       },
     }
   );
-  if (queryArtist.isLoading) {
+  if (queryArtist.isLoading || queryArtist.isFetching) {
     return (
       <Wrap>
         <MyLoader />

@@ -40,7 +40,7 @@ export default function Wrap(props: any) {
         <SideBar />
       </Grid>
       <Grid item xs={10} sx={{ height: `calc(100% - ${hidden ? 10 : heightValue + 10}%)`, overflowY: "scroll", padding: "0 2rem" }}>
-        <Box sx={{ padding: "0 1rem" }}>{props.children}</Box>
+        <Box >{props.children}</Box>
       </Grid>
       <Grid item xs={12} sx={{ height: `${heightValue}%`, display: hidden && "none" }}>
         {/* <MusicPlayerContextProvider> */}

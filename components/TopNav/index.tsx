@@ -7,10 +7,15 @@ import { NavigateBefore, NavigateNext, CloudUpload, Search, Settings, Person, Da
 import PopupMusicUpLoad from "../popups/PopupMusicUpLoad";
 import { useThemeContext } from "../../contexts/useTheme";
 import { useRouter } from "next/router";
+import { useEther } from "../../contexts/useEther";
+import { Typography } from "@material-ui/core";
+
 export default function TopNav() {
   const router = useRouter();
   const [openPopUp, setOpenPopUp] = useState(false);
+  const [showProfileCard, setShowProfileCard] = useState(false);
   const { autoSetMode, mode } = useThemeContext();
+  const { onClickConnect, onClickDisconnect, currentAccount, balance } = useEther();
   const handelUploadClick = () => {
     setOpenPopUp(true);
   };
@@ -23,7 +28,7 @@ export default function TopNav() {
   const handelIconThemeModeClick = () => {
     autoSetMode();
   };
-  const handelIconProfileClick = () => {
+  const handelIconSettingClick = () => {
     router.push("/profile");
   };
   return (
@@ -108,15 +113,26 @@ export default function TopNav() {
                 sx={{
                   color: "text.primary",
                 }}
+                onClick={handelIconSettingClick}
               />
             </Box>
-            <Box className={styles.circle} sx={{ bgcolor: "background.default" }}>
+            <Box className={styles.circle} sx={{ bgcolor: "background.default", position: "relative" }}>
               <Person
                 sx={{
                   color: "text.primary",
                 }}
-                onClick={handelIconProfileClick}
+                onClick={() => setShowProfileCard(!showProfileCard)}
               />
+              {showProfileCard && (
+                <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "10rem", zIndex: 1000, bgcolor: "text.primary" }}>
+                  <Stack>
+                    <Typography>{currentAccount}</Typography>
+                    <Typography>{balance}</Typography>
+                    <Button onClick={onClickDisconnect}>DisConnect wallet</Button>
+                    <Button onClick={onClickConnect}>Connect wallet</Button>
+                  </Stack>
+                </Box>
+              )}
             </Box>
           </Stack>
         </Grid>

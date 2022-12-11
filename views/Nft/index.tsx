@@ -9,7 +9,7 @@ import SectionTitle from "../../components/SectionTitle";
 import CarouselPlayAlbum, { TCarouselPlayAlbum } from "./components/CarouselPlayAlbum";
 import config from "../../config";
 import { Typography } from "@material-ui/core";
-
+import MyLoader from "./Loading";
 export default function NftView() {
   const { onClickConnect, onClickDisconnect, currentAccount, balance } = useEther();
   const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
@@ -32,17 +32,17 @@ export default function NftView() {
       },
     }
   );
+  if (queryAlbum.isFetching || queryAlbum.isLoading)
+    return (
+      <Wrap>
+        <MyLoader />
+      </Wrap>
+    );
   return (
     <Wrap>
-      <Stack>
-        <Typography>
-          {currentAccount} : {balance}
-        </Typography>
-        <Button onClick={onClickDisconnect}>DisConnect wallet</Button>
-      </Stack>
       <Box>
         <SectionTitle>Album</SectionTitle>
-        {queryAlbum.isSuccess ? <CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} /> : <h1>Loading</h1>}
+        {<CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} />}
       </Box>
     </Wrap>
   );

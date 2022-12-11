@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRouter } from "next/router";
 // export default axios.create({
 //   baseURL: "http://127.0.0.1:8000/music/api/",
 //   headers: {
@@ -26,18 +27,18 @@ axiosApiInstance.interceptors.request.use(
   }
 );
 
-// axiosApiInstance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async function (error) {
-//     const originalRequest = error.config;
-//     if (error.response.status === 401) {
-//       console.log("Please auth");
-//       return axiosApiInstance(originalRequest);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axiosApiInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
+    if (error.response.status === 401) {
+      console.log("Please auth");
+      return axiosApiInstance(originalRequest);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosApiInstance;

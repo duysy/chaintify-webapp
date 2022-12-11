@@ -28,7 +28,7 @@ export default function PopupAddMusicToPlaylist(props: Props) {
 
     const listSong = props.listSong;
     const playlist_: TUpdatePlayList = { name: label, song: [...listSong] };
-    console.log(idPlayList, value);
+    // console.log(idPlayList, value);
 
     const res = await updatePlaylistPrivate(+idPlayList, playlist_);
     if (res) {

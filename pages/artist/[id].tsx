@@ -4,5 +4,5 @@ import { useRouter } from "next/router";
 export default function ArtistPage() {
   const router = useRouter();
   const { id } = router.query;
-  return <Artist id={+id} />;
+  return <Artist id={id} />;
 }

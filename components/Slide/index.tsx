@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import styles from "./Slide.module.css";
-import { Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import Image from "next/image";
 const itemData = [
@@ -81,13 +81,14 @@ export default function Slide() {
         {itemData.slice(from, to).map((item) => (
           <Grid display="flex" justifyContent="center" alignItems="center" item xs={12} sm={6} md={4} key={item?.img as string}>
             <Image
-              width={300}
-              height={180}
+              width={1000}
+              height={200}
               alt={item?.title as string}
               src={item?.img as string}
               style={{
                 borderRadius: "25px",
-                objectFit: "cover"
+                objectFit: "cover",
+                padding: "0.5rem",
               }}
             />
           </Grid>

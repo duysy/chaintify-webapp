@@ -13,16 +13,18 @@ import { TMusicList } from "../../../components/MusicList/types";
 import config from "../../../config";
 import { ethers } from "ethers";
 import PopupSendNft from "../../../components/popups/PopupSendNft";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
+import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
 };
-export default function AlbumView(props: Props) {
+export default function DetailNFT(props: Props) {
   const id = props.id;
   const [open, setOpen] = useState(false);
   const { setListMusicPlayer, play, pause, isPlay } = useMusicPlayer();
   const [album, setAlbum] = useState<any | {}>({});
   const [songs, setSongs] = useState<TMusicList[] | null>(null);
+  const queryClient = useQueryClient();
   const handelButtonPlayClick = () => {
     const listSongMusicPlay_ = album.song.map((item: any) => {
       return {
@@ -32,22 +34,23 @@ export default function AlbumView(props: Props) {
     });
     setListMusicPlayer(listSongMusicPlay_);
     play();
-    console.log("play");
+    // console.log("play");
   };
   const handelButtonPauseClick = () => {
     pause();
-    console.log("pause");
+    // console.log("pause");
   };
   const queryAlbum = useQuery(
-    "",
+    ["detailNftPrivate", id],
     async () => {
       if (!id) return;
       return await detailNftPrivate(+id);
     },
     {
       onSuccess: (data: any) => {
-        console.log(data);
-        setAlbum(data.metadata);
+        // console.log("data", data);
+        if (!data) return;
+        setAlbum(data?.metadata);
       },
     }
   );
@@ -74,13 +77,17 @@ export default function AlbumView(props: Props) {
     initSongs();
   }, [album]);
   if (queryAlbum.isFetching) {
-    return <Wrap>Loading...</Wrap>;
+    return (
+      <Wrap>
+        <MyLoader />
+      </Wrap>
+    );
   }
   return (
     <Wrap>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="3rem">
             <Image
               src={album?.image}
               alt="Image album"
@@ -158,7 +165,13 @@ export default function AlbumView(props: Props) {
           </Box>
         </Grid>
         <Grid item xs={12} md={8}>
-          {songs && <MusicList list={songs} />}
+          <Box
+            sx={{
+              marginTop: "3rem",
+            }}
+          >
+            {songs && <MusicList list={songs} />}
+          </Box>
         </Grid>
       </Grid>
       <PopupSendNft open={open} setOpen={setOpen} id={id} />

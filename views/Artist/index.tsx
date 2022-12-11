@@ -10,7 +10,7 @@ import { useQuery } from "react-query";
 import { detail as detailArtistPublic } from "../../apis/public/models/artist/get_artist";
 import config from "../../config";
 type TProps = {
-  id: number;
+  id: string | string[] | undefined;
 };
 export default function ArtistView(props: TProps) {
   const id = props.id;
@@ -18,14 +18,15 @@ export default function ArtistView(props: TProps) {
   const [artist, setArtist] = useState<any>({});
 
   const queryArtist = useQuery(
-    ["getArtistPrivate"],
+    ["getArtistPrivate",id],
     async () => {
-      return await detailArtistPublic(id, {});
+      if (!id) return;
+      return await detailArtistPublic(+id, {});
     },
     {
       onSuccess: (data: any) => {
         setArtist(data);
-        console.log(data);
+        // console.log(data);
       },
     }
   );
@@ -48,7 +49,7 @@ export default function ArtistView(props: TProps) {
       });
 
       setSongs(songs_);
-      console.log("songs", songs);
+      // console.log("songs", songs);
     };
     initSongs();
   }, []);
@@ -93,7 +94,7 @@ export default function ArtistView(props: TProps) {
                 padding: "0 10px",
               }}
             >
-              Đã quan tâm:2000
+              Đã quan tâm : 2000
             </Typography>
           </Stack>
         </Box>
@@ -105,7 +106,7 @@ export default function ArtistView(props: TProps) {
           }}
         >
           <Image
-            src={`${config.baseMedia}${artist.cover}`}
+            src={`${config.baseMedia}${artist?.cover}`}
             alt="Picture of the author"
             width={300}
             height={300}
@@ -151,23 +152,7 @@ export default function ArtistView(props: TProps) {
             color: "text.primary",
           }}
         >
-          SIGNER
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "text.primary",
-          }}
-        >
           ALBUM
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "text.primary",
-          }}
-        >
-          MV
         </Typography>
       </Box>
       <Box>

@@ -11,6 +11,8 @@ import { detail as detailPlayListPrivate } from "../../apis/private/models/playl
 import { useMusicPlayer } from "../../contexts/useMusicPlayer";
 import { TMusicList } from "../../components/MusicList/types";
 import config from "../../config";
+import { useQuery } from "react-query";
+import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
 };
@@ -28,21 +30,24 @@ export default function PlayListView(props: Props) {
     });
     setListMusicPlayer(listSongMusicPlay_);
     play();
-    console.log("play");
+    // console.log("play");
   };
   const handelButtonPauseClick = () => {
     pause();
-    console.log("pause");
+    // console.log("pause");
   };
-  useEffect(() => {
-    const initPlaylist = async () => {
+  const queryPlaylist = useQuery(
+    ["initPlaylist", id],
+    async () => {
       if (!id) return;
-      const playlist_ = await detailPlayListPrivate(+id, { depth: 2 });
-      // console.log(playlist_);
-      setPlaylist(playlist_);
-    };
-    initPlaylist();
-  }, [id]);
+      return await detailPlayListPrivate(+id, { depth: 2 });
+    },
+    {
+      onSuccess: (data) => {
+        setPlaylist(data);
+      },
+    }
+  );
   useEffect(() => {
     const initSongs = async () => {
       if (!playlist || Object.keys(playlist).length === 0) return;
@@ -59,11 +64,17 @@ export default function PlayListView(props: Props) {
         } as TMusicList;
       });
 
-      console.log(songs_);
+      // console.log(songs_);
       setSongs(songs_);
     };
     initSongs();
   }, [playlist]);
+  if (queryPlaylist.isFetching)
+    return (
+      <Wrap>
+        <MyLoader />
+      </Wrap>
+    );
   return (
     <Wrap>
       <Grid container spacing={3}>

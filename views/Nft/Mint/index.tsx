@@ -12,8 +12,7 @@ import { updateStatus } from "../../../apis/private/nft/metadata/get_metadata";
 import { useEther } from "../../../contexts/useEther";
 import { ethers } from "ethers";
 import { pinMetadata } from "../../../apis/private/nft/metadata/get_metadata";
-
-
+import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
 };
@@ -35,7 +34,7 @@ export default function Mint(props: Props) {
       const contract = new ethers.Contract(address, abi, signer);
       const tx = await contract.functions.mint(dataMint?.to, +id, dataMint?.amount, dataMint?.maxSupply, uri, "0x");
       const receipt = await tx.wait();
-      console.log("receipt", receipt);
+      // console.log("receipt", receipt);
       await updateStatus(+id);
       alert("SUCCESS");
     } catch (error: any) {
@@ -43,7 +42,7 @@ export default function Mint(props: Props) {
     }
   };
   const queryAlbum = useQuery(
-    "album_detail_public",
+    ["album_detail_public", id],
     async () => {
       if (!id) return;
       return await detailAlbumPublic(+id, {});
@@ -54,6 +53,12 @@ export default function Mint(props: Props) {
       },
     }
   );
+  if (queryAlbum.isFetching)
+    return (
+      <Wrap>
+        <MyLoader />
+      </Wrap>
+    );
 
   return (
     <Wrap>

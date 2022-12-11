@@ -1,6 +1,7 @@
 import { createContext, ReactChild, useContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useAuth } from "./useAuth";
+
 export type EtherContextValue = {
   onClickConnect: any;
   currentAccount: string | undefined;
@@ -34,11 +35,12 @@ const EtherContextProvider = ({ children }: Props) => {
   }, [provider]);
 
   useEffect(() => {
-    if (!provider) return;
-    provider.on("accountsChanged", function (accounts: any) {
+    if (!window.ethereum) return;
+    window.ethereum.on("accountsChanged", function (accounts: any) {
       if (accounts.length > 0) setCurrentAccount(accounts[0]);
     });
-  }, [provider]);
+  }, []);
+
   useEffect(() => {
     if (!provider) return;
     if (!currentAccount) return;
@@ -49,7 +51,7 @@ const EtherContextProvider = ({ children }: Props) => {
       setChainId(result.chainId);
       setChainName(result.name);
     });
-    console.log(chainName, chainId, balance);
+    // console.log(chainName, chainId, balance);
   }, [provider, currentAccount]);
 
   useEffect(() => {
@@ -90,38 +92,36 @@ const EtherContextProvider = ({ children }: Props) => {
   }, [provider, chainId]);
 
   useEffect(() => {
-    if (!provider) return;
-    login();
-    setIsConnect(true);
-  }, [provider, currentAccount]);
-
-  useEffect(() => {
     onClickConnect();
   }, []);
 
-  const onClickConnect = () => {
+  const onClickConnect = async () => {
     //client side code
     if (!window.ethereum) {
-      console.log("please install MetaMask");
+      // console.log("please install MetaMask");
       window.location.href = "https://metamask.io/";
       return;
     }
     const provider_ = new ethers.providers.Web3Provider(window?.ethereum);
     setProvider(provider_);
-    signMessage()
+    setIsConnect(true);
+    const flatSig = await signMessage();
+    // console.log(flatSig);
+    if (!flatSig) return;
+    login(flatSig);
   };
   const signMessage = async () => {
     if (!provider) return;
     const signer = provider.getSigner();
     let flatSig = await signer.signMessage("hello");
-    console.log(flatSig)
+    return flatSig;
   };
   const onClickDisconnect = () => {
-    console.log("onClickDisConnect");
+    // console.log("onClickDisConnect");
     setBalance(undefined);
     setCurrentAccount(undefined);
-    logout();
     setIsConnect(true);
+    logout();
   };
 
   return (

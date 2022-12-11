@@ -1,4 +1,5 @@
 import { createContext, ReactChild, useContext, useState, useEffect } from "react";
+import { create as postSignature } from "../apis/private/auth/signature/post_signature";
 
 export type AuthContextValue = { isLogin: boolean; setIsLogin: any; getTokenAuth: any; login: any; logout: any };
 export const Auth = createContext<AuthContextValue>({} as AuthContextValue);
@@ -13,8 +14,10 @@ const AuthContextProvider = ({ children }: TProps) => {
     const authorization = localStorage.getItem("Authorization");
     if (authorization) return authorization;
   };
-  const login = () => {
-    localStorage.setItem("Authorization", "Token 4cc01dc916871676ea03b040b0145b620e937a72");
+  const login = async (signature: string) => {
+    const { token } = await postSignature({ signature: signature });
+    localStorage.setItem("Authorization", `Token ${token}`);
+    // console.log(token);
     setIsLogin(true);
   };
 
@@ -22,14 +25,6 @@ const AuthContextProvider = ({ children }: TProps) => {
     localStorage.clear();
     setIsLogin(false);
   };
-  // useEffect(() => {
-  //   const authorization = localStorage.getItem("Authorization");
-  //   if (authorization) {
-  //     setIsLogin(true);
-  //   } else {
-  //     setIsLogin(false);
-  //   }
-  // }, []);
   return (
     <Auth.Provider
       value={{

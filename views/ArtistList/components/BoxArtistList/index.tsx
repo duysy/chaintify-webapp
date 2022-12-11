@@ -35,7 +35,7 @@ export default function BoxArtistList(props: TProps) {
               }}
               onClick={(event) => {
                 event.stopPropagation();
-                console.log("card click");
+                // console.log("card click");
                 router.push(item?.clickHrefTo as string);
               }}
             >

@@ -77,7 +77,7 @@ export default function CarouselPlayAlbum(props: TProps) {
             }}
             onClick={(event) => {
               event.stopPropagation();
-              console.log("card click");
+              // console.log("card click");
               router.push(item?.clickHrefTo as string);
             }}
           >
@@ -102,7 +102,7 @@ export default function CarouselPlayAlbum(props: TProps) {
                     }}
                     onClick={(event) => {
                       event.stopPropagation();
-                      console.log("Play icon click");
+                      // console.log("Play icon click");
                       pause();
                     }}
                   />
@@ -114,7 +114,7 @@ export default function CarouselPlayAlbum(props: TProps) {
                     }}
                     onClick={(event) => {
                       event.stopPropagation();
-                      console.log("pause icon click");
+                      // console.log("pause icon click");
 
                       play();
                     }}

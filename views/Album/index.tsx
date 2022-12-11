@@ -10,7 +10,9 @@ import MusicList from "../../components/MusicList";
 import { detail as detailAlbumPublic } from "../../apis/public/extends/album/get_album";
 import { useMusicPlayer } from "../../contexts/useMusicPlayer";
 import { TMusicList } from "../../components/MusicList/types";
+import { useQuery } from "react-query";
 import config from "../../config";
+import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
 };
@@ -28,21 +30,24 @@ export default function AlbumView(props: Props) {
     });
     setListMusicPlayer(listSongMusicPlay_);
     play();
-    console.log("play");
+    // console.log("play");
   };
   const handelButtonPauseClick = () => {
     pause();
-    console.log("pause");
+    // console.log("pause");
   };
-  useEffect(() => {
-    const initAlbum = async () => {
+  const queryAlbum = useQuery(
+    ["detailAlbumPublic", id],
+    async () => {
       if (!id) return;
-      const album_ = await detailAlbumPublic(+id, { depth: 2 });
-      console.log(album_);
-      setAlbum(album_);
-    };
-    initAlbum();
-  }, [id]);
+      return await detailAlbumPublic(+id, { depth: 2 });
+    },
+    {
+      onSuccess: (data) => {
+        setAlbum(data);
+      },
+    }
+  );
   useEffect(() => {
     const initSongs = async () => {
       if (!album || Object.keys(album).length === 0) return;
@@ -59,18 +64,24 @@ export default function AlbumView(props: Props) {
         } as TMusicList;
       });
 
-      console.log(songs_);
+      // console.log(songs_);
       setSongs(songs_);
     };
     initSongs();
   }, [album]);
+  if (queryAlbum.isRefetching)
+    return (
+      <Wrap>
+        <MyLoader />
+      </Wrap>
+    );
   return (
     <Wrap>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
             <Image
-              src={`${config.baseMedia}${album.cover}`}
+              src={`${config.baseMedia}${album?.cover}`}
               alt="Image album"
               width={300}
               height={300}

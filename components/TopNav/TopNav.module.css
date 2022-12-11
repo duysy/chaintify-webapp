@@ -26,3 +26,11 @@
     align-items: center;
     margin-right: 20px;
 }
+
+.cardProfile {
+    display: none;
+}
+
+.person:hover .cardProfile {
+    display: block;
+}

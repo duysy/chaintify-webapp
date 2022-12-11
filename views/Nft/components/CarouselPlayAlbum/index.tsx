@@ -20,7 +20,7 @@ export default function CarouselPlayAlbum(props: TProps) {
 
   const MainContent = () => {
     return (
-      <Stack direction="row" spacing={3}>
+      <Box display="flex" flexWrap="wrap">
         {list.map((item: any, index: any) => {
           return (
             <Box
@@ -32,10 +32,11 @@ export default function CarouselPlayAlbum(props: TProps) {
               sx={{
                 width: 150,
                 height: 200,
+                margin: "0.5rem 2rem 0 0",
               }}
               onClick={(event: any) => {
                 event.stopPropagation();
-                console.log("card click");
+                // console.log("card click");
                 router.push(item?.clickHrefTo as string);
               }}
             >
@@ -95,7 +96,7 @@ export default function CarouselPlayAlbum(props: TProps) {
             </Box>
           );
         })}
-      </Stack>
+      </Box>
     );
   };
   if (list && list.length > 0) return <MainContent />;
