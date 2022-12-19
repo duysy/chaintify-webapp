@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import config from "../../config";
 import { TextField, Dialog, Typography, Button, Box, Stack } from "@mui/material";
-import { ethers } from "ethers";
 import { useEther } from "../../contexts/useEther";
 import { Controller, useForm } from "react-hook-form";
+import { useSendNFT } from "../../hooks/contracts/useSendNFT";
 const style = {
   width: "500px",
   height: "auto",
@@ -17,24 +16,17 @@ type Props = {
   id: string | string[] | undefined;
 };
 export default function PopupSendNft(props: Props) {
-  const { currentAccount, provider } = useEther();
+  const { address } = useEther();
   const handleClosePopUp = () => props.setOpen(false);
   const { control, reset, handleSubmit } = useForm();
-
+  const { send, status } = useSendNFT();
   async function handelOnclickMint(dataMint: any) {
     const id = props.id;
-    const signer = provider.getSigner();
-    const address = config.chaintifyContract;
-    const abi = ["function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)"];
-
-    try {
-      const contract = new ethers.Contract(address, abi, signer);
-      const tx = await contract.functions.safeTransferFrom(currentAccount, dataMint.to, id, dataMint.amount, "0x");
-      const receipt = await tx.wait();
-      // console.log("receipt", receipt);
+    if (!address) return;
+    if (!id) return;
+    await send(address, dataMint.to, +id, dataMint.amount);
+    if (status == "SUCCESS") {
       alert("SUCCESS");
-    } catch (error) {
-      console.log(error);
     }
   }
   return (

@@ -25,13 +25,13 @@ export default function SideBar() {
     },
     {
       iconElement: <AirlineStops />,
-      title: "Trending",
-      href: "/mymusic",
+      title: "Nhạc mới",
+      href: "/newsong",
       login: false,
     },
     {
       iconElement: <Bookmark />,
-      title: "Theo Dõi",
+      title: "Nghệ sĩ",
       href: "/artist",
       login: false,
     },
@@ -41,16 +41,18 @@ export default function SideBar() {
       iconElement: <LibraryMusic />,
       title: "Mint NFT",
       href: "/nft",
+      login: true,
     },
     {
       iconElement: <Album />,
       title: "Collection",
       href: "/nft/collection",
+      login: false,
     },
     {
       iconElement: <AirlineStops />,
       title: "Nhạc mới",
-      href: "/mymusic",
+      href: "/newSong",
     },
     {
       iconElement: <Bookmark />,
@@ -77,7 +79,6 @@ export default function SideBar() {
               key={item?.title}
               sx={{
                 color: "text.primary",
-                minWidth: "10rem",
                 "&:hover": {
                   bgcolor: "background.paper",
                   borderLeft: "2px solid #E8AC24",

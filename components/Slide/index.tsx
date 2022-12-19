@@ -6,28 +6,28 @@ import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import Image from "next/image";
 const itemData = [
   {
-    img: "https://picsum.photos/300/200",
+    img: "https://picsum.photos/300/201",
     title: "Breakfast",
   },
   {
-    img: "https://picsum.photos/301/200",
+    img: "https://picsum.photos/300/202",
     title: "Burger",
   },
   {
-    img: "https://picsum.photos/302/200",
+    img: "https://picsum.photos/300/203",
     title: "Camera",
   },
   {
-    img: "https://picsum.photos/303/200",
+    img: "https://picsum.photos/300/204",
     title: "Camera",
   },
   {
-    img: "https://picsum.photos/304/200",
+    img: "https://picsum.photos/300/205",
     title: "Camera",
   },
   ,
   {
-    img: "https://picsum.photos/305/200",
+    img: "https://picsum.photos/300/206",
     title: "Camera",
   },
 ];
@@ -81,14 +81,16 @@ export default function Slide() {
         {itemData.slice(from, to).map((item) => (
           <Grid display="flex" justifyContent="center" alignItems="center" item xs={12} sm={6} md={4} key={item?.img as string}>
             <Image
-              width={1000}
+              width={300}
               height={200}
               alt={item?.title as string}
               src={item?.img as string}
+              layout="responsive"
               style={{
                 borderRadius: "25px",
                 objectFit: "cover",
                 padding: "0.5rem",
+                maxHeight: "15rem",
               }}
             />
           </Grid>

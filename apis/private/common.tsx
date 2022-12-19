@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRouter } from "next/router";
+import Router from "next/router";
 // export default axios.create({
 //   baseURL: "http://127.0.0.1:8000/music/api/",
 //   headers: {
@@ -35,6 +35,9 @@ axiosApiInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401) {
       console.log("Please auth");
+      // let value = confirm("Bạn chưa cài metamask, cài metamask");
+      // if (value) Router.push("/login");
+      // localStorage.removeItem("Authorization");
       return axiosApiInstance(originalRequest);
     }
     return Promise.reject(error);

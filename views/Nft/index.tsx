@@ -10,17 +10,18 @@ import CarouselPlayAlbum, { TCarouselPlayAlbum } from "./components/CarouselPlay
 import config from "../../config";
 import { Typography } from "@material-ui/core";
 import MyLoader from "./Loading";
+
 export default function NftView() {
-  const { onClickConnect, onClickDisconnect, currentAccount, balance } = useEther();
   const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const queryAlbum = useQuery(
-    ["listAlbumPrivate_0_5_0"],
+    ["listAlbumPrivate"],
     async () => {
-      return await listAlbumPrivate({ depth: 0, limit: 5, offset: 0 });
+      return await listAlbumPrivate({ depth: 0, limit: 1000, offset: 0 });
     },
     {
       onSuccess: (data: any) => {
         let albums = data.results.map((item: any) => {
+          console.log(item);
           return {
             name: item.name,
             cover: `${config.baseMedia}${item.cover}`,
@@ -32,7 +33,7 @@ export default function NftView() {
       },
     }
   );
-  if (queryAlbum.isFetching || queryAlbum.isLoading)
+  if (queryAlbum.isFetching)
     return (
       <Wrap>
         <MyLoader />

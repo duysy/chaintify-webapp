@@ -3,7 +3,7 @@ import { Box, Stack, Button } from "@mui/material";
 import Wrap from "../wrap";
 import { useEther } from "../../contexts/useEther";
 export default function LoginView() {
-  const { onClickConnect, onClickDisconnect, currentAccount } = useEther();
+  const { onClickConnect } = useEther();
   return (
     <Wrap>
       <Stack>

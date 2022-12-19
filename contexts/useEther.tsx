@@ -4,7 +4,7 @@ import { useAuth } from "./useAuth";
 
 export type EtherContextValue = {
   onClickConnect: any;
-  currentAccount: string | undefined;
+  address: string | undefined;
   onClickDisconnect: any;
   provider: any;
   balance: any;
@@ -17,7 +17,7 @@ type Props = {
 
 const EtherContextProvider = ({ children }: Props) => {
   const [balance, setBalance] = useState<string | undefined>();
-  const [currentAccount, setCurrentAccount] = useState<string | undefined>();
+  const [address, setAddress] = useState<string | undefined>();
   const [chainId, setChainId] = useState<number | undefined>();
   const [chainName, setChainName] = useState<string | undefined>();
   const [provider, setProvider] = useState<any>();
@@ -29,7 +29,7 @@ const EtherContextProvider = ({ children }: Props) => {
     provider
       .send("eth_requestAccounts", [])
       .then((accounts: any) => {
-        if (accounts.length > 0) setCurrentAccount(accounts[0]);
+        if (accounts.length > 0) setAddress(accounts[0]);
       })
       .catch((e: any) => console.log(e));
   }, [provider]);
@@ -37,14 +37,14 @@ const EtherContextProvider = ({ children }: Props) => {
   useEffect(() => {
     if (!window.ethereum) return;
     window.ethereum.on("accountsChanged", function (accounts: any) {
-      if (accounts.length > 0) setCurrentAccount(accounts[0]);
+      if (accounts.length > 0) setAddress(accounts[0]);
     });
   }, []);
 
   useEffect(() => {
     if (!provider) return;
-    if (!currentAccount) return;
-    provider.getBalance(currentAccount).then((result: any) => {
+    if (!address) return;
+    provider.getBalance(address).then((result: any) => {
       setBalance(ethers.utils.formatEther(result));
     });
     provider.getNetwork().then((result: any) => {
@@ -52,7 +52,7 @@ const EtherContextProvider = ({ children }: Props) => {
       setChainName(result.name);
     });
     // console.log(chainName, chainId, balance);
-  }, [provider, currentAccount]);
+  }, [provider, address]);
 
   useEffect(() => {
     const check = async () => {
@@ -99,7 +99,9 @@ const EtherContextProvider = ({ children }: Props) => {
     //client side code
     if (!window.ethereum) {
       // console.log("please install MetaMask");
-      window.location.href = "https://metamask.io/";
+      let value = confirm("Bạn chưa cài metamask, cài metamask");
+      if (value) window.location.href = "https://metamask.io/";
+
       return;
     }
     const provider_ = new ethers.providers.Web3Provider(window?.ethereum);
@@ -119,7 +121,7 @@ const EtherContextProvider = ({ children }: Props) => {
   const onClickDisconnect = () => {
     // console.log("onClickDisConnect");
     setBalance(undefined);
-    setCurrentAccount(undefined);
+    setAddress(undefined);
     setIsConnect(true);
     logout();
   };
@@ -128,7 +130,7 @@ const EtherContextProvider = ({ children }: Props) => {
     <Ether.Provider
       value={{
         onClickConnect,
-        currentAccount,
+        address,
         onClickDisconnect,
         provider,
         balance,

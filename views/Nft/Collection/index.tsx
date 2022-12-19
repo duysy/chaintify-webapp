@@ -13,13 +13,13 @@ import { useQuery } from "react-query";
 import MyLoader from "./Loading";
 type Props = {};
 export default function Collection(props: Props) {
-  const { provider, currentAccount } = useEther();
+  const { provider, address } = useEther();
   const [nfts, setNfts] = useState<TCarouselPlayAlbum[]>([]);
   const queryAlbum = useQuery(
     ["listNftPrivate"],
     async () => {
-      if (!currentAccount) return;
-      return await listNftPrivate(currentAccount);
+      if (!address) return;
+      return await listNftPrivate(address);
     },
     {
       refetchInterval: 30000,
