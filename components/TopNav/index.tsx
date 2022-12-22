@@ -9,12 +9,14 @@ import { useThemeContext } from "../../contexts/useTheme";
 import { useRouter } from "next/router";
 import { useEther } from "../../contexts/useEther";
 import { search } from "../../apis/public/extends/search/get_search";
+
+import WalletConnect from "./components/WalletConnect";
+
 export default function TopNav() {
   const router = useRouter();
   const [openPopUp, setOpenPopUp] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const { autoSetMode, mode } = useThemeContext();
-  const { onClickConnect, onClickDisconnect, address, balance } = useEther();
   const [searchValue, setSearchValue] = useState<any>();
   const [focus, setFocus] = useState<any>(false);
   const handelUploadClick = () => {
@@ -226,10 +228,7 @@ export default function TopNav() {
                 {showProfileCard && (
                   <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "10rem", zIndex: 1000, bgcolor: "text.primary" }}>
                     <Stack>
-                      <Typography>{address}</Typography>
-                      <Typography>{balance}</Typography>
-                      <Button onClick={onClickDisconnect}>DisConnect wallet</Button>
-                      <Button onClick={onClickConnect}>Connect wallet</Button>
+                      <WalletConnect />
                     </Stack>
                   </Box>
                 )}

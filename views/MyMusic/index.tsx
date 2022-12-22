@@ -41,7 +41,7 @@ export default function MyMusicView() {
         let playlists = data.results.map((item: any, index: any) => {
           return {
             name: item?.name,
-            cover: `${config.baseMedia}${item?.cover}`,
+            cover: `${config.BASE_MEDIA}${item?.cover}`,
             clickHrefTo: `/playlist/${item?.id}`,
           } as TCarouselBoxCircle;
         });
@@ -59,7 +59,7 @@ export default function MyMusicView() {
         let albums = data.results.map((item: any, index: any) => {
           return {
             name: item?.name,
-            cover: `${config.baseMedia}${item?.cover}`,
+            cover: `${config.BASE_MEDIA}${item?.cover}`,
             clickHrefTo: `/album/${item?.id}`,
           } as TCarouselPlayAlbum;
         });
@@ -77,7 +77,7 @@ export default function MyMusicView() {
         let songs = data.results.map((item: any) => {
           return {
             id: item.id,
-            cover: `${config.baseMedia}${item.cover}`,
+            cover: `${config.BASE_MEDIA}${item.cover}`,
             name: item.name,
             artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
             album: item.album?.name,

@@ -40,7 +40,7 @@ export default function ArtistView(props: TProps) {
           id: item.id,
           checkBoxStatus: false,
           name: item.name,
-          cover: `${config.baseMedia}${item.cover}`,
+          cover: `${config.BASE_MEDIA}${item.cover}`,
           artist: "African giant",
           album: "Album",
           time: item.length,
@@ -106,7 +106,7 @@ export default function ArtistView(props: TProps) {
           }}
         >
           <Image
-            src={`${config.baseMedia}${artist?.cover}`}
+            src={`${config.BASE_MEDIA}${artist?.cover}`}
             alt="Picture of the author"
             width={300}
             height={300}

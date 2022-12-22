@@ -9,7 +9,7 @@ export function useSendNFT() {
   const [status, setStatus] = useState<TStatus>("WAITING");
   const send = async (from: string, to: string, id: number, amount: number) => {
     const signer = provider.getSigner();
-    const address = config.chaintifyContract;
+    const address = config.CHAINTIFY_CONTRACT;
     const abi = ["function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)"];
     try {
       const contract = new ethers.Contract(address, abi, signer);

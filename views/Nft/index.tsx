@@ -24,7 +24,7 @@ export default function NftView() {
           console.log(item);
           return {
             name: item.name,
-            cover: `${config.baseMedia}${item.cover}`,
+            cover: `${config.BASE_MEDIA}${item.cover}`,
             isMint: item.isMint,
             clickHrefTo: `/nft/mint/${item.id}`,
           } as TCarouselPlayAlbum;

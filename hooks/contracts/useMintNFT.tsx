@@ -8,7 +8,7 @@ export function useMintNFT() {
   const { provider } = useEther();
   const [status, setStatus] = useState<TStatus>("WAITING");
   const mint = async (to: string, id: number, amount: number, maxSupply: number, uri: string) => {
-    const address = config.chaintifyContract;
+    const address = config.CHAINTIFY_CONTRACT;
     const abi = ["function mint(address to_, uint256 id_, uint256 amount_, uint256 maxSupply_, string uri_, bytes data_)"];
     try {
       const signer = provider.getSigner();

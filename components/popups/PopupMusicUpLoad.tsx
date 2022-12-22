@@ -199,7 +199,7 @@ export default function PopupMusicUpLoad(props: Props) {
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
             {pathSong && (
-              <audio controls ref={refAudio} src={`${config.baseMedia}${pathSong}`}>
+              <audio controls ref={refAudio} src={`${config.BASE_MEDIA}${pathSong}`}>
                 <source src="" type="audio/mp3" />
               </audio>
             )}
@@ -214,7 +214,7 @@ export default function PopupMusicUpLoad(props: Props) {
             justifyContent={"space-around"}
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
-            {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.baseMedia}${pathImage}`} />}
+            {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.BASE_MEDIA}${pathImage}`} />}
             <br />
             <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover"} />
           </Box>

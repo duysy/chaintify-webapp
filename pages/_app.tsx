@@ -6,6 +6,48 @@ import MusicPlayer from "../components/MusicPlayer";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import EtherContextProvider from "../contexts/useEther";
 import AuthContextProvider from "../contexts/useAuth";
+
+import { WagmiConfig, createClient, configureChains } from "wagmi";
+import { polygonMumbai } from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import config from "../config";
+const { chains, provider, webSocketProvider } = configureChains([polygonMumbai], [alchemyProvider({ apiKey: config.ALCHEMY_KEY }), publicProvider()]);
+
+// Set up client
+const client = createClient({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: {
+        appName: "wagmi",
+      },
+    }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
+
 declare global {
   interface Window {
     ethereum: any;
@@ -24,18 +66,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeContextProvider>
       <AuthContextProvider>
-        <EtherContextProvider>
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <MusicPlayerContextProvider>
-                <>
-                  <Component {...pageProps} />
-                  <MusicPlayer />
-                </>
-              </MusicPlayerContextProvider>
-            </Hydrate>
-          </QueryClientProvider>
-        </EtherContextProvider>
+        <WagmiConfig client={client}>
+          <EtherContextProvider>
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydratedState}>
+                <MusicPlayerContextProvider>
+                  <>
+                    <Component {...pageProps} />
+                    <MusicPlayer />
+                  </>
+                </MusicPlayerContextProvider>
+              </Hydrate>
+            </QueryClientProvider>
+          </EtherContextProvider>
+        </WagmiConfig>
       </AuthContextProvider>
     </ThemeContextProvider>
   );

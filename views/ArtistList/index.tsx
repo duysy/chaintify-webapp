@@ -30,7 +30,7 @@ export default function Artist() {
         const artists_ = data?.results?.map((item: any) => {
           return {
             name: item.name,
-            cover: `${config.baseMedia}${item.cover}`,
+            cover: `${config.BASE_MEDIA}${item.cover}`,
             clickHrefTo: `/artist/${item.id}`,
           } as TBoxArtistList;
         });

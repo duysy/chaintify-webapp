@@ -25,7 +25,7 @@ export default function PlayListView(props: Props) {
     const listSongMusicPlay_ = playlist.song.map((item: any) => {
       return {
         ...item,
-        ...{ path: `${config.baseMedia}${item.path}` },
+        ...{ path: `${config.BASE_MEDIA}${item.path}` },
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
@@ -55,7 +55,7 @@ export default function PlayListView(props: Props) {
         return {
           id: item.id,
           name: item.name,
-          cover: `${config.baseMedia}${item.cover}`,
+          cover: `${config.BASE_MEDIA}${item.cover}`,
           artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
           album: item.album?.name,
           time: item.length,
@@ -82,7 +82,7 @@ export default function PlayListView(props: Props) {
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
             {playlist?.cover ? (
               <Image
-                src={`${config.baseMedia}${playlist?.cover}`}
+                src={`${config.BASE_MEDIA}${playlist?.cover}`}
                 alt="Image playlist"
                 width={300}
                 height={300}

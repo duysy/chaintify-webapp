@@ -17,7 +17,7 @@ export default function NewSong() {
           return {
             id: item.id,
             name: item.name,
-            cover: `${config.baseMedia}${item.cover}`,
+            cover: `${config.BASE_MEDIA}${item.cover}`,
             artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
             album: item?.album.name,
             time: item.length,

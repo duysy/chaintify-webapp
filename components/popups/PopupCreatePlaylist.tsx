@@ -111,7 +111,7 @@ export default function PopupCreatePlaylist(props: Props) {
               justifyContent={"space-around"}
               sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
             >
-              {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.baseMedia}${pathImage}`} />}
+              {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.BASE_MEDIA}${pathImage}`} />}
               <br />
               <FileUpload setPath={setPathImage} accept=".png, .jpeg, .jpg" title={"Pick a image"} />
             </Box>
