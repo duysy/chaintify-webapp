@@ -9,25 +9,36 @@ import config from "../../../config";
 import Wrap from "../../wrap";
 import { detail as detailAlbumPublic } from "../../../apis/public/extends/album/get_album";
 import { updateStatus } from "../../../apis/private/nft/metadata/get_metadata";
+import { useEther } from "../../../contexts/useEther";
+import { ethers } from "ethers";
 import { pinMetadata } from "../../../apis/private/nft/metadata/get_metadata";
 import MyLoader from "./Loading";
-import { useMintNFT } from "../../../hooks/contracts/useMintNFT";
 type Props = {
   id: string | string[] | undefined;
 };
 export default function Mint(props: Props) {
   const id = props.id;
   const [album, setAlbum] = useState<any | {}>({});
+  const { provider } = useEther();
   const { handleSubmit, reset, control } = useForm();
-  const { mint, status } = useMintNFT();
+
   const onSubmit = async (dataMint: any) => {
     if (!id) return;
     const metadata = await pinMetadata(+id);
     const { uri } = metadata;
-    await mint(dataMint?.to, +id, dataMint?.amount, dataMint?.maxSupply, uri);
-    if (status == "SUCCESS") {
+    const address = config.CHAINTIFY_CONTRACT;
+    const abi = ["function mint(address to_, uint256 id_, uint256 amount_, uint256 maxSupply_, string uri_, bytes data_)"];
+
+    try {
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(address, abi, signer);
+      const tx = await contract.functions.mint(dataMint?.to, +id, dataMint?.amount, dataMint?.maxSupply, uri, "0x");
+      const receipt = await tx.wait();
+      // console.log("receipt", receipt);
       await updateStatus(+id);
       alert("SUCCESS");
+    } catch (error: any) {
+      console.log({ error });
     }
   };
   const queryAlbum = useQuery(
@@ -55,7 +66,7 @@ export default function Mint(props: Props) {
         <Grid item xs={12} md={4}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
             <Image
-              src={`${config.BASE_MEDIA}${album?.cover}`}
+              src={`${config.baseMedia}${album?.cover}`}
               alt="Image album"
               width={300}
               height={300}
@@ -161,7 +172,7 @@ export default function Mint(props: Props) {
               Reset
             </Button>
 
-            <Button onClick={handleSubmit(onSubmit)}>{status}</Button>
+            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
           </form>
         </Grid>
       </Grid>

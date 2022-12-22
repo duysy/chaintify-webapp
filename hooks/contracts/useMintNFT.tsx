@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import config from "../../config";
 import { ethers } from "ethers";
 import { useEther } from "../../contexts/useEther";
