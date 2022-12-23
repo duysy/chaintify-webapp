@@ -226,10 +226,8 @@ export default function TopNav() {
                   onClick={() => setShowProfileCard(true)}
                 />
                 {showProfileCard && (
-                  <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "10rem", zIndex: 1000, bgcolor: "text.primary" }}>
-                    <Stack>
-                      <WalletConnect />
-                    </Stack>
+                  <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "text.primary" }}>
+                    <WalletConnect />
                   </Box>
                 )}
               </Box>

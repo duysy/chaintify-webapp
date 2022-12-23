@@ -1,32 +1,34 @@
 import React from "react";
-import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi";
-
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { Stack, Button, Box, Typography } from "@mui/material";
 export default function WalletConnect() {
   const { connect, connectors, error, isLoading, pendingConnector } = useConnect();
   const { address, connector, isConnected } = useAccount();
-  const { data: ensName } = useEnsName({ address });
   const { disconnect } = useDisconnect();
 
   if (isConnected) {
     return (
-      <div>
-        <div>{ensName ? `${ensName} (${address})` : address}</div>
-        <div>Connected to {connector?.name}</div>
-        <button onClick={() => disconnect()}>Disconnect</button>
-      </div>
+      <Box sx={{ padding: "1rem" }}>
+        <Box>{address}</Box>
+        <Box>Connected to {connector?.name}</Box>
+        <Button onClick={() => disconnect()}>Disconnect</Button>
+      </Box>
     );
   }
   return (
-    <div>
+    <Stack display="flex" flexDirection="column" spacing={2} sx={{ padding: "1rem" }}>
       {connectors.map((connector) => (
-        <button disabled={!connector.ready} key={connector.id} onClick={() => connect({ connector })}>
+        <Button key={connector.id} onClick={() => connect({ connector })}>
           {connector.name}
           {!connector.ready && " (unsupported)"}
           {isLoading && connector.id === pendingConnector?.id && " (connecting)"}
-        </button>
+        </Button>
       ))}
-
-      {error && <div>{error.message}</div>}
-    </div>
+      {error && (
+        <Typography sx={{ textAlign: "center" }} color="red">
+          {error.message}
+        </Typography>
+      )}
+    </Stack>
   );
 }

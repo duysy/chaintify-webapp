@@ -17,7 +17,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import config from "../config";
-const { chains, provider, webSocketProvider } = configureChains([polygonMumbai], [alchemyProvider({ apiKey: config.ALCHEMY_KEY }), publicProvider()]);
+const { chains, provider, webSocketProvider } = configureChains([polygonMumbai], [publicProvider(), alchemyProvider({ apiKey: config.ALCHEMY_KEY })]);
 
 // Set up client
 const client = createClient({
@@ -47,12 +47,6 @@ const client = createClient({
   provider,
   webSocketProvider,
 });
-
-declare global {
-  interface Window {
-    ethereum: any;
-  }
-}
 
 const queryClient = new QueryClient({
   defaultOptions: {

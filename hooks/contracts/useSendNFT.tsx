@@ -1,27 +1,70 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import config from "../../config";
-import { ethers } from "ethers";
-import { useEther } from "../../contexts/useEther";
-type TStatus = "WAITING" | "PENDING" | "SUCCESS" | "ERROR";
+import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
+
 export function useSendNFT() {
-  const { provider } = useEther();
-  const [status, setStatus] = useState<TStatus>("WAITING");
-  const send = async (from: string, to: string, id: number, amount: number) => {
-    const signer = provider.getSigner();
-    const address = config.CHAINTIFY_CONTRACT;
-    const abi = ["function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)"];
-    try {
-      const contract = new ethers.Contract(address, abi, signer);
-      const tx = await contract.functions.safeTransferFrom(from, to, id, amount, "0x");
-      setStatus("PENDING");
-      const receipt = await tx.wait();
-      setStatus("SUCCESS");
-      alert("SUCCESS");
-    } catch (error) {
-      setStatus("ERROR");
-      console.log(error);
-    }
+  const [dataMint, setData] = useState<any>();
+  const [enabled, setEnabled] = useState<boolean>(false);
+  const {
+    config: configWrite,
+    error: prepareError,
+    isError: isPrepareError,
+    isSuccess: isPrepareSuccess,
+  } = usePrepareContractWrite({
+    address: config.CHAINTIFY_CONTRACT,
+    abi: [
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "from",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "to",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "data",
+            type: "bytes",
+          },
+        ],
+        name: "safeTransferFrom",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ],
+    functionName: "safeTransferFrom",
+    args: [dataMint?.from, dataMint?.to, dataMint?.id, dataMint?.amount, "0x"],
+    enabled: enabled,
+  });
+  const { data, error, isError, write } = useContractWrite(configWrite);
+
+  const { isLoading, isSuccess, status } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
+  const send = (from: string, to: string, id: number, amount: number) => {
+    setData({ from, to, id, amount });
+    setEnabled(true);
   };
-  return { send, status };
+
+  useEffect(() => {
+    if (write && isPrepareSuccess) write();
+  }, [isPrepareSuccess]);
+  return { write, send, setEnabled, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status };
 }

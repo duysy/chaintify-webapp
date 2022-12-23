@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TextField, Dialog, Typography, Button, Box, Stack } from "@mui/material";
+import { TextField, Dialog, Typography, Button, Box, Stack, Link } from "@mui/material";
 import { useEther } from "../../contexts/useEther";
 import { Controller, useForm } from "react-hook-form";
 import { useSendNFT } from "../../hooks/contracts/useSendNFT";
+import { useAccount } from "wagmi";
+import config from "../../config";
+
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 const style = {
   width: "500px",
   height: "auto",
@@ -16,18 +22,30 @@ type Props = {
   id: string | string[] | undefined;
 };
 export default function PopupSendNft(props: Props) {
-  const { address } = useEther();
+  const { address } = useAccount();
   const handleClosePopUp = () => props.setOpen(false);
-  const { control, reset, handleSubmit } = useForm();
-  const { send, status } = useSendNFT();
-  async function handelOnclickMint(dataMint: any) {
+  const schema = yup.object().shape({
+    to: yup.string().length(42).required(),
+    amount: yup.number().min(1).max(10000).required(),
+  });
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      to: "",
+      amount: 1,
+    },
+  });
+  const { send, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess } = useSendNFT();
+  async function onSubmit(dataMint: any) {
     const id = props.id;
     if (!address) return;
     if (!id) return;
     await send(address, dataMint.to, +id, dataMint.amount);
-    if (status == "SUCCESS") {
-      alert("SUCCESS");
-    }
   }
   return (
     <Dialog onClose={handleClosePopUp} open={props.open} sx={{ zIndex: 2000 }}>
@@ -84,6 +102,7 @@ export default function PopupSendNft(props: Props) {
                     onChange={onChange}
                     value={value}
                   />
+                  <Typography color="red">{errors.to?.message as any}</Typography>
                 </Box>
               )}
             />
@@ -104,6 +123,7 @@ export default function PopupSendNft(props: Props) {
                     onChange={onChange}
                     value={value}
                   />
+                  <Typography color="red">{errors.amount?.message as any}</Typography>
                 </Box>
               )}
             />
@@ -113,15 +133,30 @@ export default function PopupSendNft(props: Props) {
                 onClick={() =>
                   reset({
                     to: "",
-                    amount: "",
+                    amount: 1,
                   })
                 }
                 variant={"outlined"}
               >
                 Reset
               </Button>
-              <Button onClick={handleSubmit(handelOnclickMint)}>Send</Button>
+
+              <Button disabled={isLoading || isSuccess} onClick={handleSubmit(onSubmit)}>
+                {isLoading ? "Sending..." : "Send"}
+              </Button>
             </Stack>
+
+            {isSuccess && (
+              <Box>
+                Successfully sended your NFT!
+                <Box>
+                  <Link target="_blank" href={`${config.EXPLORER}/${data?.hash}`}>
+                    Explorer scan
+                  </Link>
+                </Box>
+              </Box>
+            )}
+            {(isPrepareError || isError) && <nav>Error: {(prepareError || error)?.message}</nav>}
           </form>
         </Box>
       </Box>

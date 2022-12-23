@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Grid, Box, Typography, Button, Stack, TextField } from "@mui/material";
+import { Grid, Box, Typography, Button, Stack, TextField, Link } from "@mui/material";
 import { useQuery } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -9,38 +9,53 @@ import config from "../../../config";
 import Wrap from "../../wrap";
 import { detail as detailAlbumPublic } from "../../../apis/public/extends/album/get_album";
 import { updateStatus } from "../../../apis/private/nft/metadata/get_metadata";
-import { useEther } from "../../../contexts/useEther";
-import { ethers } from "ethers";
 import { pinMetadata } from "../../../apis/private/nft/metadata/get_metadata";
 import MyLoader from "./Loading";
+import { useMintNFT } from "../../../hooks/contracts/useMintNFT";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 type Props = {
   id: string | string[] | undefined;
 };
 export default function Mint(props: Props) {
   const id = props.id;
   const [album, setAlbum] = useState<any | {}>({});
-  const { provider } = useEther();
-  const { handleSubmit, reset, control } = useForm();
+  const schema = yup.object().shape({
+    to: yup.string().length(42).required(),
+    amount: yup.number().min(1).max(10000).required(),
+    maxSupply: yup.number().min(1).max(10000).required(),
+  });
+
+  const {
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      to: "",
+      amount: 1,
+      maxSupply: 9999,
+    },
+  });
+  const { mint, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status } = useMintNFT();
 
   const onSubmit = async (dataMint: any) => {
     if (!id) return;
     const metadata = await pinMetadata(+id);
     const { uri } = metadata;
-    const address = config.CHAINTIFY_CONTRACT;
-    const abi = ["function mint(address to_, uint256 id_, uint256 amount_, uint256 maxSupply_, string uri_, bytes data_)"];
-
-    try {
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(address, abi, signer);
-      const tx = await contract.functions.mint(dataMint?.to, +id, dataMint?.amount, dataMint?.maxSupply, uri, "0x");
-      const receipt = await tx.wait();
-      // console.log("receipt", receipt);
-      await updateStatus(+id);
-      alert("SUCCESS");
-    } catch (error: any) {
-      console.log({ error });
-    }
+    mint(dataMint?.to, +id, dataMint?.amount, dataMint?.maxSupply, uri);
   };
+
+  useEffect(() => {
+    if (status == "success") {
+      if (!id) return;
+      updateStatus(+id);
+    }
+  }, [status]);
   const queryAlbum = useQuery(
     ["album_detail_public", id],
     async () => {
@@ -66,7 +81,7 @@ export default function Mint(props: Props) {
         <Grid item xs={12} md={4}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
             <Image
-              src={`${config.baseMedia}${album?.cover}`}
+              src={`${config.BASE_MEDIA}${album?.cover}`}
               alt="Image album"
               width={300}
               height={300}
@@ -112,10 +127,11 @@ export default function Mint(props: Props) {
                     variant="outlined"
                     type={"text"}
                     sx={{ width: "100%" }}
-                    placeholder="0x71CB05EE1b1F506fF321Da3dac38f25c0c9ce6E1"
+                    placeholder="0x71CB05EE1b1F506fF321Da3dac38f25c0XXXXXXX"
                     onChange={onChange}
                     value={value}
                   />
+                  <Typography color="red">{errors.to?.message as any}</Typography>
                 </Box>
               )}
             />
@@ -126,16 +142,8 @@ export default function Mint(props: Props) {
                 <Box sx={{ width: "100%", color: "text.primary", padding: "1rem 0" }}>
                   <Typography variant="h6">Amount</Typography>
                   <Typography variant="body1">Is the recipient's amount token mint when the minting occurs</Typography>
-                  <TextField
-                    InputProps={{ inputProps: { min: 1, max: 1000000 } }}
-                    label=""
-                    variant="outlined"
-                    type={"number"}
-                    sx={{ width: "100%" }}
-                    placeholder="1"
-                    onChange={onChange}
-                    value={value}
-                  />
+                  <TextField label="" variant="outlined" type={"number"} sx={{ width: "100%" }} placeholder="1" onChange={onChange} value={value} />
+                  <Typography color="red">{errors.amount?.message as any}</Typography>
                 </Box>
               )}
             />
@@ -145,9 +153,10 @@ export default function Mint(props: Props) {
               render={({ field: { onChange, value } }) => (
                 <Box sx={{ width: "100%", color: "text.primary", padding: "1rem 0" }}>
                   <Typography variant="h6">Max Supply</Typography>
-                  <Typography variant="body1">Is the recipient's Max Supply token mint when the minting occurs</Typography>
+                  <Typography variant="body1">
+                    {album?.isMint ? "Max Supply not require" : "Is the recipient's Max Supply token mint when the minting occurs"}
+                  </Typography>
                   <TextField
-                    InputProps={{ inputProps: { min: 1, max: 1000000 } }}
                     label=""
                     variant="outlined"
                     type={"number"}
@@ -155,7 +164,9 @@ export default function Mint(props: Props) {
                     placeholder="1"
                     onChange={onChange}
                     value={value}
+                    disabled={album?.isMint}
                   />
+                  <Typography color="red">{errors.maxSupply?.message as any}</Typography>
                 </Box>
               )}
             />
@@ -163,16 +174,29 @@ export default function Mint(props: Props) {
               onClick={() =>
                 reset({
                   to: "",
-                  amount: "",
-                  maxSupply: "",
+                  amount: 1,
+                  maxSupply: album.isMint ? 9999 : 1,
                 })
               }
               variant={"outlined"}
             >
               Reset
             </Button>
+            <Button disabled={isLoading || isSuccess} onClick={handleSubmit(onSubmit)}>
+              {isLoading ? "Minting..." : "Mint"}
+            </Button>
 
-            <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+            {isSuccess && (
+              <Box>
+                Successfully minted your NFT!
+                <Box>
+                  <Link target="_blank" href={`${config.EXPLORER}/${data?.hash}`}>
+                    Explorer scan
+                  </Link>
+                </Box>
+              </Box>
+            )}
+            {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>}
           </form>
         </Grid>
       </Grid>

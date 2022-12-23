@@ -10,10 +10,11 @@ import config from "../../../config";
 import { useEther } from "../../../contexts/useEther";
 import { list as listNftPrivate } from "../../../apis/private/nft/collection/get_metadata";
 import { useQuery } from "react-query";
+import { useAccount } from "wagmi";
 import MyLoader from "./Loading";
 type Props = {};
 export default function Collection(props: Props) {
-  const { provider, address } = useEther();
+  const { address } = useAccount();
   const [nfts, setNfts] = useState<TCarouselPlayAlbum[]>([]);
   const queryAlbum = useQuery(
     ["listNftPrivate"],
@@ -38,7 +39,7 @@ export default function Collection(props: Props) {
       },
     }
   );
-  if (queryAlbum.isFetching||queryAlbum.isLoading)
+  if (queryAlbum.isFetching || queryAlbum.isLoading)
     return (
       <Wrap>
         <MyLoader />

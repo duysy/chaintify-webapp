@@ -17,14 +17,18 @@ const AuthContextProvider = ({ children }: TProps) => {
   const login = async (signature: string) => {
     const { token } = await postSignature({ signature: signature });
     localStorage.setItem("Authorization", `Token ${token}`);
-    // console.log(token);
     setIsLogin(true);
   };
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem("Authorization");
     setIsLogin(false);
   };
+  useEffect(() => {
+    if (localStorage.getItem("Authorization")) {
+      setIsLogin(true);
+    }
+  }, []);
   return (
     <Auth.Provider
       value={{
