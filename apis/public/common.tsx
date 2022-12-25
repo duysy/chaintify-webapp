@@ -1,7 +1,7 @@
 import axios from "axios";
-
+import config from "../../config";
 export default axios.create({
-  baseURL: "http://127.0.0.1:8000/music/api/",
+  baseURL: config.API_URL,
   headers: {
     // Accept: "application/json",
     // "Content-type": "application/json",

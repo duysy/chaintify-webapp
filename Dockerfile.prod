@@ -5,4 +5,4 @@ COPY package.json /code
 RUN yarn
 COPY ./ /code
 RUN yarn build
-EXPOSE 3000
+EXPOSE 1000

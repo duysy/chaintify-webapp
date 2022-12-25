@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "../../config";
 import Router from "next/router";
 // export default axios.create({
 //   baseURL: "http://127.0.0.1:8000/music/api/",
@@ -15,7 +16,7 @@ const axiosApiInstance = axios.create();
 axiosApiInstance.interceptors.request.use(
   async (config) => {
     const authorization = localStorage.getItem("Authorization");
-    config.baseURL = "http://127.0.0.1:8000/music/api/";
+    config.baseURL = config.API_URL;
     config.headers = {
       Authorization: authorization,
       Accept: "application/json",
