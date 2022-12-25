@@ -63,7 +63,7 @@ export default function EditProfile(props: TProps) {
         </Box>
         {props.pathImage ? (
           <Image
-            src={`${config.BASE_MEDIA}${props.pathImage}`}
+            src={`${config.IMAGE_URL}${props.pathImage}`}
             alt="Picture of profile"
             width={300}
             height={300}

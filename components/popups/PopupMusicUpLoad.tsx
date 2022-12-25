@@ -8,7 +8,7 @@ import FileUpload from "../../components/FileUpload";
 import { list as listAlbumPrivate } from "../../apis/private/models/album/get_album";
 import { list as listArtistPublic } from "../../apis/public/models/artist/get_artist";
 import { create as createSongApi, TCreateSong } from "../../apis/private/models/song/post_song";
-import {useAuth} from "../../contexts/useAuth"
+import { useAuth } from "../../contexts/useAuth";
 const style = {
   width: "500px",
   height: "auto",
@@ -28,7 +28,7 @@ export default function PopupMusicUpLoad(props: Props) {
   const [pathImage, setPathImage] = useState(null);
   const refAudio: any = useRef();
   const queryClient = useQueryClient();
-  const {isLogin} = useAuth()
+  const { isLogin } = useAuth();
   const queryAlbum = useQuery(
     ["listAlbumPrivate_0_1000_0"],
     async () => {
@@ -199,7 +199,7 @@ export default function PopupMusicUpLoad(props: Props) {
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
             {pathSong && (
-              <audio controls ref={refAudio} src={`${config.BASE_MEDIA}${pathSong}`}>
+              <audio controls ref={refAudio} src={`${config.IMAGE_URL}${pathSong}`}>
                 <source src="" type="audio/mp3" />
               </audio>
             )}
@@ -214,7 +214,7 @@ export default function PopupMusicUpLoad(props: Props) {
             justifyContent={"space-around"}
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
-            {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.BASE_MEDIA}${pathImage}`} />}
+            {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.IMAGE_URL}${pathImage}`} />}
             <br />
             <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover"} />
           </Box>

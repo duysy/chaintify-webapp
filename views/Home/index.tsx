@@ -26,7 +26,7 @@ export default function HomeView() {
         let albums = data.results.map((item: any, index: any) => {
           return {
             name: item.name,
-            cover: `${config.BASE_MEDIA}${item.cover}`,
+            cover: `${config.IMAGE_URL}${item.cover}`,
             clickHrefTo: `/album/${item.id}`,
           } as TCarouselPlayBasic;
         });
@@ -62,7 +62,7 @@ export default function HomeView() {
           }
           return {
             id: item.id,
-            cover: `${config.BASE_MEDIA}${item.cover}`,
+            cover: `${config.IMAGE_URL}${item.cover}`,
             name: item.name,
             artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
             updated_at: updated_at_text,

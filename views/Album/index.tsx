@@ -25,7 +25,7 @@ export default function AlbumView(props: Props) {
     const listSongMusicPlay_ = album.song.map((item: any) => {
       return {
         ...item,
-        ...{ path: `${config.BASE_MEDIA}${item.path}` },
+        ...{ path: `${config.MUSIC_URL}${item.path}` },
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
@@ -55,7 +55,7 @@ export default function AlbumView(props: Props) {
         return {
           id: item.id,
           name: item.name,
-          cover: `${config.BASE_MEDIA}${item.cover}`,
+          cover: `${config.IMAGE_URL}${item.cover}`,
           artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
           album: album?.name,
           time: item.length,
@@ -81,7 +81,7 @@ export default function AlbumView(props: Props) {
         <Grid item xs={12} md={4}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" marginTop="5rem">
             <Image
-              src={`${config.BASE_MEDIA}${album?.cover}`}
+              src={`${config.IMAGE_URL}${album?.cover}`}
               alt="Image album"
               width={300}
               height={300}

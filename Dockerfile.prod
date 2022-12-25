@@ -3,3 +3,6 @@ RUN mkdir code
 WORKDIR /code
 COPY package.json /code
 RUN yarn
+COPY ./ /code
+RUN yarn build
+EXPOSE 3000

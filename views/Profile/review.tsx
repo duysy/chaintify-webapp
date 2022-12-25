@@ -40,7 +40,7 @@ export default function ReviewProfile(props: TProps) {
         {props.pathImage ? (
           <Image
             style={{ objectFit: "cover", borderRadius: "1000px" }}
-            src={`${config.BASE_MEDIA}${props.pathImage}`}
+            src={`${config.IMAGE_URL}${props.pathImage}`}
             alt="Picture of profile"
             width={300}
             height={300}
