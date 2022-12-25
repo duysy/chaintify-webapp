@@ -14,14 +14,14 @@ const axiosApiInstance = axios.create();
 
 // Request interceptor for API calls
 axiosApiInstance.interceptors.request.use(
-  async (config) => {
+  async (configAxios) => {
     const authorization = localStorage.getItem("Authorization");
-    config.baseURL = config.API_URL;
-    config.headers = {
+    configAxios.baseURL = config.API_URL;
+    configAxios.headers = {
       Authorization: authorization,
       Accept: "application/json",
     };
-    return config;
+    return configAxios;
   },
   (error) => {
     Promise.reject(error);
