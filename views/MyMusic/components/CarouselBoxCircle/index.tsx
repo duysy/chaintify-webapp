@@ -74,8 +74,10 @@ export default function CarouselBoxCircle(props: TProps) {
                 height={150}
                 style={{
                   borderRadius: "1000px",
-                  objectFit: "cover"
+                  objectFit: "cover",
                 }}
+                placeholder="blur"
+                blurDataURL="/assert/images/image-loading.png"
               />
               <Typography
                 sx={{

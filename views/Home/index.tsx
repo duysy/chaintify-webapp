@@ -1,21 +1,20 @@
 import config from "../../config";
 import { useState } from "react";
-import { Grid, Stack, Container, Box, Typography } from "@mui/material";
-import Image from "next/image";
+import {  Box, } from "@mui/material";
 import Slide from "../../components/Slide";
 import Wrap from "../wrap";
 import SectionTitle from "../../components/SectionTitle";
-import CarouselBasic from "../../components/CarouselPlayBasic";
+import CarouselBasic from "./components/CarouselPlayBasic";
 import { list as listAlbumPublic } from "../../apis/public/models/album/get_album";
 import { list as listSongPublic } from "../../apis/public/models/song/get_song";
 import { useQuery } from "react-query";
-import { TCarouselPlayBasic } from "../../components/CarouselPlayBasic";
-import NewBoxList from "./components/NewListBox";
-import { TNewBoxList } from "./components/NewListBox";
+import { TCarouselPlayBasic } from "./components/CarouselPlayBasic";
+import NewListBoxSong from "./components/NewListBoxSong";
+import { TNewListBoxSong } from "./components/NewListBoxSong";
 
 export default function HomeView() {
   const [albums, setAlbums] = useState<TCarouselPlayBasic[]>([]);
-  const [songs, setSongs] = useState<TNewBoxList[]>([]);
+  const [songs, setSongs] = useState<TNewListBoxSong[]>([]);
   const queryAlbum = useQuery(
     ["listAlbumPublic_0_5_0"],
     async () => {
@@ -66,7 +65,7 @@ export default function HomeView() {
             name: item.name,
             artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
             updated_at: updated_at_text,
-          } as TNewBoxList;
+          } as TNewListBoxSong;
         });
         setSongs(songs);
       },
@@ -81,7 +80,7 @@ export default function HomeView() {
       </Box>
       <Box>
         <SectionTitle>Mới phát hành</SectionTitle>
-        <NewBoxList list={songs} />
+        <NewListBoxSong list={songs} />
       </Box>
       <Box>
         <SectionTitle>Album</SectionTitle>

@@ -71,6 +71,8 @@ export default function EditProfile(props: TProps) {
               borderRadius: "1000px",
               objectFit: "cover",
             }}
+            placeholder="blur"
+            blurDataURL="/assert/images/image-loading.png"
           />
         ) : (
           <ImageIcon

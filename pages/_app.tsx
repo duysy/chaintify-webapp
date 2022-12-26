@@ -16,6 +16,7 @@ import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { LedgerConnector } from "wagmi/connectors/ledger";
 import config from "../config";
 const { chains, provider, webSocketProvider } = configureChains([polygonMumbai], [publicProvider(), alchemyProvider({ apiKey: config.ALCHEMY_KEY })]);
 
@@ -24,6 +25,13 @@ const client = createClient({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({ chains }),
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
     new CoinbaseWalletConnector({
       chains,
       options: {
@@ -36,13 +44,7 @@ const client = createClient({
         qrcode: true,
       },
     }),
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Injected",
-        shimDisconnect: true,
-      },
-    }),
+    new LedgerConnector({ chains }),
   ],
   provider,
   webSocketProvider,

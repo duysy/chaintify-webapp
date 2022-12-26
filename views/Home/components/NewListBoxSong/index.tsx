@@ -4,20 +4,20 @@ import Image from "next/image";
 type TProps = {
   list: any;
 };
-export type TNewBoxList = {
+export type TNewListBoxSong = {
   cover: string;
   name: string;
   artist: string;
   updated_at: string;
 };
-export default function NewBoxList(props: TProps) {
-  const songs: TNewBoxList[] = props.list;
+export default function NewListBoxSong(props: TProps) {
+  const songs: TNewListBoxSong[] = props.list;
 
   const MainContent = () => {
     return (
       <Grid container spacing={2}>
         {songs &&
-          songs.map((item: TNewBoxList, index: any) => {
+          songs.map((item: TNewListBoxSong, index: any) => {
             return (
               <Grid item xs={6} md={4} key={index}>
                 <Box
@@ -40,8 +40,10 @@ export default function NewBoxList(props: TProps) {
                     height={65}
                     style={{
                       borderRadius: "15px",
-                      objectFit: "cover"
+                      objectFit: "cover",
                     }}
+                    placeholder="blur"
+                    blurDataURL="/assert/images/image-loading.png"
                   />
                   <Box
                     sx={{

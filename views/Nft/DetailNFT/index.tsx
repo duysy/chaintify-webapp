@@ -99,6 +99,8 @@ export default function DetailNFT(props: Props) {
                 objectFit: "cover",
                 aspectRatio: "1 / 1",
               }}
+              placeholder="blur"
+              blurDataURL="/assert/images/image-loading.png"
             />
             <Typography
               variant="h5"

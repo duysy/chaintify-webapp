@@ -84,6 +84,8 @@ export default function CarouselPlayAlbum(props: TProps) {
                     borderRadius: "20px",
                     objectFit: "cover",
                   }}
+                  placeholder="blur"
+                  blurDataURL="/assert/images/image-loading.png"
                 />
               </Box>
               <Typography

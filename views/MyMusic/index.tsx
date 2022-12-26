@@ -3,16 +3,14 @@ import { useState, useEffect } from "react";
 import config from "../../config";
 
 import { Box, Typography, Stack, Grid, Checkbox, Button } from "@mui/material";
-import Image from "next/image";
 
 import Wrap from "../wrap";
 import SectionTitle from "../../components/SectionTitle";
-import CarouselBasic from "../../components/CarouselPlayBasic";
 import MusicList from "../../components/MusicList";
-import LikeSongTab from "./components/LikeSongTab";
-import UploadTab from "./components/UploadTab";
 import CarouselBoxCircle from "./components/CarouselBoxCircle";
 import CarouselPlayAlbum, { TCarouselPlayAlbum } from "./components/CarouselPlayAlbum";
+import { TCarouselBoxCircle } from "./components/CarouselBoxCircle";
+
 import { TMusicList } from "../../components/MusicList/types";
 
 import { list as listAlbumPrivate } from "../../apis/private/models/album/get_album";
@@ -20,8 +18,8 @@ import { list as listPlaylistPrivate } from "../../apis/private/models/playlist/
 import { list as listSongPrivate } from "../../apis/private/models/song/get_song";
 import { useQuery } from "react-query";
 
-import { TCarouselBoxCircle } from "./components/CarouselBoxCircle";
 import MyLoader from "./Loading";
+import { FilterDrama } from "@mui/icons-material";
 
 type TTabView = "likeSongTab" | "UploadTab";
 
@@ -58,6 +56,7 @@ export default function MyMusicView() {
       onSuccess: (data: any) => {
         let albums = data.results.map((item: any, index: any) => {
           return {
+            id: +item?.id,
             name: item?.name,
             cover: `${config.IMAGE_URL}${item?.cover}`,
             clickHrefTo: `/album/${item?.id}`,
@@ -98,10 +97,31 @@ export default function MyMusicView() {
       </Wrap>
     );
   }
-
   const LikeSongTabWrap = () => {
     return <MusicList list={songs as TMusicList[]} />;
   };
+
+  const UploadTab = () => {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+        <FilterDrama
+          sx={{
+            fontSize: "20rem",
+            color: "text.primary",
+          }}
+        />
+        <Typography
+          variant="h6"
+          sx={{
+            color: "text.primary",
+          }}
+        >
+          Bạn chưa có bào nào trong thư viện
+        </Typography>
+      </Box>
+    );
+  };
+
   return (
     <Wrap>
       <Box>

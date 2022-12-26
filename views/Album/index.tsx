@@ -29,8 +29,9 @@ export default function AlbumView(props: Props) {
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
+    console.log(listSongMusicPlay_);
     play();
-    // console.log("play");
+    
   };
   const handelButtonPauseClick = () => {
     pause();
@@ -40,7 +41,7 @@ export default function AlbumView(props: Props) {
     ["detailAlbumPublic", id],
     async () => {
       if (!id) return;
-      return await detailAlbumPublic(+id, { depth: 2 });
+      return await detailAlbumPublic(+id);
     },
     {
       onSuccess: (data) => {
@@ -91,6 +92,8 @@ export default function AlbumView(props: Props) {
                 objectFit: "cover",
                 aspectRatio: "1 / 1",
               }}
+              placeholder="blur"
+              blurDataURL="/assert/images/image-loading.png"
             />
             <Typography
               variant="h5"

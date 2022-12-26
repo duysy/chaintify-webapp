@@ -60,7 +60,7 @@ export default function Mint(props: Props) {
     ["album_detail_public", id],
     async () => {
       if (!id) return;
-      return await detailAlbumPublic(+id, {});
+      return await detailAlbumPublic(+id);
     },
     {
       onSuccess: (data) => {
@@ -91,6 +91,8 @@ export default function Mint(props: Props) {
                 objectFit: "cover",
                 aspectRatio: "1 / 1",
               }}
+              placeholder="blur"
+              blurDataURL="/assert/images/image-loading.png"
             />
             <Typography
               variant="h5"

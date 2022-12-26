@@ -1,6 +1,5 @@
 import { createContext, ReactChild, useContext, useState, useEffect } from "react";
 import { create as postSignature } from "../apis/private/auth/signature/post_signature";
-
 export type AuthContextValue = { isLogin: boolean; setIsLogin: any; getTokenAuth: any; login: any; logout: any };
 export const Auth = createContext<AuthContextValue>({} as AuthContextValue);
 type TProps = {
@@ -9,13 +8,12 @@ type TProps = {
 
 const AuthContextProvider = ({ children }: TProps) => {
   const [isLogin, setIsLogin] = useState(false);
-
   const getTokenAuth = () => {
     const authorization = localStorage.getItem("Authorization");
     if (authorization) return authorization;
   };
-  const login = async (signature: string) => {
-    const { token } = await postSignature({ signature: signature });
+  const login = async (signature: string, none: string) => {
+    const { token } = await postSignature({ signature: signature, none: none });
     localStorage.setItem("Authorization", `Token ${token}`);
     setIsLogin(true);
   };

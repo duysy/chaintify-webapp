@@ -2,17 +2,20 @@ import React, { useState } from "react";
 import styles from "./CarouselPlayAlbum.module.css";
 
 import { Stack, Box, Typography } from "@mui/material";
-import { PlayCircle, PauseCircle, Add } from "@mui/icons-material";
+import { PlayCircle, PauseCircle, Add, Album } from "@mui/icons-material";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { useMusicPlayer } from "../../../../contexts/useMusicPlayer";
 import PopupCreateAlbum from "../../../../components/popups/PopupCreateAlbum";
+import { detail } from "../../../../apis/public/extends/album/get_album";
+import config from "../../../../config";
 type TProps = {
   list: TCarouselPlayAlbum[];
 };
 export type TCarouselPlayAlbum = {
+  id: number;
   name: string;
   cover: string;
   clickHrefTo: string;
@@ -21,9 +24,20 @@ export default function CarouselPlayAlbum(props: TProps) {
   const list: TCarouselPlayAlbum[] = props.list;
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const { play, pause, isPlay } = useMusicPlayer();
+  const { play, pause, isPlay, setListMusicPlayer, listSongMusicPlayer } = useMusicPlayer();
   const handelCreateNewAlbumCard = () => {
     setOpen(true);
+  };
+  const fetchAndSetSong = async (id: number) => {
+    const album = await detail(+id);
+    const listSongMusicPlay_ = album.song.map((item: any) => {
+      return {
+        ...item,
+        ...{ path: `${config.MUSIC_URL}${item.path}` },
+      };
+    });
+    console.log(listSongMusicPlay_);
+    setListMusicPlayer(listSongMusicPlay_);
   };
   const BoxAdd = () => {
     return (
@@ -63,7 +77,7 @@ export default function CarouselPlayAlbum(props: TProps) {
   };
   return (
     <Stack direction="row" spacing={3}>
-      {list.map((item: TCarouselPlayAlbum, index: any) => {
+      {list.map((album: TCarouselPlayAlbum, index: any) => {
         return (
           <Box
             key={index}
@@ -78,7 +92,7 @@ export default function CarouselPlayAlbum(props: TProps) {
             onClick={(event) => {
               event.stopPropagation();
               // console.log("card click");
-              router.push(item?.clickHrefTo as string);
+              router.push(album?.clickHrefTo as string);
             }}
           >
             <Box position="relative" className={styles.card}>
@@ -94,7 +108,7 @@ export default function CarouselPlayAlbum(props: TProps) {
                   height: "150px",
                 }}
               >
-                {isPlay ? (
+                {isPlay && listSongMusicPlayer[0].album == album.id ? (
                   <PauseCircle
                     sx={{
                       fontSize: "2.5rem",
@@ -112,24 +126,28 @@ export default function CarouselPlayAlbum(props: TProps) {
                       fontSize: "2.5rem",
                       color: "text.primary",
                     }}
-                    onClick={(event) => {
+                    onClick={async (event) => {
                       event.stopPropagation();
                       // console.log("pause icon click");
-
-                      play();
+                      await fetchAndSetSong(album?.id);
+                      setTimeout(() => {
+                        play();
+                      }, 1000);
                     }}
                   />
                 )}
               </Box>
               <Image
-                src={item?.cover as string}
+                src={album?.cover as string}
                 alt="Picture of album"
                 width={150}
                 height={150}
                 style={{
                   borderRadius: "20px",
-                  objectFit: "cover"
+                  objectFit: "cover",
                 }}
+                placeholder="blur"
+                blurDataURL="/assert/images/image-loading.png"
               />
             </Box>
             <Typography
@@ -137,7 +155,7 @@ export default function CarouselPlayAlbum(props: TProps) {
                 color: "text.primary",
               }}
             >
-              {item.name}
+              {album.name}
             </Typography>
           </Box>
         );

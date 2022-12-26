@@ -92,6 +92,8 @@ export default function PlayListView(props: Props) {
                   objectFit: "cover",
                   aspectRatio: "1 / 1",
                 }}
+                placeholder="blur"
+                blurDataURL="/assert/images/image-loading.png"
               />
             ) : (
               <ImageIcon

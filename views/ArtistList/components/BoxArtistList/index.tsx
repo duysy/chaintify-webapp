@@ -74,6 +74,8 @@ export default function BoxArtistList(props: TProps) {
                     borderRadius: "10px",
                     objectFit: "cover"
                   }}
+                  placeholder="blur"
+                  blurDataURL="/assert/images/image-loading.png"
                 />
               </Box>
             </Box>

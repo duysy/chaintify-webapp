@@ -79,7 +79,17 @@ export default function Slide() {
       />
       <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ width: "100%", height: "auto" }} spacing={0}>
         {itemData.slice(from, to).map((item) => (
-          <Grid display="flex" justifyContent="center" alignItems="center" item xs={12} sm={6} md={4} key={item?.img as string}>
+          <Grid
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            key={item?.img as string}
+            sx={{ padding: "0.5rem" }}
+          >
             <Image
               width={300}
               height={200}
@@ -89,9 +99,11 @@ export default function Slide() {
               style={{
                 borderRadius: "25px",
                 objectFit: "cover",
-                padding: "0.5rem",
+
                 maxHeight: "15rem",
               }}
+              placeholder="blur"
+              blurDataURL="/assert/images/image-loading.png"
             />
           </Grid>
         ))}
