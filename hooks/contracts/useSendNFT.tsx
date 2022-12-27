@@ -6,6 +6,7 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 export function useSendNFT() {
   const [dataMint, setData] = useState<any>();
   const [enabled, setEnabled] = useState<boolean>(false);
+  const [isOpenWallet, setIsOpenWallet] = useState<boolean>(false);
   const {
     config: configWrite,
     error: prepareError,
@@ -59,6 +60,7 @@ export function useSendNFT() {
   });
 
   const send = (from: string, to: string, id: number, amount: number) => {
+    setIsOpenWallet(true);
     setData({ from, to, id, amount });
     setEnabled(true);
   };
@@ -66,5 +68,9 @@ export function useSendNFT() {
   useEffect(() => {
     if (write && isPrepareSuccess) write();
   }, [isPrepareSuccess]);
-  return { write, send, setEnabled, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status };
+
+  useEffect(() => {
+    if (isLoading) setIsOpenWallet(false);
+  }, [isLoading]);
+  return { write, send, setEnabled, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status, isOpenWallet };
 }

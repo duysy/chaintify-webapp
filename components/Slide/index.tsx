@@ -103,7 +103,7 @@ export default function Slide() {
                 maxHeight: "15rem",
               }}
               placeholder="blur"
-              blurDataURL="/assert/images/image-loading.png"
+              blurDataURL="/assert/images/image-loading.gif"
             />
           </Grid>
         ))}

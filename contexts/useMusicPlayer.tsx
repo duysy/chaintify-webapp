@@ -74,12 +74,12 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     setIndexSongPlaylist(indexSongPlaylist_);
   };
   const onClickPrevious = () => {
-    console.log("onClickPrevious");
+    // console.log("onClickPrevious");
     let indexSongPlaylist_ = indexSongPlaylist - 1;
     if (indexSongPlaylist_ < 0) {
       indexSongPlaylist_ = 0;
     }
-    console.log("onClickPrevious : ", indexSongPlaylist_, listSongMusicPlayer);
+    // console.log("onClickPrevious : ", indexSongPlaylist_, listSongMusicPlayer);
     setIndexSongPlaylist(indexSongPlaylist_);
   };
   // const play = () => {

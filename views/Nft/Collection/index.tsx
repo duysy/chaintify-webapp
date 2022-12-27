@@ -2,18 +2,16 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Grid, Box, Typography, Button, Stack, TextField } from "@mui/material";
 
-import Image from "next/image";
 import SectionTitle from "../../../components/SectionTitle";
 import CarouselPlayAlbum, { TCarouselPlayAlbum } from "../components/CarouselPlayAlbum";
 import Wrap from "../../wrap";
-import config from "../../../config";
-import { useEther } from "../../../contexts/useEther";
 import { list as listNftPrivate } from "../../../apis/private/nft/collection/get_metadata";
 import { useQuery } from "react-query";
 import { useAccount } from "wagmi";
 import MyLoader from "./Loading";
 type Props = {};
-export default function Collection(props: Props) {
+
+export default function CollectionView(props: Props) {
   const { address } = useAccount();
   const [nfts, setNfts] = useState<TCarouselPlayAlbum[]>([]);
   const queryAlbum = useQuery(
@@ -49,7 +47,7 @@ export default function Collection(props: Props) {
   return (
     <Wrap>
       <Box>
-        <SectionTitle>Album</SectionTitle>
+        <SectionTitle>Collection</SectionTitle>
         {<CarouselPlayAlbum list={nfts as TCarouselPlayAlbum[]} />}
       </Box>
     </Wrap>

@@ -9,7 +9,7 @@ import { create as createAlbumPrivate, TCreateAlbum } from "../../apis/private/m
 import config from "../../config";
 import FileUpload from "../../components/FileUpload";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-
+import { useAuth } from "../../contexts/useAuth";
 const style = {
   width: "500px",
   height: "auto",
@@ -22,6 +22,7 @@ type Props = {
   setOpen: (state: boolean) => void;
 };
 export default function PopupCreateAlbum(props: Props) {
+  const { isLogin } = useAuth();
   const router = useRouter();
 
   const [artists, setArtists] = useState([]);
@@ -29,6 +30,7 @@ export default function PopupCreateAlbum(props: Props) {
   const [artistsPicker, setArtistsPicker] = useState<any[]>([]);
   const [pathImage, setPathImage] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
+  
   const queryClient = useQueryClient();
 
   const handleClose = () => props.setOpen(false);
@@ -73,7 +75,7 @@ export default function PopupCreateAlbum(props: Props) {
       if (data) {
         // console.log("createAlbum", data);
         handleClose();
-        router.push(`/album/${data.id}`);
+        // router.push(`/album/${data.id}`);
         queryClient.invalidateQueries(["listAlbumPrivate_0_5_0"]);
       } else {
         alert("Fail");
@@ -115,6 +117,7 @@ export default function PopupCreateAlbum(props: Props) {
         });
         setArtists(artist_);
       },
+      enabled: !!isLogin,
     }
   );
 

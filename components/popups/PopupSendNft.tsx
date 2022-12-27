@@ -40,7 +40,7 @@ export default function PopupSendNft(props: Props) {
       amount: 1,
     },
   });
-  const { send, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess } = useSendNFT();
+  const { send, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, isOpenWallet } = useSendNFT();
   async function onSubmit(dataMint: any) {
     const id = props.id;
     if (!address) return;
@@ -141,8 +141,8 @@ export default function PopupSendNft(props: Props) {
                 Reset
               </Button>
 
-              <Button disabled={isLoading || isSuccess} onClick={handleSubmit(onSubmit)}>
-                {isLoading ? "Sending..." : "Send"}
+              <Button disabled={isLoading || isSuccess || isOpenWallet} onClick={handleSubmit(onSubmit)}>
+                {isLoading ? "Sending..." : isOpenWallet ? "Opening wallet" : "Send"}
               </Button>
             </Stack>
 

@@ -18,7 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 type Props = {
   id: string | string[] | undefined;
 };
-export default function Mint(props: Props) {
+export default function MintView(props: Props) {
   const id = props.id;
   const [album, setAlbum] = useState<any | {}>({});
   const schema = yup.object().shape({
@@ -41,7 +41,7 @@ export default function Mint(props: Props) {
       maxSupply: 9999,
     },
   });
-  const { mint, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status } = useMintNFT();
+  const { mint, data, prepareError, isPrepareError, error, isError, isLoading, isSuccess, status, isOpenWallet } = useMintNFT();
 
   const onSubmit = async (dataMint: any) => {
     if (!id) return;
@@ -92,7 +92,7 @@ export default function Mint(props: Props) {
                 aspectRatio: "1 / 1",
               }}
               placeholder="blur"
-              blurDataURL="/assert/images/image-loading.png"
+              blurDataURL="/assert/images/image-loading.gif"
             />
             <Typography
               variant="h5"
@@ -183,8 +183,8 @@ export default function Mint(props: Props) {
             >
               Reset
             </Button>
-            <Button disabled={isLoading || isSuccess} onClick={handleSubmit(onSubmit)}>
-              {isLoading ? "Minting..." : "Mint"}
+            <Button disabled={isLoading || isSuccess || isOpenWallet} onClick={handleSubmit(onSubmit)}>
+              {isLoading ? "Minting..." : isOpenWallet ? "Opening wallet" : "Mint"}
             </Button>
 
             {isSuccess && (

@@ -2,10 +2,10 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { TextField, Dialog, Checkbox, Typography, Button, Box, Stack, Autocomplete, Alert } from "@mui/material";
 
-import { useRouter } from "next/router";
 import { list as listPlaylistPrivate } from "../../apis/private/models/playlist/get_playlist";
 import { update as updatePlaylistPrivate, TUpdatePlayList } from "../../apis/private/models/playlist/put_playlist";
 import { useQuery } from "react-query";
+import { useAuth } from "../../contexts/useAuth";
 const style = {
   width: 400,
   minHeight: 400,
@@ -19,8 +19,11 @@ type Props = {
   listSong: any[];
 };
 export default function PopupAddMusicToPlaylist(props: Props) {
+  const { isLogin } = useAuth();
+
   const [playlists, setPlaylists] = useState([]);
   const [statusAdd, setStatusAdd] = useState("");
+  
   const handleClose = () => props.setOpen(false);
   const handlePost = async (value: any) => {
     const label: any = value.label;
@@ -54,6 +57,7 @@ export default function PopupAddMusicToPlaylist(props: Props) {
         });
         setPlaylists(playlist_);
       },
+      enabled: !!isLogin,
     }
   );
   return (

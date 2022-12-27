@@ -20,14 +20,15 @@ import { useQuery } from "react-query";
 
 import MyLoader from "./Loading";
 import { FilterDrama } from "@mui/icons-material";
-
+import { useAuth } from "../../contexts/useAuth";
 type TTabView = "likeSongTab" | "UploadTab";
 
 export default function MyMusicView() {
+  const { isLogin } = useAuth();
+
   const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const [playlists, setPlaylists] = useState<TCarouselBoxCircle[]>();
   const [songs, setSongs] = useState<TMusicList[]>();
-
   const [tab, setTab] = useState<TTabView>("likeSongTab");
   const queryPlayList = useQuery(
     ["listPlaylistPrivate_0_5_0"],
@@ -45,6 +46,7 @@ export default function MyMusicView() {
         });
         setPlaylists(playlists);
       },
+      enabled: !!isLogin,
     }
   );
   const queryAlbum = useQuery(
@@ -64,6 +66,7 @@ export default function MyMusicView() {
         });
         setAlbums(albums);
       },
+      enabled: !!isLogin,
     }
   );
   const querySong = useQuery(
@@ -87,6 +90,7 @@ export default function MyMusicView() {
         });
         setSongs(songs);
       },
+      enabled: !!isLogin,
     }
   );
 
@@ -136,11 +140,19 @@ export default function MyMusicView() {
       </Box>
       <Box>
         <SectionTitle>Playlist</SectionTitle>
-        {queryPlayList.isSuccess ? <CarouselBoxCircle list={playlists as TCarouselBoxCircle[]} /> : <h1>Loading</h1>}
+        {queryPlayList.isSuccess ? (
+          <CarouselBoxCircle list={playlists as TCarouselBoxCircle[]} />
+        ) : (
+          <Typography color="text.primary">Playlist not found</Typography>
+        )}
       </Box>
       <Box>
         <SectionTitle>Album</SectionTitle>
-        {queryAlbum.isSuccess ? <CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} /> : <h1>Loading</h1>}
+        {queryAlbum.isSuccess ? (
+          <CarouselPlayAlbum list={albums as TCarouselPlayAlbum[]} />
+        ) : (
+          <Typography color="text.primary">Album not found</Typography>
+        )}
       </Box>
       <Box>
         <SectionTitle>Bài hát</SectionTitle>

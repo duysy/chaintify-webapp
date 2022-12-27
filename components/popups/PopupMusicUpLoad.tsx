@@ -21,6 +21,8 @@ type Props = {
   setOpen: (state: boolean) => void;
 };
 export default function PopupMusicUpLoad(props: Props) {
+  const { isLogin } = useAuth();
+
   const [albums, setAlbums] = useState([]);
   const [artists, setArtists] = useState([]);
   const [createSong, setCreateSong] = useState<TCreateSong | {}>({});
@@ -28,7 +30,7 @@ export default function PopupMusicUpLoad(props: Props) {
   const [pathImage, setPathImage] = useState(null);
   const refAudio: any = useRef();
   const queryClient = useQueryClient();
-  const { isLogin } = useAuth();
+  
   const queryAlbum = useQuery(
     ["listAlbumPrivate_0_1000_0"],
     async () => {
@@ -121,7 +123,7 @@ export default function PopupMusicUpLoad(props: Props) {
       mtime: 1,
     };
     const createSong_ = { ...createSong, ...addMore };
-    console.log(createSong_);
+    // console.log(createSong_);
     mutationSubmit.mutate(createSong_);
   };
 

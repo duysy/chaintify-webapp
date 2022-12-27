@@ -143,7 +143,7 @@ export default function SideBar() {
         alignItems="center"
         sx={{ height: "3rem", width: "100%" }}
         onClick={() => {
-          console.log("Create Playlist");
+          // console.log("Create Playlist");
           setOpen(true);
         }}
       >

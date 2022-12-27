@@ -36,7 +36,7 @@ export default function CarouselPlayAlbum(props: TProps) {
         ...{ path: `${config.MUSIC_URL}${item.path}` },
       };
     });
-    console.log(listSongMusicPlay_);
+    // console.log(listSongMusicPlay_);
     setListMusicPlayer(listSongMusicPlay_);
   };
   const BoxAdd = () => {
@@ -147,7 +147,7 @@ export default function CarouselPlayAlbum(props: TProps) {
                   objectFit: "cover",
                 }}
                 placeholder="blur"
-                blurDataURL="/assert/images/image-loading.png"
+                blurDataURL="/assert/images/image-loading.gif"
               />
             </Box>
             <Typography

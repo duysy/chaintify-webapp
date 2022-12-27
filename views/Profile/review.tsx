@@ -45,7 +45,7 @@ export default function ReviewProfile(props: TProps) {
             width={300}
             height={300}
             placeholder="blur"
-            blurDataURL="/assert/images/image-loading.png"
+            blurDataURL="/assert/images/image-loading.gif"
           />
         ) : (
           <ImageIcon

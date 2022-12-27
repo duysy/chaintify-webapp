@@ -93,7 +93,7 @@ export default function AlbumView(props: Props) {
                 aspectRatio: "1 / 1",
               }}
               placeholder="blur"
-              blurDataURL="/assert/images/image-loading.png"
+              blurDataURL="/assert/images/image-loading.gif"
             />
             <Typography
               variant="h5"

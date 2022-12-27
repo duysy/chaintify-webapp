@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { list as listSongPublic } from "../../apis/public/models/song/get_song";
 import MusicList from "../../components/MusicList";
+import Wrap from "../wrap";
 import config from "../../config";
-export default function NewSong() {
+export default function NewSongView() {
   const [songs, setSongs] = useState([]);
   useQuery(
     [""],
@@ -32,8 +33,8 @@ export default function NewSong() {
     }
   );
   return (
-    <div>
+    <Wrap>
       <MusicList list={songs} />
-    </div>
+    </Wrap>
   );
 }

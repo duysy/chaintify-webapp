@@ -18,7 +18,7 @@ const fakeData = [
     cover: "https://picsum.photos/500/501",
   },
 ];
-export default function Artist() {
+export default function ArtistView() {
   const [artists, setArtists] = useState<TBoxArtistList[]>([]);
   const queryArtist = useQuery(
     ["listArtistPublic_0_1000_0"],

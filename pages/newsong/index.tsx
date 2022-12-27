@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import NewSong from "../../views/newsong";
-import Wrap from "../../views/wrap";
+import NewSongView from "../../views/NewSong";
 export default function NewSongPage() {
-  return (
-    <Wrap>
-      <NewSong />
-    </Wrap>
-  );
+  return <NewSongView />;
 }

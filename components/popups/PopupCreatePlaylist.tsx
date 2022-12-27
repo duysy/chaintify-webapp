@@ -32,7 +32,7 @@ export default function PopupCreatePlaylist(props: Props) {
         alert("Success");
         // console.log("createPlayList", data);
         handleClose();
-        router.push(`/playlist/${data.id}`);
+        // router.push(`/playlist/${data.id}`);
         queryClient.invalidateQueries(["listPlaylistPrivate_0_5_0"]);
       } else {
         alert("Fail");

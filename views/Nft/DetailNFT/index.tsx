@@ -18,7 +18,7 @@ import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
 };
-export default function DetailNFT(props: Props) {
+export default function DetailNFTView(props: Props) {
   const id = props.id;
   const [open, setOpen] = useState(false);
   const { setListMusicPlayer, play, pause, isPlay } = useMusicPlayer();
@@ -100,7 +100,7 @@ export default function DetailNFT(props: Props) {
                 aspectRatio: "1 / 1",
               }}
               placeholder="blur"
-              blurDataURL="/assert/images/image-loading.png"
+              blurDataURL="/assert/images/image-loading.gif"
             />
             <Typography
               variant="h5"

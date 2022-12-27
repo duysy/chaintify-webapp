@@ -1,6 +1,6 @@
 import React from "react";
-import Login from "../../views/Login";
+import LoginView from "../../views/Login";
 
 export default function index() {
-  return <Login/>;
+  return <LoginView/>;
 }

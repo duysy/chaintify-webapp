@@ -1,5 +1,5 @@
 import React from "react";
-import MyMusic from "../../views/MyMusic";
+import MyMusicView from "../../views/MyMusic";
 export default function index() {
-  return <MyMusic />;
+  return <MyMusicView />;
 }

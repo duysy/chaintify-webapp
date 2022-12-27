@@ -112,7 +112,7 @@ export default function Player(props: TProps) {
   useEffect(() => {
     if (!audio) return;
     audio.volume = percentVolume / 100;
-    console.log("volume : ", audio.volume);
+    // console.log("volume : ", audio.volume);
   }, [percentVolume]);
 
   // useEffect(() => {
@@ -205,7 +205,7 @@ export default function Player(props: TProps) {
           aria-label="Volume"
           valueLabelDisplay="auto"
           onChange={(e: any) => {
-            console.log(e.target.value);
+            // console.log(e.target.value);
             const percentVolume_ = e.target.value;
             setPercentVolume(percentVolume_);
           }}

@@ -64,7 +64,7 @@ export default function PlayListView(props: Props) {
         } as TMusicList;
       });
 
-      console.log(songs_);
+      // console.log(songs_);
       setSongs(songs_);
     };
     initSongs();
@@ -93,7 +93,7 @@ export default function PlayListView(props: Props) {
                   aspectRatio: "1 / 1",
                 }}
                 placeholder="blur"
-                blurDataURL="/assert/images/image-loading.png"
+                blurDataURL="/assert/images/image-loading.gif"
               />
             ) : (
               <ImageIcon
