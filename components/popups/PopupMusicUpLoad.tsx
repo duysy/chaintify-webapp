@@ -201,7 +201,7 @@ export default function PopupMusicUpLoad(props: Props) {
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
             {pathSong && (
-              <audio controls ref={refAudio} src={`${config.IMAGE_URL}${pathSong}`}>
+              <audio controls ref={refAudio} src={`${config.MUSIC_URL}${pathSong}`}>
                 <source src="" type="audio/mp3" />
               </audio>
             )}
