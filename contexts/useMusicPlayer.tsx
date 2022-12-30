@@ -1,7 +1,6 @@
 import { createContext, ReactChild, useContext, useState, createRef, useEffect, useRef, RefObject } from "react";
 export type MusicPlayerContextValue = {
   playerRef: any;
-  setPlayerRef: any;
   hidden: any;
   setHidden: any;
   onPlay: () => void;
@@ -15,7 +14,6 @@ export type MusicPlayerContextValue = {
   isPlay: any;
   listSongMusicPlayer: any;
   setListSongMusicPlayer: any;
-  playListRef: any;
   setListMusicPlayer: any;
 };
 export const MusicPlayer = createContext<MusicPlayerContextValue>({} as MusicPlayerContextValue);
@@ -35,15 +33,11 @@ const fakeSongs = [
   },
 ];
 const MusicPlayerContextProvider = ({ children }: Props) => {
-  const [playerRef, setPlayerRef] = useState<React.Ref<any> | null>(null);
   const [hidden, setHidden] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
   const [indexSongPlaylist, setIndexSongPlaylist] = useState(0);
   const [listSongMusicPlayer, setListSongMusicPlayer] = useState([]);
-  const playListRef: any = useRef({
-    index: 0,
-    list: [],
-  });
+  const playerRef: any = useRef();
   const onPlay = () => {
     // console.log("onPlay");
     setIsPlay(true);
@@ -55,8 +49,8 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
   const onEnded = () => {
     // console.log("onEnded");
     onClickNext();
+    console.log(listSongMusicPlayer)
   };
-
   const setListMusicPlayer = (listSongMusicPlayer_: any) => {
     if (listSongMusicPlayer_.length <= 0) return;
     // console.log(listSongMusicPlayer_);
@@ -82,14 +76,6 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     // console.log("onClickPrevious : ", indexSongPlaylist_, listSongMusicPlayer);
     setIndexSongPlaylist(indexSongPlaylist_);
   };
-  // const play = () => {
-  //   if (listSongMusicPlayer.length === 0) return;
-  //   playerRef?.current?.audio?.current?.play();
-  // };
-  // const pause = () => {
-  //   if (listSongMusicPlayer.length === 0) return;
-  //   playerRef?.current?.audio?.current?.pause();
-  // };
 
   const play = () => {
     if (listSongMusicPlayer.length === 0) return;
@@ -121,7 +107,6 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     <MusicPlayer.Provider
       value={{
         playerRef,
-        setPlayerRef,
         hidden,
         setHidden,
         onPlay,
@@ -135,7 +120,6 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
         indexSongPlaylist,
         setListSongMusicPlayer,
         listSongMusicPlayer,
-        playListRef,
         setListMusicPlayer,
       }}
     >

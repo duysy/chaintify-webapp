@@ -16,9 +16,7 @@ type TProps = {
 };
 export default function Player(props: TProps) {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-
   const [toggle, setToggle] = useState<Boolean>(false);
-  const [autoPlay, setAutoPlay] = useState<Boolean | null>(props.autoPlay);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [percentVolume, setPercentVolume] = useState(50);
@@ -36,20 +34,20 @@ export default function Player(props: TProps) {
 
   const handelClickNext = props.onClickNext;
   const handelClickPrevious = props.onClickPrevious;
-  const onPlay = (event: any) => {
+  const onPlay = () => {
     if (props.onPlay) {
       props.onPlay();
     }
     setToggle(true);
   };
-  const onPause = (event: any) => {
+  const onPause = () => {
     if (props.onPause) {
       props.onPause();
     }
     setToggle(false);
   };
 
-  const onEnded = (event: any) => {
+  const onEnded = () => {
     if (props.onEnded) {
       props.onEnded();
     }
@@ -62,7 +60,7 @@ export default function Player(props: TProps) {
     setDuration(duration_);
   };
 
-  const onTimeupdate = (event: any) => {
+  const onTimeupdate = () => {
     if (!audio) return;
     const currentTime_ = audio.currentTime;
     const duration_ = audio.duration;
@@ -75,20 +73,20 @@ export default function Player(props: TProps) {
     // console.log("duration : ", duration);
     // console.log("percent : ", percent_);
   };
-  const onPlaying = (event: any) => {
+  const onPlaying = () => {
     // console.log("onPlaying");
     setToggle(true);
     updateDuration();
   };
 
-  const onLoadstart = (event: any) => {
+  const onLoadstart = () => {
     // console.log("onLoadstart");
     setTimeout(() => {
       updateDuration();
     }, 1000);
     // setToggle(false);
   };
-  const onSeeked = (event: any) => {
+  const onSeeked = () => {
     // console.log("seeked");
     updateDuration();
   };
@@ -102,13 +100,19 @@ export default function Player(props: TProps) {
   };
 
   useEffect(() => {
-    props.audioRefPlayer.current = new Audio();
+    if (!props.audioRefPlayer) {
+      setAudio(new Audio());
+      return;
+    }
+    if (!props.audioRefPlayer.current) {
+      props.audioRefPlayer.current = new Audio();
+    }
     setAudio(props.audioRefPlayer.current);
-  }, []);
+  }, [props.audioRefPlayer.current]);
 
   useEffect(() => {
     if (!audio) return;
-    audio.autoplay = autoPlay as boolean;
+    audio.autoplay = props.autoPlay as boolean;
   }, [audio]);
 
   useEffect(() => {
@@ -121,6 +125,13 @@ export default function Player(props: TProps) {
     audio.volume = percentVolume / 100;
     // console.log("volume : ", audio.volume);
   }, [percentVolume]);
+
+  useEffect(() => {
+    if (!audio) return;
+    updateDuration();
+    if (audio.paused === true) setToggle(false);
+    if (audio.paused === false) setToggle(true);
+  }, [audio]);
 
   useEffect(() => {
     if (!audio) return;
@@ -140,7 +151,7 @@ export default function Player(props: TProps) {
       audio.removeEventListener("pause", onPause);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [audio]);
+  }, [audio, currentTime]);
 
   return (
     <Box
