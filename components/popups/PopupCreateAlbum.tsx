@@ -10,6 +10,12 @@ import config from "../../config";
 import FileUpload from "../../components/FileUpload";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { useAuth } from "../../contexts/useAuth";
+
+import { Controller, useForm } from "react-hook-form";
+
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 const style = {
   width: "500px",
   height: "auto",
@@ -26,19 +32,30 @@ export default function PopupCreateAlbum(props: Props) {
   const router = useRouter();
 
   const [artists, setArtists] = useState([]);
-  const [createSong, setCreateSong] = useState<TCreateAlbum | {}>({});
   const [artistsPicker, setArtistsPicker] = useState<any[]>([]);
-  const [pathImage, setPathImage] = useState(null);
-  const [isPublic, setIsPublic] = useState(true);
-  
+  const [pathImage, setPathImage] = useState("");
+
   const queryClient = useQueryClient();
 
   const handleClose = () => props.setOpen(false);
-  const handleTextFieldNameChange = (event: any) => {
-    const name = event.target.value;
-    const createSong_ = { ...createSong, ...{ name: name } };
-    setCreateSong(createSong_);
-  };
+
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    artist: yup.array().required(),
+    cover: yup.string().required(),
+    description: yup.string().min(20),
+    isPublic: yup.boolean(),
+  });
+
+  const {
+    control,
+    reset,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   const handleAutoCompleteArtistChange = (event: any, value: any) => {
     if (!value) return;
@@ -60,48 +77,19 @@ export default function PopupCreateAlbum(props: Props) {
     setArtistsPicker(uniqueData);
   };
 
-  useEffect(() => {
-    const createSong_ = { ...createSong, ...{ cover: pathImage } };
-    setCreateSong(createSong_);
-  }, [pathImage]);
-  const handleTextFieldDescriptionChange = (event: any) => {
-    const description = event.target.value;
-    const createSong_ = { ...createSong, ...{ description: description } };
-    setCreateSong(createSong_);
-  };
-
   const mutationSubmit = useMutation((data: any) => createAlbumPrivate(data), {
     onSuccess: (data) => {
       if (data) {
         // console.log("createAlbum", data);
         handleClose();
         // router.push(`/album/${data.id}`);
+        queryClient.invalidateQueries(["listAlbumPrivate_0_1000_0"]);
         queryClient.invalidateQueries(["listAlbumPrivate_0_5_0"]);
       } else {
         alert("Fail");
       }
     },
   });
-
-  const handleSubmit = async () => {
-    const createSong_ = { ...createSong, ...{ isPublic: isPublic } };
-    // console.log(createSong_)
-    mutationSubmit.mutate(createSong_);
-  };
-
-  const handelCheckBoxIsPrivateChange = (event: any) => {
-    const isPublic_ = event.target.checked;
-    // console.log(isPublic_);
-    setIsPublic(isPublic_);
-  };
-  useEffect(() => {
-    const artistIds_ = artistsPicker.map((item: any) => {
-      return item.id;
-    });
-    const createSong_ = { ...createSong, ...{ artist: artistIds_ } };
-    setCreateSong(createSong_);
-  }, [artistsPicker]);
-
   const queryArtist = useQuery(
     ["listArtistPublic_0_1000_0"],
     async () => {
@@ -120,6 +108,22 @@ export default function PopupCreateAlbum(props: Props) {
       enabled: !!isLogin,
     }
   );
+
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    mutationSubmit.mutate(data);
+  };
+
+  useEffect(() => {
+    setValue("cover", pathImage);
+  }, [pathImage]);
+
+  useEffect(() => {
+    const artistIds_ = artistsPicker.map((item: any) => {
+      return item.id;
+    });
+    if (artistIds_.length > 0) setValue("artist", artistIds_);
+  }, [artistsPicker]);
 
   return (
     <Dialog onClose={handleClose} open={props.open} sx={{ zIndex: 2000 }} keepMounted={false}>
@@ -154,7 +158,17 @@ export default function PopupCreateAlbum(props: Props) {
             color: "text.primary",
           }}
         >
-          <TextField label="Name" variant="standard" onChange={handleTextFieldNameChange} />
+          <Controller
+            name={"name"}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Box sx={{ width: "100%" }}>
+                <TextField sx={{ width: "100%" }} label="Name" variant="standard" onChange={onChange} value={value} />
+                <Typography color="red">{errors.name?.message as any}</Typography>
+              </Box>
+            )}
+          />
+
           <Box>
             {artistsPicker &&
               artistsPicker.map((item) => {
@@ -183,6 +197,7 @@ export default function PopupCreateAlbum(props: Props) {
                 renderInput={(params) => <TextField {...params} label="Artist" variant="standard" />}
               />
             )}
+            <Typography color="red">{errors.artist?.message as any}</Typography>
           </Box>
 
           <Box
@@ -192,24 +207,54 @@ export default function PopupCreateAlbum(props: Props) {
             justifyContent={"space-around"}
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
-            {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.IMAGE_URL}${pathImage}`} />}
+            {pathImage && (
+              <Image
+                width={200}
+                height={200}
+                alt={"image pathImage"}
+                style={{
+                  objectFit: "cover",
+                }}
+                src={`${config.IMAGE_URL}${pathImage}`}
+              />
+            )}
             <br />
             <FileUpload setPath={setPathImage} accept=".png, .jpg, .jpeg" title={"Pick a image"} />
+            <Typography color="red">{errors.cover?.message as any}</Typography>
           </Box>
 
-          <TextareaAutosize
-            onChange={handleTextFieldDescriptionChange}
-            aria-label="empty textarea"
-            placeholder="Description"
-            style={{ width: "100%", height: "10rem" }}
+          <Controller
+            name={"description"}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Box sx={{ width: "100%" }}>
+                <TextareaAutosize
+                  onChange={onChange}
+                  value={value}
+                  aria-label="empty textarea"
+                  placeholder="Description"
+                  style={{ width: "100%", height: "10rem" }}
+                />
+                <Typography color="red">{errors.description?.message as any}</Typography>
+              </Box>
+            )}
           />
-          <Stack direction="row">
-            <Checkbox value={isPublic} defaultChecked={true} onChange={handelCheckBoxIsPrivateChange} />
-            <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
-              Mọi người có thể truy cập album này
-            </Typography>
-          </Stack>
-          <Button type="button" onClick={handleSubmit}>
+
+          <Box>
+            <Stack direction="row">
+              <Controller
+                name={"isPublic"}
+                control={control}
+                render={({ field: { onChange, value } }) => <Checkbox value={value} defaultChecked onChange={onChange} />}
+              />
+              <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
+                Mọi người có thể truy cập album này
+              </Typography>
+            </Stack>
+            <Typography color="red">{errors.isPublic?.message as any}</Typography>
+          </Box>
+
+          <Button type="button" onClick={handleSubmit(onSubmit)}>
             Submit
           </Button>
         </Stack>

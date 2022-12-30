@@ -49,16 +49,6 @@ export default function SideBar() {
       href: "/nft/collection",
       login: false,
     },
-    {
-      iconElement: <AirlineStops />,
-      title: "Nhạc mới",
-      href: "/newSong",
-    },
-    {
-      iconElement: <Bookmark />,
-      title: "Theo Dõi",
-      href: "/artist",
-    },
   ];
   const ListLink = (props: any) => {
     return (
@@ -82,6 +72,7 @@ export default function SideBar() {
                 "&:hover": {
                   bgcolor: "background.paper",
                   borderLeft: "2px solid #E8AC24",
+                  opacity: 1,
                 },
               }}
               onClick={() => {
@@ -118,32 +109,34 @@ export default function SideBar() {
       display="flex"
       flexDirection="column"
       justifyContent="space-around"
+      alignItems="center"
       sx={{
-        bgcolor: "background.default",
-        borderRadius: "20px",
+        bgcolor: "background.paper",
+        borderRadius: "5px",
         height: "100%",
         padding: "1rem 0",
       }}
     >
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 3, width: "100%" }}>
         <ListLink list={listMenuTop} />
       </Box>
-      <hr
-        style={{
-          margin: "1rem",
+      <Box
+        sx={{
+          margin: "1rem 0",
+          height: "1px",
+          width: "80%",
+          bgcolor: "text.primary",
         }}
       />
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 3, width: "100%" }}>
         <ListLink list={listMenuBottom} />
       </Box>
-
       <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
-        sx={{ height: "3rem", width: "100%" }}
+        sx={{ height: "3rem", width: "100%", flexGrow: 1 }}
         onClick={() => {
-          // console.log("Create Playlist");
           setOpen(true);
         }}
       >
@@ -169,9 +162,7 @@ export default function SideBar() {
           </>
         </Button>
       </Box>
-      <>
-        <PopupCreatePlaylist open={open} setOpen={setOpen} />
-      </>
+      <PopupCreatePlaylist open={open} setOpen={setOpen} />
     </Box>
   );
 }

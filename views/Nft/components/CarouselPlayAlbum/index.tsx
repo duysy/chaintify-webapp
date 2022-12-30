@@ -20,7 +20,7 @@ export default function CarouselPlayAlbum(props: TProps) {
 
   const MainContent = () => {
     return (
-      <Box display="flex" flexWrap="wrap">
+      <Box display="flex" flexWrap="wrap" alignItems="flex-start">
         {list.map((item: any, index: any) => {
           return (
             <Box
@@ -31,7 +31,6 @@ export default function CarouselPlayAlbum(props: TProps) {
               alignItems="center"
               sx={{
                 width: 150,
-                height: 200,
                 margin: "0.5rem 2rem 0 0",
               }}
               onClick={(event: any) => {

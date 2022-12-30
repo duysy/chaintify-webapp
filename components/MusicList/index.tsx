@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./MusicList.module.css";
 
-import { Favorite, MoreVert } from "@mui/icons-material";
+import { FavoriteBorder } from "@mui/icons-material";
 import { Stack, Typography, Checkbox, Table, TableCell, TableBody, TableRow, TableHead, TableContainer, Button } from "@mui/material";
 
 import Image from "next/image";
@@ -214,7 +214,7 @@ export default function MusicList(props: TProps) {
                         style={{
                           borderRadius: "8px",
                           border: "none",
-                          objectFit: "cover"
+                          objectFit: "cover",
                         }}
                       />
                       <Stack direction="column" justifyContent="start">
@@ -250,7 +250,7 @@ export default function MusicList(props: TProps) {
                     {row.time ? row.time : "time"}
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
-                    <Favorite />
+                    <FavoriteBorder />
                   </TableCell>
                 </TableRow>
               ))}

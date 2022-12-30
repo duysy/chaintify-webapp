@@ -73,30 +73,7 @@ export default function ArtistView(props: TProps) {
           >
             {artist?.description}
           </Typography>
-          <Stack direction="row" spacing={5}>
-            <Button
-              sx={{
-                background: "rgba(255, 198, 27, 0.85)",
-                border: "1px solid #FFFFFF",
-                borderRadius: " 25px",
-                color: "text.primary",
-                padding: "0 10px",
-              }}
-            >
-              PHÁT NHẠC
-            </Button>
-            <Typography
-              variant="h6"
-              sx={{
-                border: "1px solid #FFFFFF",
-                borderRadius: " 25px",
-                color: "text.primary",
-                padding: "0 10px",
-              }}
-            >
-              Đã quan tâm : 2000
-            </Typography>
-          </Stack>
+       
         </Box>
         <Box
           display="flex"

@@ -29,8 +29,8 @@ export default function CarouselBoxCircle(props: TProps) {
   };
   const MainContent: any = () => {
     return (
-      <Stack direction="row" spacing={3}>
-        {list.map((item: any, index: any) => {
+      <Stack direction="row" spacing={3} alignItems="flex-start">
+        {list.map((item: TCarouselBoxCircle, index: any) => {
           return (
             <Box
               key={index}
@@ -41,7 +41,6 @@ export default function CarouselBoxCircle(props: TProps) {
               alignItems="center"
               sx={{
                 width: 150,
-                height: 200,
               }}
               onClick={() => {
                 handelOnClick(item.clickHrefTo);

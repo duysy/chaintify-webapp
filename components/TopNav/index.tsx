@@ -3,7 +3,7 @@ import styles from "./TopNav.module.css";
 
 import { useState } from "react";
 import { Grid, Box, TextField, ClickAwayListener, Stack, Button, Typography } from "@mui/material";
-import { NavigateBefore, NavigateNext, CloudUpload, Search, Settings, Person, DarkMode, LightMode } from "@mui/icons-material";
+import { NavigateBefore, NavigateNext, CloudUpload, Search, Lyrics, Person, DarkMode, LightMode } from "@mui/icons-material";
 import PopupMusicUpLoad from "../popups/PopupMusicUpLoad";
 import { useThemeContext } from "../../contexts/useTheme";
 import { useRouter } from "next/router";
@@ -190,13 +190,13 @@ export default function TopNav() {
               {mode == "dark" ? (
                 <DarkMode
                   sx={{
-                    color: "text.primary",
+                    color: "text.secondary",
                   }}
                 />
               ) : (
                 <LightMode
                   sx={{
-                    color: "text.primary",
+                    color: "text.secondary",
                   }}
                 />
               )}
@@ -205,14 +205,14 @@ export default function TopNav() {
             <Box className={styles.circle} sx={{ bgcolor: "background.default" }} onClick={handelUploadClick}>
               <CloudUpload
                 sx={{
-                  color: "text.primary",
+                  color: "text.secondary",
                 }}
               />
             </Box>
             <Box className={styles.circle} sx={{ bgcolor: "background.default" }}>
-              <Settings
+              <Lyrics
                 sx={{
-                  color: "text.primary",
+                  color: "text.secondary",
                 }}
                 onClick={handelIconSettingClick}
               />
@@ -221,12 +221,12 @@ export default function TopNav() {
               <Box className={styles.circle} sx={{ bgcolor: "background.default", position: "relative" }}>
                 <Person
                   sx={{
-                    color: "text.primary",
+                    color: "text.secondary",
                   }}
                   onClick={() => setShowProfileCard(true)}
                 />
                 {showProfileCard && (
-                  <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "text.primary" }}>
+                  <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "background.paper" }}>
                     <WalletConnect />
                   </Box>
                 )}

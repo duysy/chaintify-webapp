@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styles from "./AudioPlayer.module.css";
-import { Grid, Box, Typography, Slider } from "@mui/material";
-import { Shuffle, SkipPrevious, Pause, PlayArrow, SkipNext, SettingsBackupRestore, VolumeUp } from "@mui/icons-material";
+import { Box, Typography, Slider } from "@mui/material";
+import { Shuffle, SkipPrevious, PauseCircle, PlayCircle, SkipNext, SettingsBackupRestore, VolumeUp } from "@mui/icons-material";
 
 type TProps = {
   onPlay: () => void | null;
@@ -162,7 +162,7 @@ export default function Player(props: TProps) {
           <Shuffle sx={{ color: "text.primary" }} />
           <SkipPrevious sx={{ color: "text.primary" }} onClick={handelClickPrevious} />
           {toggle ? (
-            <Pause
+            <PauseCircle
               onClick={handelPause}
               sx={{
                 fontSize: "3rem",
@@ -170,7 +170,7 @@ export default function Player(props: TProps) {
               }}
             />
           ) : (
-            <PlayArrow
+            <PlayCircle
               onClick={handelPlay}
               sx={{
                 fontSize: "3rem",

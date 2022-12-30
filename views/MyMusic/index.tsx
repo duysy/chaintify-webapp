@@ -133,6 +133,7 @@ export default function MyMusicView() {
           variant="h3"
           sx={{
             color: "text.primary",
+            fontWeight:"1000"
           }}
         >
           Thư viện

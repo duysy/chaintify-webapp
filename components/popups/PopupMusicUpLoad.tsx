@@ -9,6 +9,11 @@ import { list as listAlbumPrivate } from "../../apis/private/models/album/get_al
 import { list as listArtistPublic } from "../../apis/public/models/artist/get_artist";
 import { create as createSongApi, TCreateSong } from "../../apis/private/models/song/post_song";
 import { useAuth } from "../../contexts/useAuth";
+import { Controller, useForm } from "react-hook-form";
+
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 const style = {
   width: "500px",
   height: "auto",
@@ -25,12 +30,30 @@ export default function PopupMusicUpLoad(props: Props) {
 
   const [albums, setAlbums] = useState([]);
   const [artists, setArtists] = useState([]);
-  const [createSong, setCreateSong] = useState<TCreateSong | {}>({});
-  const [pathSong, setPathSong] = useState(null);
-  const [pathImage, setPathImage] = useState(null);
+  const [pathSong, setPathSong] = useState("");
+  const [pathImage, setPathImage] = useState("");
   const refAudio: any = useRef();
   const queryClient = useQueryClient();
-  
+
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    album: yup.number().required(),
+    artist: yup.array().required(),
+    path: yup.string().required(),
+    cover: yup.string().required(),
+    lyrics: yup.string().min(20),
+  });
+
+  const {
+    control,
+    reset,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const queryAlbum = useQuery(
     ["listAlbumPrivate_0_1000_0"],
     async () => {
@@ -72,6 +95,7 @@ export default function PopupMusicUpLoad(props: Props) {
         alert("Up load success new song");
         handleClosePopUp();
         queryClient.invalidateQueries(["listSong_1_1000_0"]);
+        queryClient.invalidateQueries(["detailAlbumPublic"]);
       } else {
         alert("Fail");
       }
@@ -79,51 +103,33 @@ export default function PopupMusicUpLoad(props: Props) {
   });
 
   const handleClosePopUp = () => props.setOpen(false);
-  const handleTextFieldNameChange = (event: any) => {
-    const name = event.target.value;
-    const createSong_ = { ...createSong, ...{ name: name } };
-    setCreateSong(createSong_);
-  };
-
   const handleAutoCompleteAlbumChange = (event: any, value: any) => {
     if (!value) return;
     const album: number = value.id;
-    const createSong_ = { ...createSong, ...{ album: album } };
-    setCreateSong(createSong_);
+    setValue("album", album);
   };
   const handleAutoCompleteArtistChange = (event: any, value: any) => {
     if (!value) return;
     const artist: number = value.id;
-
-    const createSong_ = { ...createSong, ...{ artist: [artist] } };
-    setCreateSong(createSong_);
+    setValue("artist", [artist]);
   };
 
   useEffect(() => {
-    const createSong_ = { ...createSong, ...{ path: pathSong } };
-    setCreateSong(createSong_);
+    setValue("path", pathSong);
   }, [pathSong]);
 
   useEffect(() => {
-    const createSong_ = { ...createSong, ...{ cover: pathImage } };
-    setCreateSong(createSong_);
+    setValue("cover", pathImage);
   }, [pathImage]);
 
-  const handleTextFieldLyricsChange = (event: any) => {
-    const lyrics = event.target.value;
-    const createSong_ = { ...createSong, ...{ lyrics: lyrics } };
-    setCreateSong(createSong_);
-  };
-
-  const handleSubmit = async () => {
+  const onSubmit = async (data: any) => {
     const addMore = {
       length: refAudio?.current?.duration | 0,
       track: 1,
       disc: 1,
       mtime: 1,
     };
-    const createSong_ = { ...createSong, ...addMore };
-    // console.log(createSong_);
+    const createSong_ = { ...data, ...addMore };
     mutationSubmit.mutate(createSong_);
   };
 
@@ -160,39 +166,56 @@ export default function PopupMusicUpLoad(props: Props) {
             color: "text.primary",
           }}
         >
-          <TextField label="Name" variant="standard" onChange={handleTextFieldNameChange} />
-          {queryAlbum.isSuccess ? (
-            <Autocomplete
-              disablePortal
-              onChange={handleAutoCompleteAlbumChange}
-              options={albums.map((option: any) => ({
-                label: option.name,
-                id: option.id,
-              }))}
-              renderInput={(params: any) => <TextField {...params} label="Album" variant="standard" />}
-            />
-          ) : (
-            <>
-              <CircularProgress />
-              <Typography>Loading album</Typography>
-            </>
-          )}
-          {queryArtist.isSuccess ? (
-            <Autocomplete
-              disablePortal
-              onChange={handleAutoCompleteArtistChange}
-              options={artists.map((option: any) => ({
-                label: option.name,
-                id: option.id,
-              }))}
-              renderInput={(params: any) => <TextField {...params} label="Artist" variant="standard" />}
-            />
-          ) : (
-            <>
-              <CircularProgress />
-              <Typography>Loading artist</Typography>
-            </>
-          )}
+          <Controller
+            name={"name"}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Box sx={{ width: "100%" }}>
+                <TextField sx={{ width: "100%" }} label="Name" variant="standard" onChange={onChange} value={value} />
+                <Typography color="red">{errors.name?.message as any}</Typography>
+              </Box>
+            )}
+          />
+
+          <Box>
+            {queryAlbum.isSuccess ? (
+              <Autocomplete
+                disablePortal
+                onChange={handleAutoCompleteAlbumChange}
+                options={albums.map((option: any) => ({
+                  label: option.name,
+                  id: option.id,
+                }))}
+                renderInput={(params: any) => <TextField {...params} label="Album" variant="standard" />}
+              />
+            ) : (
+              <>
+                <CircularProgress />
+                <Typography>Loading album</Typography>
+              </>
+            )}
+            <Typography color="red">{errors.album?.message as any}</Typography>
+          </Box>
+
+          <Box>
+            {queryArtist.isSuccess ? (
+              <Autocomplete
+                disablePortal
+                onChange={handleAutoCompleteArtistChange}
+                options={artists.map((option: any) => ({
+                  label: option.name,
+                  id: option.id,
+                }))}
+                renderInput={(params: any) => <TextField {...params} label="Artist" variant="standard" />}
+              />
+            ) : (
+              <>
+                <CircularProgress />
+                <Typography>Loading artist</Typography>
+              </>
+            )}
+            <Typography color="red">{errors.artist?.message as any}</Typography>
+          </Box>
           <Box
             display={"flex"}
             flexDirection="column"
@@ -207,6 +230,7 @@ export default function PopupMusicUpLoad(props: Props) {
             )}
             <br />
             <FileUpload setPath={setPathSong} accept=".mp3" title={"Pick a music"} />
+            <Typography color="red">{errors.path?.message as any}</Typography>
           </Box>
 
           <Box
@@ -219,15 +243,27 @@ export default function PopupMusicUpLoad(props: Props) {
             {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.IMAGE_URL}${pathImage}`} />}
             <br />
             <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover"} />
+            <Typography color="red">{errors.cover?.message as any}</Typography>
           </Box>
 
-          <TextareaAutosize
-            onChange={handleTextFieldLyricsChange}
-            aria-label="empty textarea"
-            placeholder="Lyrics"
-            style={{ width: "100%", height: "10rem" }}
-          />
-          <Button type="button" onClick={handleSubmit}>
+          <Box>
+            <Controller
+              name={"lyrics"}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <TextareaAutosize
+                  onChange={onChange}
+                  value={value}
+                  aria-label="empty textarea"
+                  placeholder="Lyrics"
+                  style={{ width: "100%", height: "10rem" }}
+                />
+              )}
+            />
+            <Typography color="red">{errors.lyrics?.message as any}</Typography>
+          </Box>
+
+          <Button type="button" onClick={handleSubmit(onSubmit)}>
             Submit
           </Button>
         </Stack>

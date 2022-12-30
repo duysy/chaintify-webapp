@@ -14,7 +14,7 @@ export default function NftView() {
 
   const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const queryAlbum = useQuery(
-    ["listAlbumPrivate"],
+    ["listAlbumPrivate_0_1000_0"],
     async () => {
       return await listAlbumPrivate({ depth: 0, limit: 1000, offset: 0 });
     },

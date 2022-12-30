@@ -28,7 +28,7 @@ const ThemeContextProvider = ({ children }: Props) => {
         },
         text: {
           primary: "#FFFFFF",
-          secondary: "FFFFFF",
+          secondary: "#FEFEFE",
         },
       },
     },
@@ -46,7 +46,7 @@ const ThemeContextProvider = ({ children }: Props) => {
         },
         text: {
           primary: "#1A1E1F",
-          secondary: "1A1E1F",
+          secondary: "#333333",
         },
       },
     },

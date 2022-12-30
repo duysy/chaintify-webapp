@@ -69,7 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <MusicPlayerContextProvider>
                   <>
                     <Component {...pageProps} />
-                    <MusicPlayer />
+                    {/* <MusicPlayer /> */}
                   </>
                 </MusicPlayerContextProvider>
               </Hydrate>

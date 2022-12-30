@@ -37,7 +37,7 @@ export default function PlayListView(props: Props) {
     // console.log("pause");
   };
   const queryPlaylist = useQuery(
-    ["initPlaylist", id],
+    ["detailPlayListPrivate", id],
     async () => {
       if (!id) return;
       return await detailPlayListPrivate(+id, { depth: 2 });

@@ -48,7 +48,6 @@ export default function CarouselPlayAlbum(props: TProps) {
         alignItems="center"
         sx={{
           width: 150,
-          height: 200,
         }}
         onClick={handelCreateNewAlbumCard}
       >
@@ -76,8 +75,8 @@ export default function CarouselPlayAlbum(props: TProps) {
     );
   };
   return (
-    <Stack direction="row" spacing={3}>
-      {list.map((album: TCarouselPlayAlbum, index: any) => {
+    <Stack direction="row" spacing={3} alignItems="flex-start">
+      {list?.map((album: TCarouselPlayAlbum, index: any) => {
         return (
           <Box
             key={index}
@@ -87,7 +86,6 @@ export default function CarouselPlayAlbum(props: TProps) {
             alignItems="center"
             sx={{
               width: 150,
-              height: 200,
             }}
             onClick={(event) => {
               event.stopPropagation();
@@ -111,8 +109,8 @@ export default function CarouselPlayAlbum(props: TProps) {
                 {isPlay && listSongMusicPlayer[0].album == album.id ? (
                   <PauseCircle
                     sx={{
-                      fontSize: "2.5rem",
-                      color: "text.primary",
+                      fontSize: "4.5rem",
+                      color: "#ffffff",
                     }}
                     onClick={(event) => {
                       event.stopPropagation();
@@ -123,8 +121,8 @@ export default function CarouselPlayAlbum(props: TProps) {
                 ) : (
                   <PlayCircle
                     sx={{
-                      fontSize: "2.5rem",
-                      color: "text.primary",
+                      fontSize: "4.5rem",
+                      color: "#ffffff",
                     }}
                     onClick={async (event) => {
                       event.stopPropagation();

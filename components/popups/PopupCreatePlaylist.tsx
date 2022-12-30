@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Dialog, Checkbox, Typography, Button, Box, Stack } from "@mui/material";
 import { useRouter } from "next/router";
 import { create as createPlayListPrivate, TCreatePlayList } from "../../apis/private/models/playlist/post_playlist";
@@ -7,6 +7,11 @@ import Image from "next/image";
 import config from "../../config";
 import FileUpload from "../FileUpload";
 import { useMutation, useQueryClient } from "react-query";
+import { Controller, useForm } from "react-hook-form";
+
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 const style = {
   width: 500,
   height: "auto",
@@ -20,11 +25,26 @@ type Props = {
 };
 export default function PopupCreatePlaylist(props: Props) {
   const router = useRouter();
-  const [playListName, setPlayListName] = useState<string | null>(null);
-  const [playListDescription, setPlayListDescription] = useState<string | null>(null);
-  const [pathImage, setPathImage] = useState<string | null>(null);
-  const [isPublic, setIsPublic] = useState(true);
+  const [pathImage, setPathImage] = useState<string | null>("");
   const handleClose = () => props.setOpen(false);
+
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    description: yup.string().min(20),
+    cover: yup.string().required(),
+    isPublic: yup.boolean(),
+  });
+
+  const {
+    control,
+    reset,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const queryClient = useQueryClient();
   const mutationSubmit = useMutation((data: any) => createPlayListPrivate(data), {
     onSuccess: (data) => {
@@ -34,39 +54,20 @@ export default function PopupCreatePlaylist(props: Props) {
         handleClose();
         // router.push(`/playlist/${data.id}`);
         queryClient.invalidateQueries(["listPlaylistPrivate_0_5_0"]);
+        queryClient.invalidateQueries(["listPlaylistPrivate_0_1000_0"]);
       } else {
         alert("Fail");
       }
     },
   });
-  const handlePost = async () => {
-    if (!playListName || !playListDescription || !pathImage) return;
-    const dataSubmit: TCreatePlayList = {
-      name: playListName,
-      description: playListDescription,
-      cover: pathImage,
-      isPublic: isPublic,
-    };
-    mutationSubmit.mutate(dataSubmit);
-  };
-  const handleTextFieldNameChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const playListName_ = event.target.value;
-    if (!playListName_) return;
-    // console.log(playListName_);
-    setPlayListName(playListName_);
+
+  const onSubmit = async (data: any) => {
+    mutationSubmit.mutate(data);
   };
 
-  const handleTextFieldDescriptionChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const setPlayListDescription_ = event.target.value;
-    if (!setPlayListDescription_) return;
-    // console.log(setPlayListDescription_);
-    setPlayListDescription(setPlayListDescription_);
-  };
-  const handelCheckBoxIsPrivateChange = (event: any) => {
-    const isPublic_ = event.target.checked;
-    // console.log(isPublic_);
-    setIsPublic(isPublic_);
-  };
+  useEffect(() => {
+    setValue("cover", pathImage);
+  }, [pathImage]);
 
   return (
     <div>
@@ -102,8 +103,29 @@ export default function PopupCreatePlaylist(props: Props) {
             >
               Tạo playlist mới
             </Typography>
-            <TextField id="standard-basic" label="Name" variant="standard" onChange={handleTextFieldNameChange} />
-            <TextField id="standard-basic" label="Description" variant="standard" onChange={handleTextFieldDescriptionChange} />
+
+            <Controller
+              name={"name"}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Box sx={{ width: "100%" }}>
+                  <TextField sx={{ width: "100%" }} label="Name" variant="standard" onChange={onChange} value={value} />
+                  <Typography color="red">{errors.name?.message as any}</Typography>
+                </Box>
+              )}
+            />
+
+            <Controller
+              name={"description"}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Box sx={{ width: "100%" }}>
+                  <TextField sx={{ width: "100%" }} label="Description" variant="standard" onChange={onChange} value={value} />
+                  <Typography color="red">{errors.description?.message as any}</Typography>
+                </Box>
+              )}
+            />
+
             <Box
               display={"flex"}
               flexDirection="column"
@@ -111,17 +133,37 @@ export default function PopupCreatePlaylist(props: Props) {
               justifyContent={"space-around"}
               sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
             >
-              {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.IMAGE_URL}${pathImage}`} />}
+              {pathImage && (
+                <Image
+                  width={200}
+                  height={200}
+                  alt={"image pathImage"}
+                  style={{
+                    objectFit: "cover",
+                  }}
+                  src={`${config.IMAGE_URL}${pathImage}`}
+                />
+              )}
               <br />
               <FileUpload setPath={setPathImage} accept=".png, .jpeg, .jpg" title={"Pick a image"} />
+              <Typography color="red">{errors?.cover?.message as any}</Typography>
             </Box>
-            <Stack direction="row">
-              <Checkbox value={isPublic} defaultChecked={true} onChange={handelCheckBoxIsPrivateChange} />
-              <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
-                Mọi người có thể truy cập playlist này
-              </Typography>
-            </Stack>
-            <Button onClick={handlePost}>Tạo mới</Button>
+
+            <Box>
+              <Stack direction="row">
+                <Controller
+                  name={"isPublic"}
+                  control={control}
+                  render={({ field: { onChange, value } }) => <Checkbox value={value} defaultChecked onChange={onChange} />}
+                />
+                <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
+                  Mọi người có thể truy cập playlist này
+                </Typography>
+              </Stack>
+              <Typography color="red">{errors.isPublic?.message as any}</Typography>
+            </Box>
+
+            <Button onClick={handleSubmit(onSubmit)}>Tạo mới</Button>
           </Box>
         </Box>
       </Dialog>

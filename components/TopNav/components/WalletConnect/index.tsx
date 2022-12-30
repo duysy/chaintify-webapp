@@ -9,8 +9,8 @@ export default function WalletConnect() {
   if (isConnected) {
     return (
       <Box sx={{ padding: "1rem" }}>
-        <Box>{address}</Box>
-        <Box>Connected to {connector?.name}</Box>
+        <Typography color={"text.primary"}>{address}</Typography>
+        <Typography color={"text.primary"}>Connected to {connector?.name}</Typography>
         <Button onClick={() => disconnect()}>Disconnect</Button>
       </Box>
     );
