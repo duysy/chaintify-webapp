@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./MusicList.module.css";
 
 import { FavoriteBorder } from "@mui/icons-material";
-import { Stack, Typography, Checkbox, Table, TableCell, TableBody, TableRow, TableHead, TableContainer, Button } from "@mui/material";
+import { Stack, Typography, Checkbox, Table, TableCell, TableBody, TableRow, TableHead, TableContainer, Button, Box } from "@mui/material";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import PopupAddMusicToPlaylist from "../popups/PopupAddMusicToPlaylist";
-
+import { useMusicPlayer } from "../../contexts/useMusicPlayer";
 import { TMusicList } from "./types";
 type TProps = {
   list: TMusicList[] | null;
@@ -55,6 +55,7 @@ export default function MusicList(props: TProps) {
   const [allCheck, setAllCheck] = useState(false);
   const [listSong, setListSong] = useState<number[]>([]);
 
+  const { listSongMusicPlayer, indexSongPlaylist, isPlay } = useMusicPlayer();
   useEffect(() => {
     if (!list || list.length == 0) return;
     setRows(list);
@@ -92,13 +93,6 @@ export default function MusicList(props: TProps) {
     setRows(rows_);
   }, [allCheck]);
 
-  useEffect(() => {
-    if (!rows) return;
-    let rows_ = rows.map((item) => {
-      return { ...item, ...{ checkBoxStatus: allCheck } };
-    });
-    setRows(rows_);
-  }, [allCheck]);
   useEffect(() => {
     const checkOpenPlayListAdd = () => {
       if (!rows) return;
@@ -206,17 +200,32 @@ export default function MusicList(props: TProps) {
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
                     <Stack direction="row" spacing={2}>
-                      <Image
-                        src={row.cover}
-                        alt="Picture of music"
-                        width={50}
-                        height={50}
-                        style={{
-                          borderRadius: "8px",
-                          border: "none",
-                          objectFit: "cover",
-                        }}
-                      />
+                      <Box width={50} height={50} sx={{ position: "relative" }}>
+                        <Image
+                          src={row.cover}
+                          alt="Picture of music"
+                          width={50}
+                          height={50}
+                          style={{
+                            borderRadius: "8px",
+                            border: "none",
+                            objectFit: "cover",
+                          }}
+                        />
+                        {listSongMusicPlayer[indexSongPlaylist]?.id == row.id && isPlay && (
+                          <Box
+                            sx={{ position: "absolute", top: 0, left: 0, borderRadius: "8px", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                            display={"flex"}
+                            alignItems={"center"}
+                            justifyContent={"center"}
+                            width={50}
+                            height={50}
+                          >
+                            <Image src={"/assert/images/icon-playing.gif"} alt="Picture of music" width={20} height={20} />
+                          </Box>
+                        )}
+                      </Box>
+
                       <Stack direction="column" justifyContent="start">
                         <Typography
                           sx={{
@@ -247,7 +256,7 @@ export default function MusicList(props: TProps) {
                     {row.album ? row.album : "album"}
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
-                    {row.time ? row.time : "time"}
+                    {row.time ? (row?.time / 60).toFixed(2) : "time"}
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
                     <FavoriteBorder />

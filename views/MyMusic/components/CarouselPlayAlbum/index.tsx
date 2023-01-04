@@ -34,10 +34,14 @@ export default function CarouselPlayAlbum(props: TProps) {
       return {
         ...item,
         ...{ path: `${config.MUSIC_URL}${item.path}` },
+        ...{ cover: `${config.IMAGE_URL}${item.cover}` },
       };
     });
     // console.log(listSongMusicPlay_);
     setListMusicPlayer(listSongMusicPlay_);
+    setTimeout(() => {
+      play();
+    }, 100);
   };
   const BoxAdd = () => {
     return (
@@ -128,9 +132,6 @@ export default function CarouselPlayAlbum(props: TProps) {
                       event.stopPropagation();
                       // console.log("pause icon click");
                       await fetchAndSetSong(album?.id);
-                      setTimeout(() => {
-                        play();
-                      }, 1000);
                     }}
                   />
                 )}

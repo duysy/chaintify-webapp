@@ -49,11 +49,11 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
   const onEnded = () => {
     // console.log("onEnded");
     onClickNext();
-    console.log(listSongMusicPlayer)
+    console.log(listSongMusicPlayer);
   };
   const setListMusicPlayer = (listSongMusicPlayer_: any) => {
     if (listSongMusicPlayer_.length <= 0) return;
-    // console.log(listSongMusicPlayer_);
+    console.log(listSongMusicPlayer_);
     setListSongMusicPlayer(listSongMusicPlayer_);
     setIndexSongPlaylist(0);
   };

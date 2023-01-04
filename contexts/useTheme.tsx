@@ -1,4 +1,4 @@
-import { createContext, JSXElementConstructor, ReactChild, ReactElement, useContext, useState } from "react";
+import { createContext, JSXElementConstructor, ReactChild, ReactElement, useContext, useState, useEffect } from "react";
 import { ThemeProvider, createTheme, ThemeOptions } from "@mui/material/styles";
 import { deepOrange, grey } from "@mui/material/colors";
 export type ThemeContextValue = {
@@ -54,9 +54,11 @@ const ThemeContextProvider = ({ children }: Props) => {
   const autoSetMode = () => {
     if (mode === "dark") {
       setMode("light");
+      localStorage.setItem("mode", "light");
     }
     if (mode === "light") {
       setMode("dark");
+      localStorage.setItem("mode", "dark");
     }
   };
   const getMode = (mode: string) => {
@@ -67,6 +69,17 @@ const ThemeContextProvider = ({ children }: Props) => {
       return lightMode;
     }
   };
+
+  // useEffect(() => {
+  //   localStorage.setItem("mode", mode);
+  // }, [mode]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("mode")) return;
+    const mode_ = localStorage.getItem("mode");
+    console.log(mode_);
+    setMode(mode_ as TMode);
+  }, []);
   return (
     <ThemeContext.Provider
       value={{

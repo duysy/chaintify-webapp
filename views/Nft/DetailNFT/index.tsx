@@ -33,8 +33,9 @@ export default function DetailNFTView(props: Props) {
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
-    play();
-    // console.log("play");
+    setTimeout(() => {
+      play();
+    }, 100);
   };
   const handelButtonPauseClick = () => {
     pause();

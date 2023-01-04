@@ -189,7 +189,7 @@ export default function MintView(props: Props) {
 
             {isSuccess && (
               <Box>
-                Successfully minted your NFT!
+                <Typography color="text.primary">Successfully minted your NFT!</Typography>
                 <Box>
                   <Link target="_blank" href={`${config.EXPLORER}/${data?.hash}`}>
                     Explorer scan
@@ -197,7 +197,7 @@ export default function MintView(props: Props) {
                 </Box>
               </Box>
             )}
-            {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>}
+            {(isPrepareError || isError) && <Typography color="red">Error: {(prepareError || error)?.message}</Typography>}
           </form>
         </Grid>
       </Grid>

@@ -148,7 +148,7 @@ export default function PopupSendNft(props: Props) {
 
             {isSuccess && (
               <Box>
-                Successfully sended your NFT!
+                <Typography color="text.primary">Successfully sended your NFT!</Typography>
                 <Box>
                   <Link target="_blank" href={`${config.EXPLORER}/${data?.hash}`}>
                     Explorer scan
@@ -156,7 +156,7 @@ export default function PopupSendNft(props: Props) {
                 </Box>
               </Box>
             )}
-            {(isPrepareError || isError) && <nav>Error: {(prepareError || error)?.message}</nav>}
+            {(isPrepareError || isError) && <Typography color="red">Error: {(prepareError || error)?.message}</Typography>}
           </form>
         </Box>
       </Box>

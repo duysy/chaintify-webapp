@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./TopNav.module.css";
 
 import { useState } from "react";
@@ -19,6 +19,7 @@ export default function TopNav() {
   const { autoSetMode, mode } = useThemeContext();
   const [searchValue, setSearchValue] = useState<any>();
   const [focus, setFocus] = useState<any>(false);
+  const [textSearch, setTextSearch] = useState("");
   const handelUploadClick = () => {
     setOpenPopUp(true);
   };
@@ -34,6 +35,13 @@ export default function TopNav() {
   const handelIconSettingClick = () => {
     router.push("/profile");
   };
+  useEffect(() => {
+    const search_ = async () => {
+      const value = await search(textSearch);
+      setSearchValue(value);
+    };
+    search_();
+  }, [textSearch]);
   return (
     <>
       <Grid container spacing={0}>
@@ -83,15 +91,13 @@ export default function TopNav() {
                 }}
                 onChange={async (event) => {
                   const text = event.target.value;
-                  if (!text) return;
-                  const value = await search(text);
-                  setSearchValue(value);
+                  setTextSearch(text);
                 }}
                 onFocus={() => {
                   setFocus(true);
                 }}
               />
-              {focus && (
+              {focus && textSearch.length > 0 && (
                 <Box
                   sx={{
                     position: "absolute",
@@ -226,7 +232,9 @@ export default function TopNav() {
                   onClick={() => setShowProfileCard(true)}
                 />
                 {showProfileCard && (
-                  <Box sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "background.paper" }}>
+                  <Box
+                    sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "background.paper" }}
+                  >
                     <WalletConnect />
                   </Box>
                 )}

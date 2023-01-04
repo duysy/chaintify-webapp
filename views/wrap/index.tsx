@@ -2,15 +2,11 @@ import TextButtons from "../../components/TextButtons";
 import { Grid, Stack, Container, Box, Typography, Icon } from "@mui/material";
 import SideBar from "../../components/SideBar";
 import TopNav from "../../components/TopNav";
-import Slide from "../../components/Slide";
-import Image from "next/image";
-import MusicPlayerContextProvider, { useMusicPlayer } from "../../contexts/useMusicPlayer";
-import { useThemeContext } from "../../contexts/useTheme";
+import { useMusicPlayer } from "../../contexts/useMusicPlayer";
 import MusicPlay from "../../components/MusicPlayer";
-
+import Logo from "../../components/Logo";
 export default function Wrap(props: any) {
   const { hidden } = useMusicPlayer();
-  const { mode } = useThemeContext();
   const heightValue = 13;
   return (
     <Grid
@@ -24,22 +20,7 @@ export default function Wrap(props: any) {
       }}
     >
       <Grid item xs={2} sx={{ height: "10%", bgcolor: "background.default" }}>
-        <Box display="flex" alignItems="center" justifyContent="center" width="100%" height="100%">
-          {/* <Typography
-            variant="h4"
-            sx={{
-              color: "text.primary",
-              fontWeight: "1000",
-            }}
-          >
-            Chaintify
-          </Typography> */}
-          {mode == "dark" ? (
-            <img src="/assert/images/logo-dark.png" alt="logo" style={{ height: "65%" }} />
-          ) : (
-            <img src="/assert/images/logo-light.png" alt="logo" style={{ height: "65%" }} />
-          )}
-        </Box>
+        <Logo />
       </Grid>
       <Grid item xs={10} sx={{ height: "10%", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <TopNav />

@@ -56,9 +56,9 @@ export default function BoxArtistList(props: TProps) {
                 >
                   <Typography
                     sx={{
-                      color: "text.primary",
+                      color: "#ffffff",
                       fontSize: "1.2rem",
-                      textShadow: "0px 4px 4px #1A1E1F",
+                      textShadow: "5px 5px 5px #1A1E1F",
                     }}
                   >
                     {item?.name ? item?.name : "name"}

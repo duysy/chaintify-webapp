@@ -35,7 +35,7 @@ export default function NewListBoxSong(props: TProps) {
                 >
                   <Image
                     src={item.cover as string}
-                    alt="Picture of the author"
+                    alt="Picture of new song"
                     width={65}
                     height={65}
                     style={{
@@ -56,7 +56,7 @@ export default function NewListBoxSong(props: TProps) {
                         color: "text.primary",
                       }}
                     >
-                      {item?.name ? item.name : "name"}
+                      {item?.name ? item.name.substring(0, 25) : "name"} {item.name.length > 25 ? "..." : ""}
                     </Typography>
                     <Typography
                       variant="subtitle1"

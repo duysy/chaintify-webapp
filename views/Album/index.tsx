@@ -13,6 +13,7 @@ import { TMusicList } from "../../components/MusicList/types";
 import { useQuery } from "react-query";
 import config from "../../config";
 import MyLoader from "./Loading";
+import MenuMoreVert from "./components/MenuMoreVert";
 type Props = {
   id: string | string[] | undefined;
 };
@@ -26,12 +27,14 @@ export default function AlbumView(props: Props) {
       return {
         ...item,
         ...{ path: `${config.MUSIC_URL}${item.path}` },
+        ...{ cover: `${config.IMAGE_URL}${item.cover}` },
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
-    console.log(listSongMusicPlay_);
-    play();
-    
+    // console.log(listSongMusicPlay_);
+    setTimeout(() => {
+      play();
+    }, 100);
   };
   const handelButtonPauseClick = () => {
     pause();
@@ -171,11 +174,7 @@ export default function AlbumView(props: Props) {
                   bgcolor: "background.paper",
                 }}
               >
-                <MoreVert
-                  sx={{
-                    color: "text.primary",
-                  }}
-                />
+                <MenuMoreVert id={album?.id} />
               </Box>
             </Stack>
           </Box>

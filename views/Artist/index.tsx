@@ -3,22 +3,45 @@ import { Box, Typography, Stack, Button, Grid, Checkbox } from "@mui/material";
 import Image from "next/image";
 import Wrap from "../wrap";
 import SectionTitle from "../../components/SectionTitle";
-import { list as listSong } from "../../apis/public/models/song/get_song";
+import { getSongByArtist } from "../../apis/public/extends/song/get_song";
+import { getAlbumByArtist } from "../../apis/public/extends/album/get_album";
 import MusicList from "../../components/MusicList";
 import { TMusicList } from "../../components/MusicList/types";
 import { useQuery } from "react-query";
 import { detail as detailArtistPublic } from "../../apis/public/models/artist/get_artist";
 import config from "../../config";
+import CarouselPlayBasic, { TCarouselPlayBasic } from "./CarouselPlayBasic";
+import { useMusicPlayer } from "../../contexts/useMusicPlayer";
+import { PlayArrow, Pause } from "@mui/icons-material";
 type TProps = {
   id: string | string[] | undefined;
 };
+type TTab = "OVERVIEW" | "ALBUM" | "SONG";
 export default function ArtistView(props: TProps) {
   const id = props.id;
-  const [songs, setSongs] = useState<TMusicList[]>();
   const [artist, setArtist] = useState<any>({});
+  const [songs, setSongs] = useState<any[]>();
+  const [albums, setAlbums] = useState<any>({});
+  const [tab, setTab] = useState<TTab>("OVERVIEW");
+  const { setListMusicPlayer, play, pause, isPlay } = useMusicPlayer();
 
+  const handelButtonPlayClick = () => {
+    if (!songs) return;
+    const listSongMusicPlay_ = songs.map((item: any) => {
+      return {
+        ...item,
+        ...{ artist: [{ ...artist }] },
+      };
+    });
+    // console.log(songs);
+    setListMusicPlayer(listSongMusicPlay_);
+    setTimeout(() => {
+      play();
+    }, 100);
+  };
+  const handelButtonPauseClick = () => pause();
   const queryArtist = useQuery(
-    ["getArtistPrivate",id],
+    ["getArtistPrivate", id],
     async () => {
       if (!id) return;
       return await detailArtistPublic(+id, {});
@@ -31,28 +54,55 @@ export default function ArtistView(props: TProps) {
     }
   );
 
-  useEffect(() => {
-    const initSongs = async () => {
-      let songs_ = await listSong({});
-      songs_ = songs_.results;
-      songs_ = songs_.map((item: any, index: any) => {
-        return {
-          id: item.id,
-          checkBoxStatus: false,
-          name: item.name,
-          cover: `${config.IMAGE_URL}${item.cover}`,
-          artist: "African giant",
-          album: "Album",
-          time: item.length,
-          favorite: true,
-        } as TMusicList;
-      });
+  const queryAlbumArtist = useQuery(
+    ["getAlbumByArtist", id],
+    async () => {
+      if (!id) return;
+      return await getAlbumByArtist(+id);
+    },
+    {
+      onSuccess: (data: any) => {
+        if (!data) return;
+        let albums = data.map((item: any, index: any) => {
+          return {
+            name: item.name,
+            cover: `${config.IMAGE_URL}${item.cover}`,
+            clickHrefTo: `/album/${item.id}`,
+          } as TCarouselPlayBasic;
+        });
+        setAlbums(albums);
+      },
+    }
+  );
 
-      setSongs(songs_);
-      // console.log("songs", songs);
-    };
-    initSongs();
-  }, []);
+  const querySongArtist = useQuery(
+    ["getSongByArtist", id, artist],
+    async () => {
+      if (!id) return;
+      return await getSongByArtist(+id);
+    },
+    {
+      onSuccess: (data: any) => {
+        if (!data) return;
+        if (!artist) return;
+        const songs_ = data?.map((item: any, index: any) => {
+          return {
+            id: item.id,
+            checkBoxStatus: false,
+            name: item.name,
+            cover: `${config.IMAGE_URL}${item.cover}`,
+            path: `${config.MUSIC_URL}${item.path}`,
+            artist: item?.artist && item.artist.map((item: any) => item.name).join("|"),
+            album: item?.album?.name,
+            time: item.length,
+            favorite: true,
+          };
+        });
+
+        setSongs(songs_);
+      },
+    }
+  );
   return (
     <Wrap>
       <Box display="flex">
@@ -73,7 +123,6 @@ export default function ArtistView(props: TProps) {
           >
             {artist?.description}
           </Typography>
-       
         </Box>
         <Box
           display="flex"
@@ -96,12 +145,21 @@ export default function ArtistView(props: TProps) {
           />
         </Box>
       </Box>
+      <Box>
+        <Button
+          startIcon={isPlay ? <Pause /> : <PlayArrow />}
+          onClick={isPlay ? handelButtonPauseClick : handelButtonPlayClick}
+          sx={{ bgcolor: "#FFC61B", color: "text.primary", borderRadius: "25px", padding: "0.5rem 1rem" }}
+        >
+          PHÁT NHẠC
+        </Button>
+      </Box>
       <Box
         display="flex"
         alignItems="center"
         justifyContent="space-around"
         sx={{
-          background: "#33373B",
+          bgcolor: "background.paper",
           borderRadius: "20px",
           padding: "0 1rem",
           margin: "3rem 0",
@@ -109,35 +167,64 @@ export default function ArtistView(props: TProps) {
           marginLeft: "10%",
         }}
       >
-        <Typography
-          variant="h6"
+        <Button
+          onClick={() => {
+            setTab("OVERVIEW");
+          }}
           sx={{
             color: "text.primary",
           }}
         >
           TỔNG QUAN
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "text.primary",
+        </Button>
+        <Button
+          onClick={() => {
+            setTab("ALBUM");
           }}
-        >
-          BÀI HÁT
-        </Typography>
-        <Typography
-          variant="h6"
           sx={{
             color: "text.primary",
           }}
         >
           ALBUM
-        </Typography>
+        </Button>
+        <Button
+          onClick={() => {
+            setTab("SONG");
+          }}
+          sx={{
+            color: "text.primary",
+          }}
+        >
+          BÀI HÁT
+        </Button>
       </Box>
-      <Box>
-        <SectionTitle>Danh sách bài hát</SectionTitle>
-        {songs && <MusicList list={songs as TMusicList[]} />}
-      </Box>
+      {tab == "OVERVIEW" && (
+        <Box>
+          <Box>
+            <SectionTitle>Danh sách album</SectionTitle>
+            {albums && <CarouselPlayBasic list={albums as TCarouselPlayBasic[]} />}
+          </Box>
+
+          <Box>
+            <SectionTitle>Danh sách bài hát</SectionTitle>
+            {songs && <MusicList list={songs as TMusicList[]} />}
+          </Box>
+        </Box>
+      )}
+
+      {tab == "ALBUM" && (
+        <Box>
+          <SectionTitle>Danh sách album</SectionTitle>
+          {albums && <CarouselPlayBasic list={albums as TCarouselPlayBasic[]} />}
+        </Box>
+      )}
+
+      {tab == "SONG" && (
+        <Box>
+          <SectionTitle>Danh sách bài hát</SectionTitle>
+          {songs && <MusicList list={songs as TMusicList[]} />}
+        </Box>
+      )}
     </Wrap>
   );
 }

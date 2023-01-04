@@ -12,6 +12,8 @@ import { useMusicPlayer } from "../../contexts/useMusicPlayer";
 import { TMusicList } from "../../components/MusicList/types";
 import config from "../../config";
 import { useQuery } from "react-query";
+import MenuMoreVert from "./components/MenuMoreVert";
+
 import MyLoader from "./Loading";
 type Props = {
   id: string | string[] | undefined;
@@ -26,11 +28,13 @@ export default function PlayListView(props: Props) {
       return {
         ...item,
         ...{ path: `${config.MUSIC_URL}${item.path}` },
+        ...{ cover: `${config.IMAGE_URL}${item.cover}` },
       };
     });
     setListMusicPlayer(listSongMusicPlay_);
-    play();
-    // console.log("play");
+    setTimeout(() => {
+      play();
+    }, 100);
   };
   const handelButtonPauseClick = () => {
     pause();
@@ -180,11 +184,7 @@ export default function PlayListView(props: Props) {
                   bgcolor: "background.paper",
                 }}
               >
-                <MoreHoriz
-                  sx={{
-                    color: "text.primary",
-                  }}
-                />
+                <MenuMoreVert id={playlist?.id} />
               </Box>
             </Stack>
           </Box>
