@@ -11,7 +11,7 @@ export default {
   IMAGE_URL: "http://server:8000/music/api/public/upload/?path=",
   MUSIC_URL: "http://103.39.125.95:8000/media/",
 
-  CHAINTIFY_CONTRACT: "0xAC9676B8dacAfe02986B35d2D045724C7D1B9F93",
+  CHAINTIFY_CONTRACT: "0xab091A35E9bf7D997a1DF8961cE76A1edf4a4530",
   ALCHEMY_KEY: "Gnp3tbW0Wp0tJpdhVz1ZRtB9bqgYG03O",
   EXPLORER: "https://mumbai.polygonscan.com/tx",
 };
