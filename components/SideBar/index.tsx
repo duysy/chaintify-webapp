@@ -13,7 +13,7 @@ export default function SideBar() {
   const listMenuTop = [
     {
       iconElement: <LibraryMusic />,
-      title: "Cá Nhân test",
+      title: "Cá Nhân",
       href: "/mymusic",
       login: true,
     },
