@@ -9,13 +9,6 @@ import config from "../../config";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const style = {
-  width: "500px",
-  height: "auto",
-  bgcolor: "background.default",
-  boxShadow: 24,
-  p: 3,
-};
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
@@ -50,9 +43,13 @@ export default function PopupSendNft(props: Props) {
   return (
     <Dialog onClose={handleClosePopUp} open={props.open} sx={{ zIndex: 2000 }}>
       <Box
-        sx={style}
-        style={{
+        sx={{
           position: "relative",
+          width: { xs: "80vw", md: "500px" },
+          height: "auto",
+          bgcolor: "background.default",
+          boxShadow: 24,
+          p: 3,
         }}
       >
         <Button

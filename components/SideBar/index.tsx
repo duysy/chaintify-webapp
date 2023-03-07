@@ -20,7 +20,7 @@ export default function SideBar() {
     {
       iconElement: <Album />,
       title: "Khám Phá",
-      href: "/home",
+      href: "/",
       login: false,
     },
     {
@@ -92,7 +92,7 @@ export default function SideBar() {
                 variant="subtitle1"
                 sx={{
                   marginLeft: "0.5rem",
-                  display: { xs: "none", sm: "block" },
+                  display: { xs: "none", md: "block" },
                   fontWeight: "500",
                 }}
               >
@@ -154,7 +154,7 @@ export default function SideBar() {
             <Typography
               sx={{
                 textTransform: "none",
-                display: { xs: "none", sm: "block" },
+                display: { xs: "none", md: "block" },
               }}
             >
               Tạo playlist mới

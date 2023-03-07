@@ -27,7 +27,7 @@ export default function CarouselPlayBasic(props: TProps) {
               alignItems="center"
               sx={{
                 width: 150,
-                margin: "1.5rem 1.5rem 0 0",
+                margin: "0rem 1rem 1rem 0",
               }}
               onClick={(event: any) => {
                 event.stopPropagation();

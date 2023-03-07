@@ -11,8 +11,27 @@ type TProps = {
 };
 export default function ReviewProfile(props: TProps) {
   return (
-    <Box display="flex">
-      <Box display="flex" flexDirection="column" justifyContent="space-around" sx={{ flex: 3 }}>
+    <Box
+      display="flex"
+      sx={{
+        flexDirection: {
+          xs: "column",
+          md: "row",
+        },
+      }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-around"
+        sx={{
+          flex: 3,
+          order: {
+            xs: 2,
+            md: 1,
+          },
+        }}
+      >
         <Typography
           variant="h4"
           sx={{
@@ -35,6 +54,10 @@ export default function ReviewProfile(props: TProps) {
         justifyContent="center"
         sx={{
           flex: 2,
+          order: {
+            xs: 1,
+            md: 2,
+          },
         }}
       >
         {props.pathImage ? (

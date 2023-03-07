@@ -4,7 +4,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab/";
 import SaveIcon from "@mui/icons-material/Save";
 type Props = {
-  setPath: any;
+  setPath: (pathName: string) => void;
+  setName: null | ((name: string) => void);
   accept: string;
   title: string | null;
 };
@@ -38,6 +39,8 @@ export default function PopupCreateAlbum(props: Props) {
         showError("Size max 24 Mb");
         return;
       }
+      const name_ = (selectedFile as any).name;
+      if (props.setName) props.setName(name_);
       const formData = new FormData();
       formData.append("file_uploaded", selectedFile);
       try {

@@ -17,8 +17,27 @@ export default function EditProfile(props: TProps) {
   const handelTextFieldDescriptionChange = (event: any) => props.setDescription(event.target.value);
 
   return (
-    <Box display="flex">
-      <Box display="flex" flexDirection="column" justifyContent="space-around" sx={{ flex: 3 }}>
+    <Box
+      display="flex"
+      sx={{
+        flexDirection: {
+          xs: "column",
+          md: "row",
+        },
+      }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-around"
+        sx={{
+          flex: 3,
+          order: {
+            xs: 2,
+            md: 1,
+          },
+        }}
+      >
         <Typography
           variant="h4"
           sx={{
@@ -49,6 +68,10 @@ export default function EditProfile(props: TProps) {
         sx={{
           flex: 2,
           position: "relative",
+          order: {
+            xs: 1,
+            md: 2,
+          },
         }}
       >
         <Box
@@ -59,7 +82,7 @@ export default function EditProfile(props: TProps) {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <FileUpLoad setPath={props.setPathImage} accept={".png,.jpg"} title={"Pick image"} />
+          <FileUpLoad setPath={props.setPathImage} accept={".png,.jpg"} title={"Pick image"} setName={null} />
         </Box>
         {props.pathImage ? (
           <Image

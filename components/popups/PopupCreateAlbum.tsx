@@ -16,13 +16,6 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const style = {
-  width: "500px",
-  height: "auto",
-  bgcolor: "background.default",
-  boxShadow: 24,
-  p: 3,
-};
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
@@ -128,9 +121,13 @@ export default function PopupCreateAlbum(props: Props) {
   return (
     <Dialog onClose={handleClose} open={props.open} sx={{ zIndex: 2000 }} keepMounted={false}>
       <Box
-        sx={style}
-        style={{
+        sx={{
           position: "relative",
+          width: { xs: "80vw", md: "500px" },
+          height: "auto",
+          bgcolor: "background.default",
+          boxShadow: 24,
+          p: 3,
         }}
       >
         <Button
@@ -219,7 +216,7 @@ export default function PopupCreateAlbum(props: Props) {
               />
             )}
             <br />
-            <FileUpload setPath={setPathImage} accept=".png, .jpg, .jpeg" title={"Pick a image"} />
+            <FileUpload setPath={setPathImage} accept=".png, .jpg, .jpeg" title={"Pick a image"} setName={null} />
             <Typography color="red">{errors.cover?.message as any}</Typography>
           </Box>
 

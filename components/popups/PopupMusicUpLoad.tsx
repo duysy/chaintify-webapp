@@ -14,13 +14,6 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const style = {
-  width: "500px",
-  height: "auto",
-  bgcolor: "background.default",
-  boxShadow: 24,
-  p: 3,
-};
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
@@ -32,16 +25,16 @@ export default function PopupMusicUpLoad(props: Props) {
   const [artists, setArtists] = useState([]);
   const [pathSong, setPathSong] = useState("");
   const [pathImage, setPathImage] = useState("");
-  const refAudio: any = useRef();
+  const audioRef: any = useRef();
   const queryClient = useQueryClient();
 
   const schema = yup.object().shape({
     name: yup.string().required(),
-    album: yup.number().required(),
-    artist: yup.array().required(),
+    album: yup.number().optional(),
+    artist: yup.array().optional(),
     path: yup.string().required(),
-    cover: yup.string().required(),
-    lyrics: yup.string().min(20),
+    cover: yup.string().optional(),
+    lyrics: yup.string().min(20).optional(),
   });
 
   const {
@@ -95,7 +88,7 @@ export default function PopupMusicUpLoad(props: Props) {
         alert("Up load success new song");
         handleClosePopUp();
         queryClient.invalidateQueries(["listSong_1_1000_0"]);
-        queryClient.invalidateQueries(["detailAlbumPublic"]);
+        queryClient.invalidateQueries(["detailAlbum"]);
       } else {
         alert("Fail");
       }
@@ -113,7 +106,9 @@ export default function PopupMusicUpLoad(props: Props) {
     const artist: number = value.id;
     setValue("artist", [artist]);
   };
-
+  const setName = (name: any) => {
+    setValue("name", name);
+  };
   useEffect(() => {
     setValue("path", pathSong);
   }, [pathSong]);
@@ -124,21 +119,28 @@ export default function PopupMusicUpLoad(props: Props) {
 
   const onSubmit = async (data: any) => {
     const addMore = {
-      length: refAudio?.current?.duration | 0,
+      length: audioRef?.current?.duration | 0,
       track: 1,
       disc: 1,
       mtime: 1,
+      album: null,
+      artist: [],
+      cover: null,
     };
-    const createSong_ = { ...data, ...addMore };
+    const createSong_ = { ...addMore, ...data };
     mutationSubmit.mutate(createSong_);
   };
 
   return (
     <Dialog onClose={handleClosePopUp} open={props.open} sx={{ zIndex: 2000 }}>
       <Box
-        sx={style}
-        style={{
+        sx={{
           position: "relative",
+          width: { xs: "80vw", md: "500px" },
+          height: "auto",
+          bgcolor: "background.default",
+          boxShadow: 24,
+          p: 3,
         }}
       >
         <Button
@@ -171,7 +173,7 @@ export default function PopupMusicUpLoad(props: Props) {
             control={control}
             render={({ field: { onChange, value } }) => (
               <Box sx={{ width: "100%" }}>
-                <TextField sx={{ width: "100%" }} label="Name" variant="standard" onChange={onChange} value={value} />
+                <TextField sx={{ width: "100%" }} label="Name" variant="standard" onChange={onChange} value={value ? value : ""} />
                 <Typography color="red">{errors.name?.message as any}</Typography>
               </Box>
             )}
@@ -186,12 +188,12 @@ export default function PopupMusicUpLoad(props: Props) {
                   label: option.name,
                   id: option.id,
                 }))}
-                renderInput={(params: any) => <TextField {...params} label="Album" variant="standard" />}
+                renderInput={(params: any) => <TextField {...params} label="Album (Optional)" variant="standard" />}
               />
             ) : (
               <>
                 <CircularProgress />
-                <Typography>Loading album</Typography>
+                <Typography>Loading albums</Typography>
               </>
             )}
             <Typography color="red">{errors.album?.message as any}</Typography>
@@ -206,12 +208,12 @@ export default function PopupMusicUpLoad(props: Props) {
                   label: option.name,
                   id: option.id,
                 }))}
-                renderInput={(params: any) => <TextField {...params} label="Artist" variant="standard" />}
+                renderInput={(params: any) => <TextField {...params} label="Artist (Optional)" variant="standard" />}
               />
             ) : (
               <>
                 <CircularProgress />
-                <Typography>Loading artist</Typography>
+                <Typography>Loading artists</Typography>
               </>
             )}
             <Typography color="red">{errors.artist?.message as any}</Typography>
@@ -224,15 +226,14 @@ export default function PopupMusicUpLoad(props: Props) {
             sx={{ border: "1px solid", borderColor: "text.primary", padding: "1rem 0", margin: "1rem 0" }}
           >
             {pathSong && (
-              <audio controls ref={refAudio} src={`${config.MUSIC_URL}${pathSong}`}>
+              <audio controls ref={audioRef} src={`${config.MUSIC_URL}${pathSong}`}>
                 <source src="" type="audio/mp3" />
               </audio>
             )}
             <br />
-            <FileUpload setPath={setPathSong} accept=".mp3" title={"Pick a music"} />
+            <FileUpload setPath={setPathSong} accept=".mp3" title={"Pick a music"} setName={setName} />
             <Typography color="red">{errors.path?.message as any}</Typography>
           </Box>
-
           <Box
             display={"flex"}
             flexDirection="column"
@@ -242,7 +243,7 @@ export default function PopupMusicUpLoad(props: Props) {
           >
             {pathImage && <Image width={200} height={200} alt={"image pathImage"} objectFit={"cover"} src={`${config.IMAGE_URL}${pathImage}`} />}
             <br />
-            <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover"} />
+            <FileUpload setPath={setPathImage} accept=".png,.jpeg,.jpg" title={"Pick a image cover (Optional)"} setName={null} />
             <Typography color="red">{errors.cover?.message as any}</Typography>
           </Box>
 
@@ -255,7 +256,7 @@ export default function PopupMusicUpLoad(props: Props) {
                   onChange={onChange}
                   value={value}
                   aria-label="empty textarea"
-                  placeholder="Lyrics"
+                  placeholder="Lyrics (Optional)"
                   style={{ width: "100%", height: "10rem" }}
                 />
               )}

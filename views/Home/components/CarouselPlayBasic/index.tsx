@@ -16,7 +16,7 @@ export default function CarouselPlayBasic(props: TProps) {
   const router = useRouter();
   const MainContent = () => {
     return (
-      <Stack direction="row" spacing={3} alignItems="flex-start">
+      <Box display={"flex"} flexWrap={"wrap"} alignItems="flex-start">
         {list.map((item: any, index: any) => {
           return (
             <Box
@@ -27,6 +27,7 @@ export default function CarouselPlayBasic(props: TProps) {
               alignItems="center"
               sx={{
                 width: 150,
+                margin: "0 1rem 1.5rem 0",
               }}
               onClick={(event: any) => {
                 event.stopPropagation();
@@ -57,7 +58,7 @@ export default function CarouselPlayBasic(props: TProps) {
             </Box>
           );
         })}
-      </Stack>
+      </Box>
     );
   };
   if (list && list.length > 0) return <MainContent />;

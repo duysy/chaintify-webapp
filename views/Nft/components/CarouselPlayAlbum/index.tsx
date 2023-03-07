@@ -31,7 +31,7 @@ export default function CarouselPlayAlbum(props: TProps) {
               alignItems="center"
               sx={{
                 width: 150,
-                margin: "0.5rem 2rem 0 0",
+                margin: "0 1rem 1.5rem 0",
               }}
               onClick={(event: any) => {
                 event.stopPropagation();

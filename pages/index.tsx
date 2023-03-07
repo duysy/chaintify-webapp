@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
+import HomeView from "../views/Home";
 
-export default function index() {
-  return (
-    <div>index</div>
-  )
+export default function HomePage() {
+  return <HomeView />;
 }

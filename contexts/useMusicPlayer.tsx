@@ -12,6 +12,8 @@ export type MusicPlayerContextValue = {
   play: () => void;
   pause: () => void;
   isPlay: any;
+  onLoop: () => void;
+  loop: any;
   listSongMusicPlayer: any;
   setListSongMusicPlayer: any;
   setListMusicPlayer: any;
@@ -37,6 +39,7 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
   const [isPlay, setIsPlay] = useState(false);
   const [indexSongPlaylist, setIndexSongPlaylist] = useState(0);
   const [listSongMusicPlayer, setListSongMusicPlayer] = useState([]);
+  const [loop, setLoop] = useState(false);
   const playerRef: any = useRef();
   const onPlay = () => {
     // console.log("onPlay");
@@ -46,10 +49,17 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
     // console.log("onPause");
     setIsPlay(false);
   };
+  const onLoop = () => {
+    // console.log("onPause");
+    setLoop(!loop);
+  };
   const onEnded = () => {
     // console.log("onEnded");
     onClickNext();
     console.log(listSongMusicPlayer);
+    if (loop == true) {
+      play();
+    }
   };
   const setListMusicPlayer = (listSongMusicPlayer_: any) => {
     if (listSongMusicPlayer_.length <= 0) return;
@@ -117,6 +127,8 @@ const MusicPlayerContextProvider = ({ children }: Props) => {
         play,
         pause,
         isPlay,
+        onLoop,
+        loop,
         indexSongPlaylist,
         setListSongMusicPlayer,
         listSongMusicPlayer,

@@ -6,13 +6,6 @@ import { list as listPlaylistPrivate } from "../../apis/private/models/playlist/
 import { update as updatePlaylistPrivate, TUpdatePlayList } from "../../apis/private/models/playlist/put_playlist";
 import { useQuery } from "react-query";
 import { useAuth } from "../../contexts/useAuth";
-const style = {
-  width: 400,
-  minHeight: 400,
-  bgcolor: "background.default",
-  boxShadow: 24,
-  p: 4,
-};
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
@@ -64,9 +57,13 @@ export default function PopupAddMusicToPlaylist(props: Props) {
     <div>
       <Dialog onClose={handleClose} open={props.open} sx={{ zIndex: 2000 }}>
         <Box
-          sx={style}
-          style={{
+          sx={{
             position: "relative",
+            width: { xs: "80vw", md: "500px" },
+            minHeight: 400,
+            bgcolor: "background.default",
+            boxShadow: 24,
+            p: 4,
           }}
         >
           <Button

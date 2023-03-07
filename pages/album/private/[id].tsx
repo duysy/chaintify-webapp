@@ -1,5 +1,5 @@
-import React ,{useState} from "react";
-import AlbumView from "../../views/Album";
+import React, { useState } from "react";
+import AlbumView from "../../../views/Album/private";
 import { useRouter } from "next/router";
 export default function AlbumPage() {
   const router = useRouter();

@@ -5,15 +5,15 @@ import { Favorite, MoreVert, PlayCircle, PauseCircle } from "@mui/icons-material
 
 import Image from "next/image";
 
-import Wrap from "../wrap";
-import MusicList from "../../components/MusicList";
-import { detail as detailAlbumPublic } from "../../apis/public/extends/album/get_album";
-import { useMusicPlayer } from "../../contexts/useMusicPlayer";
-import { TMusicList } from "../../components/MusicList/types";
+import Wrap from "../../wrap";
+import MusicList from "../../../components/MusicList";
+import { detail as detailAlbumPublic } from "../../../apis/public/extends/album/get_album";
+import { useMusicPlayer } from "../../../contexts/useMusicPlayer";
+import { TMusicList } from "../../../components/MusicList/types";
 import { useQuery } from "react-query";
-import config from "../../config";
+import config from "../../../config";
 import MyLoader from "./Loading";
-import MenuMoreVert from "./components/MenuMoreVert";
+import MenuMoreVert from "../components/MenuMoreVert";
 type Props = {
   id: string | string[] | undefined;
 };
@@ -41,7 +41,7 @@ export default function AlbumView(props: Props) {
     // console.log("pause");
   };
   const queryAlbum = useQuery(
-    ["detailAlbumPublic", id],
+    ["detailAlbum", id],
     async () => {
       if (!id) return;
       return await detailAlbumPublic(+id);
@@ -55,7 +55,7 @@ export default function AlbumView(props: Props) {
   useEffect(() => {
     const initSongs = async () => {
       if (!album || Object.keys(album).length === 0) return;
-      let songs_: TMusicList[] = album.song.map((item: any, index: any) => {
+      let songs_: TMusicList[] = album?.song?.map((item: any, index: any) => {
         return {
           id: item.id,
           name: item.name,

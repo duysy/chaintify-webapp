@@ -30,7 +30,7 @@ export default function CarouselPlayAlbum(props: TProps) {
   };
   const fetchAndSetSong = async (id: number) => {
     const album = await detail(+id);
-    const listSongMusicPlay_ = album.song.map((item: any) => {
+    const listSongMusicPlay_ = album?.song?.map((item: any) => {
       return {
         ...item,
         ...{ path: `${config.MUSIC_URL}${item.path}` },
@@ -79,7 +79,7 @@ export default function CarouselPlayAlbum(props: TProps) {
     );
   };
   return (
-    <Stack direction="row" spacing={3} alignItems="flex-start">
+    <Box display={"flex"} flexWrap={"wrap"} alignItems="flex-start">
       {list?.map((album: TCarouselPlayAlbum, index: any) => {
         return (
           <Box
@@ -90,6 +90,7 @@ export default function CarouselPlayAlbum(props: TProps) {
             alignItems="center"
             sx={{
               width: 150,
+              margin: "0 1rem 1.5rem 0",
             }}
             onClick={(event) => {
               event.stopPropagation();
@@ -162,6 +163,6 @@ export default function CarouselPlayAlbum(props: TProps) {
 
       <BoxAdd />
       <PopupCreateAlbum open={open} setOpen={setOpen} />
-    </Stack>
+    </Box>
   );
 }

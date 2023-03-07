@@ -45,8 +45,24 @@ export default function TopNav() {
   return (
     <>
       <Grid container spacing={0}>
-        <Grid item xs={1}>
-          <Stack direction="row" alignItems="center" justifyContent="space-evenly" sx={{ height: "100%" }}>
+        <Grid
+          item
+          xs={1}
+          sx={{
+            display: {
+              xs: "none",
+              md: "block",
+            },
+          }}
+        >
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-evenly"
+            sx={{
+              height: "100%",
+            }}
+          >
             <NavigateBefore
               sx={{
                 color: "text.primary",
@@ -63,7 +79,7 @@ export default function TopNav() {
             />
           </Stack>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} md={6}>
           <ClickAwayListener
             onClickAway={() => {
               setFocus(false);
@@ -190,7 +206,7 @@ export default function TopNav() {
             </Stack>
           </ClickAwayListener>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={6} md={5}>
           <Stack direction="row" alignItems="center" justifyContent="end" sx={{ height: "100%" }}>
             <Box className={styles.circle} sx={{ bgcolor: "background.default" }} onClick={handelIconThemeModeClick}>
               {mode == "dark" ? (

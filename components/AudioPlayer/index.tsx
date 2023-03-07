@@ -9,6 +9,8 @@ type TProps = {
   onEnded: () => void | null;
   onClickNext: () => void | null;
   onClickPrevious: () => void | null;
+  onLoop: () => void | null;
+  loop: boolean;
   src: string | (() => string);
   autoPlay: Boolean | null;
   audioRefPlayer: any;
@@ -21,7 +23,6 @@ export default function Player(props: TProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [percentVolume, setPercentVolume] = useState(50);
   const [percentCurrentTime, setPercentCurrentTime] = useState(0);
-
   const handelPause = () => {
     if (!audio) return;
     audio?.pause();
@@ -162,13 +163,26 @@ export default function Player(props: TProps) {
       sx={{
         display: "fex",
         flexDirection: "row",
-        width: "100%",
         bgcolor: "background.paper",
+        width: "100%",
         height: "100%",
+        flexWrap: "nowrap",
       }}
     >
-      <Box sx={{ width: "20%", height: "100%" }}>{props.leftElement}</Box>
-      <Box sx={{ width: "60%", height: "100%" }} display="flex" flexDirection="column">
+      <Box
+        sx={{
+          flexGrow: 3,
+          height: "100%",
+          display: {
+            xs: "none",
+            md: "block",
+          },
+          width: "0px",
+        }}
+      >
+        {props.leftElement}
+      </Box>
+      <Box sx={{ flexGrow: 6, height: "100%" }} display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-around" alignItems="center" sx={{ width: "100%", height: "60%", padding: "0 30%" }}>
           <Shuffle sx={{ color: "text.primary" }} />
           <SkipPrevious sx={{ color: "text.primary" }} onClick={handelClickPrevious} />
@@ -190,7 +204,7 @@ export default function Player(props: TProps) {
             />
           )}
           <SkipNext sx={{ color: "text.primary" }} onClick={handelClickNext} />
-          <SettingsBackupRestore sx={{ color: "text.primary" }} />
+          <SettingsBackupRestore sx={{ color: props.loop ? "#E8AC24" : "text.primary" }} onClick={props.onLoop} />
         </Box>
         <Box display="flex" justifyContent="space-evenly" alignItems="center" sx={{ width: "100%", height: "40%", padding: "0 3rem" }}>
           <Typography sx={{ color: "text.primary" }}>{(currentTime / 60).toFixed(2)}</Typography>
@@ -199,7 +213,20 @@ export default function Player(props: TProps) {
         </Box>
       </Box>
 
-      <Box display="flex" justifyContent="center" alignItems="center" sx={{ width: "20%", height: "100%" }}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={{
+          flexGrow: 3,
+          height: "100%",
+          display: {
+            xs: "none",
+            md: "flex",
+          },
+          width: "0px",
+        }}
+      >
         <VolumeUp
           sx={{
             color: "text.primary",
@@ -207,7 +234,9 @@ export default function Player(props: TProps) {
         />
         <Slider
           size="small"
-          sx={{ width: "60%" }}
+          sx={{
+            width: "60%",
+          }}
           defaultValue={50}
           aria-label="Volume"
           valueLabelDisplay="auto"

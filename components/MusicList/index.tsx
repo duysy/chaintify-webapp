@@ -247,13 +247,13 @@ export default function MusicList(props: TProps) {
                             textAlign: "left",
                           }}
                         >
-                          {row.artist ? row.artist : "artist"}
+                          {row.artist ? row.artist : "Unknown artist"}
                         </Typography>
                       </Stack>
                     </Stack>
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
-                    {row.album ? row.album : "album"}
+                    {row.album ? row.album : "Unknown album"}
                   </TableCell>
                   <TableCell align="center" className={styles.tableRow}>
                     {row.time ? (row?.time / 60).toFixed(2) : "time"}

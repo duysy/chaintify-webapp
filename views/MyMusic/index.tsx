@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import MyLoader from "./Loading";
 import { FilterDrama } from "@mui/icons-material";
 import { useAuth } from "../../contexts/useAuth";
-type TTabView = "likeSongTab" | "UploadTab";
+type TTabView = "UpLoadTab" | "LikeSongTab";
 
 export default function MyMusicView() {
   const { isLogin } = useAuth();
@@ -29,7 +29,7 @@ export default function MyMusicView() {
   const [albums, setAlbums] = useState<TCarouselPlayAlbum[]>();
   const [playlists, setPlaylists] = useState<TCarouselBoxCircle[]>();
   const [songs, setSongs] = useState<TMusicList[]>();
-  const [tab, setTab] = useState<TTabView>("likeSongTab");
+  const [tab, setTab] = useState<TTabView>("UpLoadTab");
   const queryPlayList = useQuery(
     ["listPlaylistPrivate_0_5_0"],
     async () => {
@@ -61,7 +61,7 @@ export default function MyMusicView() {
             id: +item?.id,
             name: item?.name,
             cover: `${config.IMAGE_URL}${item?.cover}`,
-            clickHrefTo: `/album/${item?.id}`,
+            clickHrefTo: item.isPublic ? `/album/public/${item.id}` : `/album/private/${item.id}`,
           } as TCarouselPlayAlbum;
         });
         setAlbums(albums);
@@ -101,11 +101,11 @@ export default function MyMusicView() {
       </Wrap>
     );
   }
-  const LikeSongTabWrap = () => {
+  const UpLoadTab = () => {
     return <MusicList list={songs as TMusicList[]} />;
   };
 
-  const UploadTab = () => {
+  const LikeSongTabWrap = () => {
     return (
       <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         <FilterDrama
@@ -133,7 +133,7 @@ export default function MyMusicView() {
           variant="h3"
           sx={{
             color: "text.primary",
-            fontWeight:"1000"
+            fontWeight: "1000",
           }}
         >
           Thư viện
@@ -163,31 +163,11 @@ export default function MyMusicView() {
           }}
         >
           <Button
-            sx={
-              tab == "likeSongTab"
-                ? {
-                    borderRadius: "100px",
-                    padding: "0.3rem 2rem",
-                    background: "#E8AC24",
-                    color: "text.primary",
-                  }
-                : {
-                    borderRadius: "100px",
-                    padding: "0.3rem 2rem",
-                  }
-            }
             onClick={() => {
-              setTab("likeSongTab");
-            }}
-          >
-            Yêu thích
-          </Button>
-          <Button
-            onClick={() => {
-              setTab("uploadTab" as TTabView);
+              setTab("UpLoadTab" as TTabView);
             }}
             sx={
-              tab == ("uploadTab" as TTabView)
+              tab === ("UpLoadTab" as TTabView)
                 ? {
                     borderRadius: "100px",
                     padding: "0.3rem 2rem",
@@ -202,9 +182,29 @@ export default function MyMusicView() {
           >
             Đã tải lên
           </Button>
+          <Button
+            sx={
+              tab === "LikeSongTab"
+                ? {
+                    borderRadius: "100px",
+                    padding: "0.3rem 2rem",
+                    background: "#E8AC24",
+                    color: "text.primary",
+                  }
+                : {
+                    borderRadius: "100px",
+                    padding: "0.3rem 2rem",
+                  }
+            }
+            onClick={() => {
+              setTab("LikeSongTab");
+            }}
+          >
+            Yêu thích
+          </Button>
         </Box>
-        {tab == ("likeSongTab" as TTabView) && <LikeSongTabWrap />}
-        {tab == ("uploadTab" as TTabView) && <UploadTab />}
+        {tab == ("LikeSongTab" as TTabView) && <LikeSongTabWrap />}
+        {tab == ("UpLoadTab" as TTabView) && <UpLoadTab />}
       </Box>
     </Wrap>
   );

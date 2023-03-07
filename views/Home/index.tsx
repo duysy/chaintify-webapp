@@ -26,7 +26,7 @@ export default function HomeView() {
           return {
             name: item.name,
             cover: `${config.IMAGE_URL}${item.cover}`,
-            clickHrefTo: `/album/${item.id}`,
+            clickHrefTo: item.isPublic ? `/album/public/${item.id}` : `/album/private/${item.id}`,
           } as TCarouselPlayBasic;
         });
         setAlbums(albums);

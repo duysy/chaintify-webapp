@@ -12,13 +12,6 @@ import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-const style = {
-  width: 500,
-  height: "auto",
-  bgcolor: "background.default",
-  boxShadow: 24,
-  p: 4,
-};
 type Props = {
   open: boolean;
   setOpen: (state: boolean) => void;
@@ -32,7 +25,6 @@ export default function PopupCreatePlaylist(props: Props) {
     name: yup.string().required(),
     description: yup.string().min(20),
     cover: yup.string().required(),
-    isPublic: yup.boolean(),
   });
 
   const {
@@ -73,9 +65,13 @@ export default function PopupCreatePlaylist(props: Props) {
     <div>
       <Dialog onClose={handleClose} open={props.open} sx={{ zIndex: 2000 }}>
         <Box
-          sx={style}
-          style={{
+          sx={{
             position: "relative",
+            width: { xs: "80vw", md: "500px" },
+            height: "auto",
+            bgcolor: "background.default",
+            boxShadow: 24,
+            p: 4,
           }}
         >
           <Button
@@ -145,22 +141,8 @@ export default function PopupCreatePlaylist(props: Props) {
                 />
               )}
               <br />
-              <FileUpload setPath={setPathImage} accept=".png, .jpeg, .jpg" title={"Pick a image"} />
+              <FileUpload setPath={setPathImage} accept=".png, .jpeg, .jpg" title={"Pick a image"} setName={null} />
               <Typography color="red">{errors?.cover?.message as any}</Typography>
-            </Box>
-
-            <Box>
-              <Stack direction="row">
-                <Controller
-                  name={"isPublic"}
-                  control={control}
-                  render={({ field: { onChange, value } }) => <Checkbox value={value} defaultChecked onChange={onChange} />}
-                />
-                <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
-                  Mọi người có thể truy cập playlist này
-                </Typography>
-              </Stack>
-              <Typography color="red">{errors.isPublic?.message as any}</Typography>
             </Box>
 
             <Button onClick={handleSubmit(onSubmit)}>Tạo mới</Button>

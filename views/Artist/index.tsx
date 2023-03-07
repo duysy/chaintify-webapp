@@ -67,7 +67,7 @@ export default function ArtistView(props: TProps) {
           return {
             name: item.name,
             cover: `${config.IMAGE_URL}${item.cover}`,
-            clickHrefTo: `/album/${item.id}`,
+            clickHrefTo: item.isPublic ? `/album/public/${item.id}` : `/album/private/${item.id}`,
           } as TCarouselPlayBasic;
         });
         setAlbums(albums);
@@ -105,8 +105,27 @@ export default function ArtistView(props: TProps) {
   );
   return (
     <Wrap>
-      <Box display="flex">
-        <Box display="flex" flexDirection="column" justifyContent="space-around" sx={{ flex: 3 }}>
+      <Box
+        display="flex"
+        sx={{
+          flexDirection: {
+            xs: "column",
+            md: "row",
+          },
+        }}
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-around"
+          sx={{
+            flex: 3,
+            order: {
+              xs: 2,
+              md: 1,
+            },
+          }}
+        >
           <Typography
             variant="h4"
             sx={{
@@ -129,6 +148,10 @@ export default function ArtistView(props: TProps) {
           justifyContent="center"
           sx={{
             flex: 2,
+            order: {
+              xs: 1,
+              md: 2,
+            },
           }}
         >
           <Image
