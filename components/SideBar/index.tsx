@@ -31,7 +31,7 @@ export default function SideBar() {
     },
     {
       iconElement: <Bookmark />,
-      title: "Nghệ sĩ",
+      title: "Na dep gai",
       href: "/artist",
       login: false,
     },
