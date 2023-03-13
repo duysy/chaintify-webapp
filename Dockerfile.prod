@@ -5,3 +5,4 @@ COPY package.json /code
 RUN yarn
 COPY ./ /code
 RUN yarn build
+EXPOSE 80

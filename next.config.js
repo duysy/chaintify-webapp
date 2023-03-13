@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    server: {
-    domain: 'chaintify.space'
-  },
+    //     server: {
+    //     domain: 'chaintify.space'
+    //   },
     reactStrictMode: true,
     swcMinify: true,
     images: {
