@@ -15,7 +15,7 @@ export default {
   IMAGE_URL: "https://api.chaintify.space/music/api/public/upload/?path=",
   MUSIC_URL: "https://api.chaintify.space/media/",
 
-  CHAINTIFY_CONTRACT: "0x4C4B27C6b1867F5d71F974c0e02446fC267C4a2a",
+  CHAINTIFY_CONTRACT: "0x1ad1A82aA0AA9FCB53Dd2d265Eb79B06265097E3",
   ALCHEMY_KEY: "Gnp3tbW0Wp0tJpdhVz1ZRtB9bqgYG03O",
   EXPLORER: "https://mumbai.polygonscan.com/tx",
 };
