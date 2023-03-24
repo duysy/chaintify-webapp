@@ -136,7 +136,7 @@ export default function TopNav() {
                             key={item.id}
                             onClick={() => {
                               setFocus(false);
-                              router.push(`/album/${item.album_id}`);
+                              router.push(`/album/public/${item.album_id}`);
                             }}
                             sx={{
                               "&:hover": {
