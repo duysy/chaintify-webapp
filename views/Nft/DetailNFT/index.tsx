@@ -142,7 +142,7 @@ export default function DetailNFTView(props: Props) {
                     }}
                     onClick={handelButtonPauseClick}
                   >
-                    Tạm dừng
+                    Pause
                   </Button>
                 ) : (
                   <Button

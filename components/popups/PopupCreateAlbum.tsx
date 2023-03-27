@@ -146,7 +146,7 @@ export default function PopupCreateAlbum(props: Props) {
             color: "text.primary",
           }}
         >
-          Tạo album
+          Create album
         </Typography>
         <Stack
           spacing={3}
@@ -245,7 +245,7 @@ export default function PopupCreateAlbum(props: Props) {
                 render={({ field: { onChange, value } }) => <Checkbox value={value} defaultChecked onChange={onChange} />}
               />
               <Typography sx={{ textAlign: "center", lineHeight: "3rem", height: "3rem" }} variant="inherit">
-                Mọi người có thể truy cập album này
+                Everyone can access this album
               </Typography>
             </Stack>
             <Typography color="red">{errors.isPublic?.message as any}</Typography>

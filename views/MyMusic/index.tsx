@@ -120,7 +120,7 @@ export default function MyMusicView() {
             color: "text.primary",
           }}
         >
-          Bạn chưa có bào nào trong thư viện
+          You don't have any songs in your library.
         </Typography>
       </Box>
     );
@@ -136,7 +136,7 @@ export default function MyMusicView() {
             fontWeight: "1000",
           }}
         >
-          Thư viện
+          Library
         </Typography>
       </Box>
       <Box>

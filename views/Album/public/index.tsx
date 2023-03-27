@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Grid, Box, Checkbox, Typography, Button, Stack } from "@mui/material";
-import { Favorite, MoreVert, PlayCircle, PauseCircle } from "@mui/icons-material";
+import { FavoriteBorder, MoreVert, PlayCircle, PauseCircle } from "@mui/icons-material";
 
 import Image from "next/image";
 
@@ -128,7 +128,7 @@ export default function AlbumView(props: Props) {
                   }}
                   onClick={handelButtonPauseClick}
                 >
-                  Tạm dừng
+                  Pause
                 </Button>
               ) : (
                 <Button
@@ -158,7 +158,7 @@ export default function AlbumView(props: Props) {
                   bgcolor: "background.paper",
                 }}
               >
-                <Favorite
+                <FavoriteBorder
                   sx={{
                     color: "text.primary",
                   }}

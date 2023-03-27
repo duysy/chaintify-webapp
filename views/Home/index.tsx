@@ -1,6 +1,6 @@
 import config from "../../config";
 import { useState } from "react";
-import {  Box, } from "@mui/material";
+import { Box } from "@mui/material";
 import Slide from "../../components/Slide";
 import Wrap from "../wrap";
 import SectionTitle from "../../components/SectionTitle";
@@ -48,16 +48,16 @@ export default function HomeView() {
           // console.log(datetime);
           let updated_at_text = "";
           if (datetime < 60) {
-            updated_at_text = `${datetime.toFixed(0)} giây trước`;
+            updated_at_text = `${datetime.toFixed(0)} seconds ago`;
           } else if (datetime > 60 && datetime < 3600) {
             datetime = datetime / 60;
-            updated_at_text = `${datetime.toFixed(0)} phút trước`;
+            updated_at_text = `${datetime.toFixed(0)} minutes ago`;
           } else if (datetime > 3600 && datetime < 86400) {
             datetime = datetime / 3600;
-            updated_at_text = `${datetime.toFixed(0)} giờ trước`;
+            updated_at_text = `${datetime.toFixed(0)} hours ago`;
           } else if (datetime > 86400) {
             datetime = datetime / 86400;
-            updated_at_text = `${datetime.toFixed(0)} ngày trước`;
+            updated_at_text = `${datetime.toFixed(0)} days ago`;
           }
           return {
             id: item.id,

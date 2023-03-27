@@ -83,7 +83,7 @@ export default function PopupAddMusicToPlaylist(props: Props) {
                 color: "text.primary",
               }}
             >
-              Thêm nhạc đã chọn vào playlist
+              To add the selected music to a playlist
             </Typography>
 
             <Autocomplete

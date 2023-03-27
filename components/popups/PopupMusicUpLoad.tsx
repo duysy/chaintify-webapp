@@ -159,7 +159,7 @@ export default function PopupMusicUpLoad(props: Props) {
             color: "text.primary",
           }}
         >
-          Upload nhạc
+          Upload music
         </Typography>
         <Stack
           spacing={3}

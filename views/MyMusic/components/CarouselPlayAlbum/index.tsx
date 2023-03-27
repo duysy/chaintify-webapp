@@ -73,7 +73,7 @@ export default function CarouselPlayAlbum(props: TProps) {
             color: "text.primary",
           }}
         >
-          Tạo album
+          Create album
         </Typography>
       </Box>
     );
