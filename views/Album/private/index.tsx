@@ -17,6 +17,7 @@ import MenuMoreVert from "../components/MenuMoreVert";
 type Props = {
   id: string | string[] | undefined;
 };
+//change
 export default function AlbumView(props: Props) {
   const id = props.id;
   const { setListMusicPlayer, play, pause, isPlay } = useMusicPlayer();
