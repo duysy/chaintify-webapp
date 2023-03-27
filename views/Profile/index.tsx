@@ -50,8 +50,8 @@ export default function ProfileView() {
     return (
       <Wrap>
         <Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} sx={{ width: "100%", height: "300px" }}>
-          <Typography sx={{ color: "text.primary" }}>Bạn không phải là nghệ sỹ</Typography>
-          <Button onClick={handelEditButtonCLick}>Trở thành nghệ sỹ</Button>
+          <Typography sx={{ color: "text.primary" }}>You are not an artist</Typography>
+          <Button onClick={handelEditButtonCLick}>Become an artist now</Button>
         </Box>
       </Wrap>
     );

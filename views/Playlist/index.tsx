@@ -114,7 +114,7 @@ export default function PlayListView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {playlist?.name ? playlist.name : "Không có tên bài hát"}
+              {playlist?.name ? playlist.name : "No song title"}
             </Typography>
             <Typography
               variant="caption"
@@ -122,7 +122,7 @@ export default function PlayListView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {playlist?.description ? playlist.description : "Không có description"}
+              {playlist?.description ? playlist.description : "No description"}
             </Typography>
             <Box>
               {isPlay ? (
@@ -138,7 +138,7 @@ export default function PlayListView(props: Props) {
                   }}
                   onClick={handelButtonPauseClick}
                 >
-                  Tạm dừng
+                  Pause
                 </Button>
               ) : (
                 <Button
@@ -197,7 +197,7 @@ export default function PlayListView(props: Props) {
               padding: "1rem 0",
             }}
           >
-            {playlist?.isPublic ? "Album này được public, mọi người có thể truy cập" : "Album này được không public, mọi người không thể truy cập"}
+            {playlist?.isPublic ? "This album is public, everyone can access it" : "This album is not public, people cannot access it"}
           </Typography>
           {/* <Like songs={songs} /> */}
           {songs && <MusicList list={songs} />}

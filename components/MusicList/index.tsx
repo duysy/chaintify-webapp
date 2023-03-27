@@ -147,16 +147,16 @@ export default function MusicList(props: TProps) {
                 #
               </TableCell>
               <TableCell align="center" className={styles.tableRow} sx={{ minWidth: "15rem" }}>
-                Bài Hát
+                Song
               </TableCell>
               <TableCell align="center" className={styles.tableRow} sx={{ minWidth: "10rem" }}>
                 Album
               </TableCell>
               <TableCell align="center" className={styles.tableRow} style={{ maxWidth: "5rem" }}>
-                Thời gian
+                Time
               </TableCell>
               <TableCell align="center" className={styles.tableRow} sx={{ maxWidth: "5rem" }}>
-                Yêu thích
+                Favorite
               </TableCell>
             </TableRow>
           </TableHead>
@@ -171,7 +171,7 @@ export default function MusicList(props: TProps) {
                         setOpen(true);
                       }}
                     >
-                      <Typography>Thêm vào playlist</Typography>
+                      <Typography>Add to playlist</Typography>
                     </Button>
                     <PopupAddMusicToPlaylist open={open} setOpen={setOpen} listSong={listSong} />
                   </Stack>
@@ -269,5 +269,5 @@ export default function MusicList(props: TProps) {
     );
   };
   if (list && list.length > 0) return <MainContent />;
-  return <Typography sx={{ color: "text.primary" }}>Ops, Không có bài hát nào</Typography>;
+  return <Typography sx={{ color: "text.primary" }}>Oops, there are no songs</Typography>;
 }

@@ -91,5 +91,5 @@ export default function CarouselBoxCircle(props: TProps) {
     );
   };
   if (list && list.length > 0) return <MainContent />;
-  return <Typography sx={{ color: "text.primary" }}>Ops,Không có data</Typography>;
+  return <Typography sx={{ color: "text.primary" }}>Oops, there is no data</Typography>;
 }

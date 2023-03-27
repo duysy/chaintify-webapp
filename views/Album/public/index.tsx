@@ -104,7 +104,7 @@ export default function AlbumView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {album?.name ? album.name : "Không có tên bài hát"}
+              {album?.name ? album.name : "No song title"}
             </Typography>
             <Typography
               variant="caption"
@@ -112,7 +112,7 @@ export default function AlbumView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {album?.description ? album.description : "Không có description"}
+              {album?.description ? album.description : "No description"}
             </Typography>
             <Box>
               {isPlay ? (
@@ -187,7 +187,7 @@ export default function AlbumView(props: Props) {
               padding: "1rem 0",
             }}
           >
-            {album?.isPublic ? "Album này được public, mọi người có thể truy cập" : "Album này được không public, mọi người không thể truy cập"}
+            {album?.isPublic ? "This album is public, everyone can access it" : "This album is not public, everyone cannot access it"}
           </Typography>
           {/* <Like songs={songs} /> */}
           {songs && <MusicList list={songs} />}

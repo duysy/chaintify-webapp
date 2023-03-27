@@ -48,7 +48,7 @@ export default function ArtistView() {
 
   return (
     <Wrap>
-      <SectionTitle>Danh sách ca sỹ</SectionTitle>
+      <SectionTitle>List of singers</SectionTitle>
       <BoxArtistList list={artists as TBoxArtistList[]} />
     </Wrap>
   );

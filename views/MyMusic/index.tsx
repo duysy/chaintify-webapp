@@ -156,7 +156,7 @@ export default function MyMusicView() {
         )}
       </Box>
       <Box>
-        <SectionTitle>Bài hát</SectionTitle>
+        <SectionTitle>Song</SectionTitle>
         <Box
           sx={{
             paddingBottom: "3rem",
@@ -180,7 +180,7 @@ export default function MyMusicView() {
                   }
             }
           >
-            Đã tải lên
+            Uploaded
           </Button>
           <Button
             sx={
@@ -200,7 +200,7 @@ export default function MyMusicView() {
               setTab("LikeSongTab");
             }}
           >
-            Yêu thích
+            Favorite
           </Button>
         </Box>
         {tab == ("LikeSongTab" as TTabView) && <LikeSongTabWrap />}

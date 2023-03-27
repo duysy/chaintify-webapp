@@ -109,7 +109,7 @@ export default function DetailNFTView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {album?.name ? album.name : "Không có tên album"}
+              {album?.name ? album.name : "No album name"}
             </Typography>
             <Typography
               variant="caption"
@@ -117,7 +117,7 @@ export default function DetailNFTView(props: Props) {
                 color: "text.primary",
               }}
             >
-              {album?.description ? album.description : "Không có description"}
+              {album?.description ? album.description : "No description"}
             </Typography>
 
             <Box

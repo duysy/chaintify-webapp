@@ -7,21 +7,19 @@ import { NavigateBefore, NavigateNext, CloudUpload, Search, Lyrics, Person, Dark
 import PopupMusicUpLoad from "../popups/PopupMusicUpLoad";
 import { useThemeContext } from "../../contexts/useTheme";
 import { useRouter } from "next/router";
-import { useEther } from "../../contexts/useEther";
 import { search } from "../../apis/public/extends/search/get_search";
 
-import WalletConnect from "./components/WalletConnect";
-
+import PopupWalletConnect from "../popups/PopupWalletConnect";
 export default function TopNav() {
   const router = useRouter();
-  const [openPopUp, setOpenPopUp] = useState(false);
-  const [showProfileCard, setShowProfileCard] = useState(false);
   const { autoSetMode, mode } = useThemeContext();
+  const [openUploadPopUp, setOpenUploadPopUp] = useState(false);
+  const [openWalletPopUp, setOpenWalletPopUp] = useState(false);
   const [searchValue, setSearchValue] = useState<any>();
   const [focus, setFocus] = useState<any>(false);
   const [textSearch, setTextSearch] = useState("");
   const handelUploadClick = () => {
-    setOpenPopUp(true);
+    setOpenUploadPopUp(true);
   };
   const handelClickNavigateBefore = () => {
     router.back();
@@ -35,6 +33,7 @@ export default function TopNav() {
   const handelIconSettingClick = () => {
     router.push("/profile");
   };
+  const handelOpenWalletPopUp = () => setOpenWalletPopUp(true);
   useEffect(() => {
     const search_ = async () => {
       const value = await search(textSearch);
@@ -99,7 +98,7 @@ export default function TopNav() {
                 type="text"
                 autoComplete="off"
                 className={styles.searchInput}
-                placeholder="Tìm kiếm bài hát, nghệ sỹ..."
+                placeholder="Search for songs, artists..."
                 sx={{
                   "& fieldset": { border: "none" },
                   bgcolor: "background.paper",
@@ -239,27 +238,20 @@ export default function TopNav() {
                 onClick={handelIconSettingClick}
               />
             </Box>
-            <ClickAwayListener onClickAway={() => setShowProfileCard(false)}>
-              <Box className={styles.circle} sx={{ bgcolor: "background.default", position: "relative" }}>
-                <Person
-                  sx={{
-                    color: "text.secondary",
-                  }}
-                  onClick={() => setShowProfileCard(true)}
-                />
-                {showProfileCard && (
-                  <Box
-                    sx={{ position: "absolute", top: "100%", right: 0, width: "30rem", height: "auto", zIndex: 1000, bgcolor: "background.paper" }}
-                  >
-                    <WalletConnect />
-                  </Box>
-                )}
-              </Box>
-            </ClickAwayListener>
+
+            <Box className={styles.circle} sx={{ bgcolor: "background.default" }}>
+              <Person
+                sx={{
+                  color: "text.secondary",
+                }}
+                onClick={handelOpenWalletPopUp}
+              />
+            </Box>
           </Stack>
         </Grid>
       </Grid>
-      <PopupMusicUpLoad open={openPopUp} setOpen={setOpenPopUp} />
+      <PopupWalletConnect open={openWalletPopUp} setOpen={setOpenWalletPopUp} />
+      <PopupMusicUpLoad open={openUploadPopUp} setOpen={setOpenUploadPopUp} />
     </>
   );
 }

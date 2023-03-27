@@ -58,7 +58,7 @@ export default function Player() {
               <Typography variant="subtitle2">
                 {(listSongMusicPlayer[indexSongPlaylist]?.artist &&
                   listSongMusicPlayer[indexSongPlaylist]?.artist.map((item: any) => item.name).join("|")) ||
-                  "Không có ca sỹ"}
+                  "No singer"}
               </Typography>
             </Box>
           </Stack>

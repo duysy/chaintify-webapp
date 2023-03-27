@@ -174,7 +174,7 @@ export default function ArtistView(props: TProps) {
           onClick={isPlay ? handelButtonPauseClick : handelButtonPlayClick}
           sx={{ bgcolor: "#FFC61B", color: "text.primary", borderRadius: "25px", padding: "0.5rem 1rem" }}
         >
-          PHÁT NHẠC
+          PLAY MUSIC
         </Button>
       </Box>
       <Box
@@ -198,7 +198,7 @@ export default function ArtistView(props: TProps) {
             color: "text.primary",
           }}
         >
-          TỔNG QUAN
+          OVERVIEW
         </Button>
         <Button
           onClick={() => {
@@ -218,18 +218,18 @@ export default function ArtistView(props: TProps) {
             color: "text.primary",
           }}
         >
-          BÀI HÁT
+          SONGS
         </Button>
       </Box>
       {tab == "OVERVIEW" && (
         <Box>
           <Box>
-            <SectionTitle>Danh sách album</SectionTitle>
+            <SectionTitle>List of albums</SectionTitle>
             {albums && <CarouselPlayBasic list={albums as TCarouselPlayBasic[]} />}
           </Box>
 
           <Box>
-            <SectionTitle>Danh sách bài hát</SectionTitle>
+            <SectionTitle>List of songs</SectionTitle>
             {songs && <MusicList list={songs as TMusicList[]} />}
           </Box>
         </Box>
@@ -237,14 +237,14 @@ export default function ArtistView(props: TProps) {
 
       {tab == "ALBUM" && (
         <Box>
-          <SectionTitle>Danh sách album</SectionTitle>
+          <SectionTitle>List of albums</SectionTitle>
           {albums && <CarouselPlayBasic list={albums as TCarouselPlayBasic[]} />}
         </Box>
       )}
 
       {tab == "SONG" && (
         <Box>
-          <SectionTitle>Danh sách bài hát</SectionTitle>
+          <SectionTitle>List of songs</SectionTitle>
           {songs && <MusicList list={songs as TMusicList[]} />}
         </Box>
       )}

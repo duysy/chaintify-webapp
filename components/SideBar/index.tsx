@@ -13,25 +13,25 @@ export default function SideBar() {
   const listMenuTop = [
     {
       iconElement: <LibraryMusic />,
-      title: "Cá Nhân",
+      title: "Personal",
       href: "/mymusic",
       login: true,
     },
     {
       iconElement: <Album />,
-      title: "Khám Phá",
+      title: "Discover",
       href: "/",
       login: false,
     },
     {
       iconElement: <AirlineStops />,
-      title: "Nhạc mới",
+      title: "New songs",
       href: "/newsong",
       login: false,
     },
     {
       iconElement: <Bookmark />,
-      title: "Nghệ sĩ",
+      title: "Artist",
       href: "/artist",
       login: false,
     },
@@ -157,7 +157,7 @@ export default function SideBar() {
                 display: { xs: "none", md: "block" },
               }}
             >
-              Tạo playlist mới
+              Create a new playlist
             </Typography>
           </>
         </Button>

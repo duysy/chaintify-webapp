@@ -97,7 +97,7 @@ export default function PopupCreatePlaylist(props: Props) {
                 color: "text.primary",
               }}
             >
-              Tạo playlist mới
+              Create a new playlist
             </Typography>
 
             <Controller

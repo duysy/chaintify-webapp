@@ -75,11 +75,11 @@ export default function HomeView() {
     <Wrap>
       <Slide />
       <Box>
-        <SectionTitle>Gần đây</SectionTitle>
+        <SectionTitle>Recently</SectionTitle>
         <CarouselBasic list={albums} />
       </Box>
       <Box>
-        <SectionTitle>Mới phát hành</SectionTitle>
+        <SectionTitle>Newly released</SectionTitle>
         <NewListBoxSong list={songs} />
       </Box>
       <Box>
